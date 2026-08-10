@@ -1,0 +1,6 @@
+namespace: actions-handler-system
+
+resources:
+  - namespace.yaml
+  - service.yaml
+  - rbac.yaml

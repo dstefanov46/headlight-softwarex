@@ -1,0 +1,62 @@
+# Local Kubernetes and Karmada state. These contain credentials and private keys.
+.kube/
+.karmada/
+.cache/
+.config/
+
+# Generated experiment outputs. Keep scripts/configs in git; regenerate results.
+results/*
+!results/.gitkeep
+!results/README.md
+!results/ARTIFACTS_POLICY.md
+results/**/raw/
+results/**/logs/
+results/**/*debug*/
+results/**/*.jsonl
+results/**/*.sqlite
+results/**/*.db
+results/**/*.prof
+results/**/*.trace
+
+# Python caches and virtual environments.
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# Python packaging/build outputs.
+/build/
+/dist/
+*.egg-info/
+
+# Model and training outputs.
+*.pth
+*.pt
+*.pkl
+*.npy
+ai-module/ai-module/trained_models/
+ai-module/ai-module/feature_history/
+ai-module/ai-module/logs/
+ai-module/ai-module/nephele/
+ai-module/baselines/artifacts/
+
+# Logs and temporary files.
+*.log
+*.tmp
+*.swp
+*.swo
+nohup.out
+
+# IDE/editor state.
+.idea/
+.vscode/
+.claude/
+
+# OS metadata.
+.DS_Store
+Thumbs.db

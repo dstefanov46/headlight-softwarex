@@ -1,0 +1,16 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: WorkloadProfile
+metadata:
+  name: bursty
+spec:
+  pattern: bursty
+  duration_seconds: 2400
+  warmup_seconds: 300
+  locust:
+    spawn_rate: 30
+    base_users: 35
+    burst_users: 220
+    burst_probability: 0.12
+    burst_window_seconds: 120
+  notes: Optional stretch workload with stochastic bursts.
+  sampling_interval_seconds: 15

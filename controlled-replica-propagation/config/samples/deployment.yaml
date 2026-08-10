@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crp-example
+spec:
+  selector:
+    matchLabels:
+      app: crp-example
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: crp-example
+    spec:
+      containers:
+        - name: test
+          image: registry.k8s.io/busybox:1.27.2
+          args:
+            - /bin/sh
+            - -c
+            - sleep $((RANDOM % 16)); touch /tmp/ready; tail -f /dev/null
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/ready
+            initialDelaySeconds: 5
+            periodSeconds: 5

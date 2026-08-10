@@ -1,0 +1,35 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ExperimentRun
+metadata:
+  name: keda__flash-crowd__multi-cluster-headlight
+spec:
+  controller_profile: experiments/configs/baselines/keda.yaml
+  topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
+  workload_profile: experiments/configs/workloads/flash-crowd.yaml
+  seeds:
+  - 101
+  - 102
+  - 103
+  - 104
+  - 105
+  duration_seconds: 2400
+  warmup_seconds: 300
+  sampling_interval_seconds: 15
+  sla:
+    p95_latency_ms: 1000
+    minimum_success_rate: 0.99
+    max_violation_window_seconds: 60
+  output_dir: results/softwarex/keda-flash-crowd-multi-cluster-headlight
+  reset_policy:
+    between_seeds: true
+    delete_pods: true
+    clear_controller_state: true
+  capture:
+    raw_logs: true
+    prometheus_snapshots: true
+    kubernetes_events: true
+    crp_state_transitions: true
+    actions_handler_batches: true
+    ai_inference_times: true
+    model_checkpoints: true
+  notes: Two-cluster measured comparison run using common paired seeds for KEDA.

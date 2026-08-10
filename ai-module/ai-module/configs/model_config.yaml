@@ -1,0 +1,11 @@
+LEGACY_CONFIG: true  # Retained for the unused AdapGLA-era helper_functions.py path.
+INPUT_SIZE: 14  # 7 aligned Prometheus features plus 7 missing-value masks
+STEP_NUM_IN: 24  # 6-minute lookback at 15-second sampling
+STEP_NUM_OUT: 12  # 3-minute forecast horizon
+NUM_BLOCKS: 2
+ADJ_TYPE: 'gcn'
+MODEL_FOLDER: '/app/trained_models'
+MODEL_PATH: 'AdapGLA.pth'  # Legacy path; active Headlight uses frozen bundle metadata.
+MAX_LOG_SIZE: 5242880  # 5 MB
+BACKUP_COUNT: 3  # Keep last 3 log files
+NUM_MODELS: 1

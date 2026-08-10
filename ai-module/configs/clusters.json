@@ -1,0 +1,7 @@
+{"cluster2": {
+              "maxReplicas": 3
+	     },
+ "cluster3": {
+              "maxReplicas": 5
+	     }
+}

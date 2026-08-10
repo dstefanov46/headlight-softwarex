@@ -1,0 +1,15 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: TopologyProfile
+metadata:
+  name: multi-cluster-headlight
+spec:
+  mode: multi-cluster-headlight
+  namespace: trainticket
+  active_clusters:
+    - cluster2
+    - cluster3
+  clusters_file: ai-module/configs/clusters.json
+  services_file: ai-module/configs/application_services.json
+  additional_services_file: ai-module/configs/additional_services.json
+  placement_source: actions-handler
+  notes: Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation.

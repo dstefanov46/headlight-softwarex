@@ -1,0 +1,18 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: TopologyProfile
+metadata:
+  name: multi-cluster-static
+spec:
+  mode: multi-cluster-static
+  namespace: trainticket
+  active_clusters:
+    - cluster2
+    - cluster3
+  clusters_file: ai-module/configs/clusters.json
+  services_file: ai-module/configs/application_services.json
+  additional_services_file: ai-module/configs/additional_services.json
+  placement_source: fixed-plan
+  default_replica_weights:
+    cluster2: 3
+    cluster3: 5
+  notes: Static federation baseline derived from current cluster capacity limits.

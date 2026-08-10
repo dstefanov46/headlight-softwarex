@@ -1,0 +1,533 @@
+{
+  "schema_version": "headlight.service-profile/v1",
+  "profile_name": "full",
+  "profile_version": 1,
+  "namespace": "trainticket",
+  "sampling_interval_seconds": 15,
+  "cluster_limits": {
+    "cluster2": {
+      "min_replicas": 1,
+      "initial_replicas": 1,
+      "max_replicas": 3
+    },
+    "cluster3": {
+      "min_replicas": 1,
+      "initial_replicas": 1,
+      "max_replicas": 5
+    }
+  },
+  "node_order": [
+    "ts-admin-basic-info",
+    "ts-admin-order",
+    "ts-admin-route",
+    "ts-admin-travel",
+    "ts-admin-user",
+    "ts-assurance",
+    "ts-assurance-mongo",
+    "ts-auth",
+    "ts-auth-mongo",
+    "ts-avatar",
+    "ts-basic",
+    "ts-cancel",
+    "ts-config",
+    "ts-config-mongo",
+    "ts-consign",
+    "ts-consign-mongo",
+    "ts-consign-price",
+    "ts-consign-price-mongo",
+    "ts-contacts",
+    "ts-contacts-mongo",
+    "ts-execute",
+    "ts-food",
+    "ts-food-map",
+    "ts-food-map-mongo",
+    "ts-food-mongo",
+    "ts-inside-payment",
+    "ts-inside-payment-mongo",
+    "ts-news",
+    "ts-notification",
+    "ts-order",
+    "ts-order-mongo",
+    "ts-order-other",
+    "ts-order-other-mongo",
+    "ts-payment",
+    "ts-payment-mongo",
+    "ts-preserve",
+    "ts-preserve-other",
+    "ts-price",
+    "ts-price-mongo",
+    "ts-rebook",
+    "ts-route",
+    "ts-route-mongo",
+    "ts-route-plan",
+    "ts-seat",
+    "ts-security",
+    "ts-security-mongo",
+    "ts-station",
+    "ts-station-mongo",
+    "ts-ticket-office",
+    "ts-ticket-office-mongo",
+    "ts-ticketinfo",
+    "ts-train",
+    "ts-train-mongo",
+    "ts-travel",
+    "ts-travel-mongo",
+    "ts-travel-plan",
+    "ts-travel2",
+    "ts-travel2-mongo",
+    "ts-user",
+    "ts-user-mongo",
+    "ts-verification-code",
+    "ts-voucher",
+    "ts-voucher-mysql"
+  ],
+  "nodes": [
+    {
+      "name": "ts-admin-basic-info",
+      "workload": "ts-admin-basic-info",
+      "service_name": "ts-admin-basic-info-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-admin-order",
+      "workload": "ts-admin-order",
+      "service_name": "ts-admin-order-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-admin-route",
+      "workload": "ts-admin-route",
+      "service_name": "ts-admin-route-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-admin-travel",
+      "workload": "ts-admin-travel",
+      "service_name": "ts-admin-travel-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-admin-user",
+      "workload": "ts-admin-user",
+      "service_name": "ts-admin-user-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-assurance",
+      "workload": "ts-assurance",
+      "service_name": "ts-assurance-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-assurance-mongo",
+      "workload": "ts-assurance-mongo",
+      "service_name": "ts-assurance-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-auth",
+      "workload": "ts-auth",
+      "service_name": "ts-auth-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-auth-mongo",
+      "workload": "ts-auth-mongo",
+      "service_name": "ts-auth-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-avatar",
+      "workload": "ts-avatar",
+      "service_name": "ts-avatar-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-basic",
+      "workload": "ts-basic",
+      "service_name": "ts-basic-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-cancel",
+      "workload": "ts-cancel",
+      "service_name": "ts-cancel-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-config",
+      "workload": "ts-config",
+      "service_name": "ts-config-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-config-mongo",
+      "workload": "ts-config-mongo",
+      "service_name": "ts-config-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-consign",
+      "workload": "ts-consign",
+      "service_name": "ts-consign-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-consign-mongo",
+      "workload": "ts-consign-mongo",
+      "service_name": "ts-consign-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-consign-price",
+      "workload": "ts-consign-price",
+      "service_name": "ts-consign-price-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-consign-price-mongo",
+      "workload": "ts-consign-price-mongo",
+      "service_name": "ts-consign-price-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-contacts",
+      "workload": "ts-contacts",
+      "service_name": "ts-contacts-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-contacts-mongo",
+      "workload": "ts-contacts-mongo",
+      "service_name": "ts-contacts-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-execute",
+      "workload": "ts-execute",
+      "service_name": "ts-execute-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-food",
+      "workload": "ts-food",
+      "service_name": "ts-food-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-food-map",
+      "workload": "ts-food-map",
+      "service_name": "ts-food-map-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-food-map-mongo",
+      "workload": "ts-food-map-mongo",
+      "service_name": "ts-food-map-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-food-mongo",
+      "workload": "ts-food-mongo",
+      "service_name": "ts-food-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-inside-payment",
+      "workload": "ts-inside-payment",
+      "service_name": "ts-inside-payment-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-inside-payment-mongo",
+      "workload": "ts-inside-payment-mongo",
+      "service_name": "ts-inside-payment-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-news",
+      "workload": "ts-news",
+      "service_name": "ts-news-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-notification",
+      "workload": "ts-notification",
+      "service_name": "ts-notification-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-order",
+      "workload": "ts-order",
+      "service_name": "ts-order-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-order-mongo",
+      "workload": "ts-order-mongo",
+      "service_name": "ts-order-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-order-other",
+      "workload": "ts-order-other",
+      "service_name": "ts-order-other-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-order-other-mongo",
+      "workload": "ts-order-other-mongo",
+      "service_name": "ts-order-other-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-payment",
+      "workload": "ts-payment",
+      "service_name": "ts-payment-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-payment-mongo",
+      "workload": "ts-payment-mongo",
+      "service_name": "ts-payment-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-preserve",
+      "workload": "ts-preserve",
+      "service_name": "ts-preserve-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-preserve-other",
+      "workload": "ts-preserve-other",
+      "service_name": "ts-preserve-other-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-price",
+      "workload": "ts-price",
+      "service_name": "ts-price-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-price-mongo",
+      "workload": "ts-price-mongo",
+      "service_name": "ts-price-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-rebook",
+      "workload": "ts-rebook",
+      "service_name": "ts-rebook-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-route",
+      "workload": "ts-route",
+      "service_name": "ts-route-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-route-mongo",
+      "workload": "ts-route-mongo",
+      "service_name": "ts-route-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-route-plan",
+      "workload": "ts-route-plan",
+      "service_name": "ts-route-plan-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-seat",
+      "workload": "ts-seat",
+      "service_name": "ts-seat-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-security",
+      "workload": "ts-security",
+      "service_name": "ts-security-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-security-mongo",
+      "workload": "ts-security-mongo",
+      "service_name": "ts-security-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-station",
+      "workload": "ts-station",
+      "service_name": "ts-station-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-station-mongo",
+      "workload": "ts-station-mongo",
+      "service_name": "ts-station-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-ticket-office",
+      "workload": "ts-ticket-office",
+      "service_name": "ts-ticket-office-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-ticket-office-mongo",
+      "workload": "ts-ticket-office-mongo",
+      "service_name": "ts-ticket-office-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-ticketinfo",
+      "workload": "ts-ticketinfo",
+      "service_name": "ts-ticketinfo-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-train",
+      "workload": "ts-train",
+      "service_name": "ts-train-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-train-mongo",
+      "workload": "ts-train-mongo",
+      "service_name": "ts-train-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-travel",
+      "workload": "ts-travel",
+      "service_name": "ts-travel-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-travel-mongo",
+      "workload": "ts-travel-mongo",
+      "service_name": "ts-travel-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-travel-plan",
+      "workload": "ts-travel-plan",
+      "service_name": "ts-travel-plan-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-travel2",
+      "workload": "ts-travel2",
+      "service_name": "ts-travel2-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-travel2-mongo",
+      "workload": "ts-travel2-mongo",
+      "service_name": "ts-travel2-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-user",
+      "workload": "ts-user",
+      "service_name": "ts-user-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-user-mongo",
+      "workload": "ts-user-mongo",
+      "service_name": "ts-user-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-verification-code",
+      "workload": "ts-verification-code",
+      "service_name": "ts-verification-code-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-voucher",
+      "workload": "ts-voucher",
+      "service_name": "ts-voucher-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-voucher-mysql",
+      "workload": "ts-voucher-mysql",
+      "service_name": "ts-voucher-mysql",
+      "service_type": "database",
+      "scalable": false
+    }
+  ],
+  "source": {
+    "generator": "experiments/scripts/generate_service_profiles.py",
+    "rendered_manifest_sha256": "a33e97b1368334d3ce18b4107ccd3c010b213ab65f99dbeaf3b498548c346cd4",
+    "resource_profile": "source"
+  },
+  "profile_hash": "dc6fa37ac9916dbc4901c0279cbad630c419ea5eb18e8caf484f843e4cb3ce17"
+}

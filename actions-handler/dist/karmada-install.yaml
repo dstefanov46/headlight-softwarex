@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    istio-injection: enabled
+  name: actions-handler-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: actions-handler
+  name: actions-handler-manager
+  namespace: actions-handler-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: actions-handler-manager
+rules:
+- apiGroups:
+  - policy.nephele-project.eu
+  resources:
+  - controlledreplicapropagations
+  verbs:
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: actions-handler
+  name: actions-handler-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: actions-handler-manager
+subjects:
+- kind: ServiceAccount
+  name: actions-handler-manager
+  namespace: actions-handler-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: actions-handler
+  namespace: actions-handler-system
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: actions-handler
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: actions-handler
+  namespace: actions-handler-system
+spec:
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - cluster2
+      - cluster3
+  resourceSelectors:
+  - apiVersion: v1
+    kind: Service
+    name: actions-handler

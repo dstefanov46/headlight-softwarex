@@ -1,0 +1,5 @@
+## Append samples of your project ##
+resources:
+- deployment.yaml
+- policy_v1alpha1_controlledreplicapropagation.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

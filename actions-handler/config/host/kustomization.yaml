@@ -1,0 +1,11 @@
+namespace: actions-handler-system
+
+resources:
+- namespace.yaml
+- app.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: actions-handler
+  newName: ghcr.io/vidbregar/actions-handler
+  newTag: 0.2.0

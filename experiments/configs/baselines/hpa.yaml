@@ -1,0 +1,16 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ControllerProfile
+metadata:
+  name: hpa
+spec:
+  controller: hpa
+  implementation_state: ready
+  setup_script: ai-module/kubernetes_hpa_setup.sh
+  deployment_manifest: ai-module/deployments/kubernetes-autoscaler-eval-deployment.yaml
+  hpa_manifest: ai-module/kubernetes-autoscaler/hpa.yaml
+  metrics_collector: ai-module/metrics/fetch_service_metrics.py
+  actuation_path: kubernetes-hpa
+  notes: Native Kubernetes baseline; kept separate from Actions Handler by design.
+  sampling_interval_seconds: 15
+  controller_variant: native-hpa
+  image_tag_env: HEADLIGHT_HPA_IMAGE

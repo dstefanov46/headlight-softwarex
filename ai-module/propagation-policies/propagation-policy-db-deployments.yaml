@@ -1,0 +1,459 @@
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-user-mongo
+  name: ts-user-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-user-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-auth-mongo
+  name: ts-auth-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-auth-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-route-mongo
+  name: ts-route-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-route-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-contacts-mongo
+  name: ts-contacts-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-contacts-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-order-mongo
+  name: ts-order-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-order-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-order-other-mongo
+  name: ts-order-other-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-order-other-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-config-mongo
+  name: ts-config-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-config-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-station-mongo
+  name: ts-station-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-station-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-train-mongo
+  name: ts-train-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-train-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-travel-mongo
+  name: ts-travel-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-travel-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-travel2-mongo
+  name: ts-travel2-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-travel2-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-price-mongo
+  name: ts-price-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-price-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-security-mongo
+  name: ts-security-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-security-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-inside-payment-mongo
+  name: ts-inside-payment-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-inside-payment-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-payment-mongo
+  name: ts-payment-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-payment-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-assurance-mongo
+  name: ts-assurance-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-assurance-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-ticket-office-mongo
+  name: ts-ticket-office-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-ticket-office-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-voucher-mysql
+  name: ts-voucher-mysql
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-voucher-mysql
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-food-map-mongo
+  name: ts-food-map-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-food-map-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-consign-mongo
+  name: ts-consign-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-consign-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-consign-price-mongo
+  name: ts-consign-price-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-consign-price-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-food-mongo
+  name: ts-food-mongo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-food-mongo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1

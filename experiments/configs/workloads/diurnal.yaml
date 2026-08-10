@@ -1,0 +1,22 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: WorkloadProfile
+metadata:
+  name: diurnal
+spec:
+  pattern: diurnal
+  duration_seconds: 3600
+  warmup_seconds: 300
+  locust:
+    spawn_rate: 20
+    min_users: 25
+    max_users: 250
+    cycle_seconds: 3600
+    phase_offset_seconds: 0
+  notes: One-hour compressed daily cycle for repeatable measured runs.
+  sampling_interval_seconds: 15
+  shape_parameters:
+    spawn_rate: 20
+    min_users: 25
+    max_users: 250
+    cycle_seconds: 3600
+    phase_offset_seconds: 0

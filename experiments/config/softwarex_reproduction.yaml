@@ -1,0 +1,85 @@
+schema_version: headlight.softwarex-reproduction/v1
+description: Deterministic SoftwareX validation workflow for execution on a dedicated measurement host.
+mode_defaults:
+  dry_run: true
+  real_execution_requires_cluster: true
+seeds:
+  training: 20260705
+  workload: 101
+  controller_order: 7301
+sample_data:
+  label: sample
+  description: Small synthetic fixture for parser and plotting checks only; not comparative evidence.
+  calibration_csv: experiments/sample_data/softwarex/sample_calibration.csv
+  result_bundle: null
+real_data:
+  label: measured
+  calibration_csv: results/calibration/train-ticket-calibration.csv
+  adjacency_json: results/calibration/static-adjacency.json
+  headlight_bundle: results/calibration/headlight-bundle
+  lstm_bundle: results/calibration/lstm-bundle
+workflow:
+  namespace: trainticket
+  service_profile: ai-module/configs/service_profiles/advanced-ticket.json
+  workload_profile: experiments/configs/workloads/gradual-ramp.yaml
+  topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
+  run_config: experiments/configs/runs/headlight-gradual-ramp-multi-cluster-headlight.yaml
+  output_root: results/softwarex-reproduction
+  controllers:
+    - headlight
+    - hpa
+    - static
+  optional_controllers:
+    - keda
+    - lstm
+  unsupported_or_incomplete:
+    migration: Requires live CRP event collection and validator input; dry-run does not assert success.
+pinned_environment:
+  os_tested: Ubuntu 24.04 LTS
+  minimum_cpu_cores: 16
+  minimum_memory_gib: 64
+  python: "3.11"
+  go: "1.23.x for CRP, 1.24.x for actions-handler"
+  kubernetes: "v1.32.0"
+  kind: "v0.23.0"
+  kind_node_image: kindest/node:v1.32.0
+  kubectl: "v1.32.0"
+  helm: "v3.15.4"
+  karmada: "v1.12.0"
+  istioctl: "1.22.3"
+  prometheus_chart:
+    repository: prometheus-community/kube-prometheus-stack
+    version: "61.7.2"
+  metrics_server: "v0.7.2"
+  images:
+    headlight_ai: dstefanov46/nephele-ai-module:0.120.0
+    locust: dstefanov46/locust-test:0.66.0
+    actions_handler: ghcr.io/vidbregar/actions-handler:0.2.0
+    crp_controller: ghcr.io/vidbregar/controlled-replica-propagation:0.2.1
+    train_ticket: codewisdom/*:0.0.4 plus mongo:4.0
+stages:
+  validate-env:
+    description: Record tool versions and verify required commands for real execution.
+  bootstrap-cluster:
+    description: Bootstrap Kind/Karmada or verify existing contexts.
+    command: ./experiments/bootstrap_kind_karmada.sh
+  deploy-monitoring:
+    description: Install pinned Prometheus and metrics-server charts/manifests.
+    commands:
+      - ./experiments/install_prometheus_monitoring.sh
+      - ./experiments/install_metrics_server.sh
+  deploy-headlight:
+    description: Deploy CRP, actions-handler, and Headlight in shadow mode with a frozen bundle.
+    command: HEADLIGHT_SHADOW_MODE=1 ./ai-module/ai_module_setup.sh
+  collect-or-load-data:
+    description: Use measured calibration CSV in real mode or labelled sample CSV in dry-run mode.
+  train-or-load-model:
+    description: Train a frozen bundle or validate an existing frozen bundle.
+  run-workload:
+    description: Execute one gradual-ramp workload profile with fixed seed 101.
+  run-controllers:
+    description: Run Headlight, HPA, and static provisioning where supported.
+  validate-results:
+    description: Run artifact and CRP validators before measured artifact generation.
+  generate-compact-output:
+    description: Generate a compact CSV and optional SVG from validated results.

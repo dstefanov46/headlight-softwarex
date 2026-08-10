@@ -1,0 +1,4 @@
+DATA_FOLDER: 'nephele'
+FEATURE_HISTORY_FOLDER: 'feature_history'
+LOGS_FOLDER: 'logs'
+HISTORY_LENGTH: 24

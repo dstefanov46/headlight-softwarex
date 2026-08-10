@@ -1,0 +1,8 @@
+{
+  "service_names": [
+    "locust-master",
+    "locust-worker",
+    "ai-module",
+    "kubernetes-autoscaler-eval"
+  ]
+}

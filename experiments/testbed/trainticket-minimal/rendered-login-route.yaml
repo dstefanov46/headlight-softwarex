@@ -1,0 +1,369 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: trainticket
+  labels:
+    istio-injection: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-auth-mongo
+  namespace: trainticket
+spec:
+  selector:
+    matchLabels:
+      app: ts-auth-mongo
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-auth-mongo
+      annotations:
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+      - name: ts-auth-mongo
+        image: mongo:4.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+            ephemeral-storage: 256Mi
+          limits:
+            cpu: 200m
+            memory: 384Mi
+            ephemeral-storage: 2Gi
+      automountServiceAccountToken: false
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-route-mongo
+  namespace: trainticket
+spec:
+  selector:
+    matchLabels:
+      app: ts-route-mongo
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-route-mongo
+      annotations:
+        sidecar.istio.io/inject: 'false'
+    spec:
+      containers:
+      - name: ts-route-mongo
+        image: mongo:4.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+            ephemeral-storage: 256Mi
+          limits:
+            cpu: 200m
+            memory: 384Mi
+            ephemeral-storage: 2Gi
+      automountServiceAccountToken: false
+  replicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-auth-mongo
+  namespace: trainticket
+spec:
+  ports:
+  - port: 27017
+  selector:
+    app: ts-auth-mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-route-mongo
+  namespace: trainticket
+spec:
+  ports:
+  - port: 27017
+  selector:
+    app: ts-route-mongo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-auth
+  namespace: trainticket
+spec:
+  selector:
+    matchLabels:
+      app: ts-auth
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-auth
+      annotations:
+        sidecar.istio.io/inject: 'true'
+        sidecar.istio.io/proxyCPU: 10m
+        sidecar.istio.io/proxyMemory: 64Mi
+        sidecar.istio.io/proxyCPULimit: 100m
+        sidecar.istio.io/proxyMemoryLimit: 128Mi
+    spec:
+      containers:
+      - name: ts-auth
+        image: codewisdom/ts-auth-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12340
+        resources:
+          requests:
+            cpu: 10m
+            memory: 96Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 150m
+            memory: 512Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12340
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+  replicas: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-route
+  namespace: trainticket
+spec:
+  selector:
+    matchLabels:
+      app: ts-route
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-route
+      annotations:
+        sidecar.istio.io/inject: 'true'
+        sidecar.istio.io/proxyCPU: 10m
+        sidecar.istio.io/proxyMemory: 64Mi
+        sidecar.istio.io/proxyCPULimit: 100m
+        sidecar.istio.io/proxyMemoryLimit: 128Mi
+    spec:
+      containers:
+      - name: ts-route
+        image: codewisdom/ts-route-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11178
+        resources:
+          requests:
+            cpu: 10m
+            memory: 96Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 150m
+            memory: 512Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 11178
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+  replicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-route-service
+  namespace: trainticket
+spec:
+  ports:
+  - name: http
+    port: 11178
+  selector:
+    app: ts-route
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-auth-service
+  namespace: trainticket
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 12340
+  selector:
+    app: ts-auth
+---
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-auth-mongo
+  name: ts-auth-mongo
+  namespace: trainticket
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-auth-mongo
+  placements:
+  - clusterName: cluster2
+    replicas: 1
+  - clusterName: cluster3
+    replicas: 1
+---
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-route-mongo
+  name: ts-route-mongo
+  namespace: trainticket
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-route-mongo
+  placements:
+  - clusterName: cluster2
+    replicas: 1
+  - clusterName: cluster3
+    replicas: 1
+---
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-auth
+  name: ts-auth
+  namespace: trainticket
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-auth
+  placements:
+  - clusterName: cluster2
+    replicas: 1
+  - clusterName: cluster3
+    replicas: 1
+---
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-route
+  name: ts-route
+  namespace: trainticket
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-route
+  placements:
+  - clusterName: cluster2
+    replicas: 1
+  - clusterName: cluster3
+    replicas: 1
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-route-service
+  namespace: trainticket
+spec:
+  resourceSelectors:
+  - apiVersion: v1
+    kind: Service
+    name: ts-route-service
+    namespace: trainticket
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - cluster2
+      - cluster3
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-auth-service
+  namespace: trainticket
+spec:
+  resourceSelectors:
+  - apiVersion: v1
+    kind: Service
+    name: ts-auth-service
+    namespace: trainticket
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - cluster2
+      - cluster3
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-auth-mongo
+  namespace: trainticket
+spec:
+  resourceSelectors:
+  - apiVersion: v1
+    kind: Service
+    name: ts-auth-mongo
+    namespace: trainticket
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - cluster2
+      - cluster3
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-route-mongo
+  namespace: trainticket
+spec:
+  resourceSelectors:
+  - apiVersion: v1
+    kind: Service
+    name: ts-route-mongo
+    namespace: trainticket
+  placement:
+    clusterAffinity:
+      clusterNames:
+      - cluster2
+      - cluster3

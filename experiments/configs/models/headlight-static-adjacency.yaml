@@ -1,0 +1,12 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ModelVariant
+metadata:
+  name: static_adjacency
+spec:
+  controller: headlight
+  graph_enabled: true
+  adaptive_adjacency: false
+  attention_enabled: true
+  adjacency_source: calibration_istio_edges
+  residual_bound: 0.0
+  adjacency_normalization: row

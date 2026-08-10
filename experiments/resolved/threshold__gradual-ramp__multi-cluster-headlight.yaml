@@ -1,0 +1,87 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ResolvedExperimentManifest
+metadata:
+  name: threshold__gradual-ramp__multi-cluster-headlight
+spec:
+  controller:
+    controller: threshold
+    implementation_state: ready
+    setup_script: ai-module/ai_module_setup.sh
+    deployment_manifest: ai-module/deployments/threshold-autoscaler-deployment.yaml
+    entrypoint: ai-module/baselines/threshold_autoscaler.py
+    metrics_collector: ai-module/metrics/fetch_service_metrics.py
+    actuation_path: actions-handler
+    notes: Simple threshold policy using the same actuation path as Headlight for
+      fairness.
+    sampling_interval_seconds: 15
+    controller_variant: multi-metric-reactive
+    image_tag_env: HEADLIGHT_THRESHOLD_IMAGE
+    policy:
+      scale_up:
+        p95_latency_ms_gt: 300
+        cpu_utilization_gt: 0.7
+      scale_down:
+        stable_windows: 2
+        p95_latency_ms_lt: 180
+        cpu_utilization_lt: 0.35
+      cooldown_seconds: 60
+  topology:
+    mode: multi-cluster-headlight
+    namespace: trainticket
+    active_clusters:
+    - cluster2
+    - cluster3
+    clusters_file: ai-module/configs/clusters.json
+    services_file: ai-module/configs/application_services.json
+    additional_services_file: ai-module/configs/additional_services.json
+    placement_source: actions-handler
+    notes: Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation.
+  workload:
+    pattern: gradual-ramp
+    duration_seconds: 3000
+    warmup_seconds: 300
+    locust:
+      spawn_rate: 15
+      start_users: 20
+      end_users: 320
+      ramp_seconds: 1200
+      hold_seconds: 600
+    notes: Monotonic growth workload used to measure anticipation of sustained demand.
+    sampling_interval_seconds: 15
+    shape_parameters:
+      spawn_rate: 15
+      start_users: 20
+      end_users: 320
+      ramp_seconds: 1200
+      hold_seconds: 600
+  run:
+    controller_profile: experiments/configs/baselines/threshold.yaml
+    topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
+    workload_profile: experiments/configs/workloads/gradual-ramp.yaml
+    seeds:
+    - 101
+    - 102
+    - 103
+    - 104
+    - 105
+    duration_seconds: 3000
+    warmup_seconds: 300
+    sampling_interval_seconds: 15
+    sla:
+      p95_latency_ms: 1000
+      minimum_success_rate: 0.99
+      max_violation_window_seconds: 60
+    output_dir: results/softwarex/threshold-gradual-ramp-multi-cluster-headlight
+    reset_policy:
+      between_seeds: true
+      delete_pods: true
+      clear_controller_state: true
+    capture:
+      raw_logs: true
+      prometheus_snapshots: true
+      kubernetes_events: true
+      crp_state_transitions: true
+      actions_handler_batches: true
+      ai_inference_times: true
+      model_checkpoints: true
+    notes: Generated measured comparison run using common paired seeds.

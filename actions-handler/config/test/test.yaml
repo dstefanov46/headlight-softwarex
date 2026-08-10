@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: actions-handler-test
+spec:
+  selector:
+    matchLabels:
+      app: actions-handler-test
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: actions-handler-test
+    spec:
+      containers:
+        - name: test
+          image: alpine/curl:8.14.1
+          command: ["/bin/ash", "-c", "--"]
+          args: ["while true; do sleep 30; done;"]
+---
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: actions-handler-test
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: actions-handler-test
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3

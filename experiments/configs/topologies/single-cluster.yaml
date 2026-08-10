@@ -1,0 +1,14 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: TopologyProfile
+metadata:
+  name: single-cluster
+spec:
+  mode: single-cluster
+  namespace: trainticket
+  active_clusters:
+    - cluster3
+  clusters_file: ai-module/configs/clusters.json
+  services_file: ai-module/configs/application_services.json
+  additional_services_file: ai-module/configs/additional_services.json
+  placement_source: fixed-single-cluster
+  notes: Canonical single-cluster comparison mode using the larger existing member cluster.

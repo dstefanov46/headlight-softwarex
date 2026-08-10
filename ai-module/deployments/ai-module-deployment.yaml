@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-module
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-module
+  template:
+    metadata:
+      labels:
+        app: ai-module
+    spec:
+      containers:
+      - name: ai-module
+        image: dstefanov46/nephele-ai-module:0.120.0
+        imagePullPolicy: IfNotPresent
+        command:
+        - python
+        - live_inference.py
+        args:
+        - --bundle
+        - /models/bundle
+        - --service-profile
+        - /profiles/profile.json
+        - --action-log
+        - /artifacts/actions.jsonl
+        env:
+        - name: HEADLIGHT_ACTION_HANDLER_URL
+          value: http://actions-handler.actions-handler-system.svc.cluster.local:8080/placements
+        - name: HEADLIGHT_PROMETHEUS_URL
+          value: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        - name: HEADLIGHT_SHADOW_MODE
+          value: '0'
+        - name: KUBECONFIG
+          value: /home/appuser/.kube/config
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/appuser/.kube/config
+          subPath: config
+          readOnly: true
+        - name: model-bundle
+          mountPath: /models/bundle
+          readOnly: true
+        - name: service-profile
+          mountPath: /profiles/profile.json
+          subPath: profile.json
+          readOnly: true
+        - name: artifacts
+          mountPath: /artifacts
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+            ephemeral-storage: 1Gi
+      volumes:
+      - name: kubeconfig
+        secret:
+          secretName: pod-kubeconfig-trainticket
+      - name: model-bundle
+        secret:
+          secretName: headlight-model-bundle
+      - name: service-profile
+        configMap:
+          name: headlight-service-profile
+      - name: artifacts
+        emptyDir: {}
+      automountServiceAccountToken: false

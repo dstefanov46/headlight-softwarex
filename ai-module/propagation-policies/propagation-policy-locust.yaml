@@ -1,0 +1,95 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: locust-master
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: locust-master
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - cluster2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - cluster3
+            weight: 1
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: locust-worker
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: locust-worker
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - cluster2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - cluster3
+            weight: 1
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: locust-master
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: locust-master
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: locust-worker
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: locust-worker
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3

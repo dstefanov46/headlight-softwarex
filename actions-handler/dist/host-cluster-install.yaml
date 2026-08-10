@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    istio-injection: enabled
+  name: actions-handler-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: actions-handler
+  namespace: actions-handler-system
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: actions-handler
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: actions-handler
+  name: actions-handler
+  namespace: actions-handler-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: actions-handler
+  serviceName: actions-handler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: actions-handler
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - env:
+        - name: BATCH_PLACEMENTS_DIR
+          value: /var/lib/batch-placement-updates
+        - name: KARMADA_CONFIG_PATH
+          value: /karmadaconfig/karmada.config
+        - name: BATCH_SUBMIT_CRON
+          value: '* * * * *'
+        image: ghcr.io/vidbregar/actions-handler:0.2.0
+        name: actions-handler
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+            ephemeral-storage: 64Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+            ephemeral-storage: 512Mi
+        volumeMounts:
+        - mountPath: /var/lib/batch-placement-updates
+          name: actions-handler-store
+        - mountPath: /karmadaconfig
+          name: karmadaconfig
+          readOnly: true
+      volumes:
+      - name: karmadaconfig
+        secret:
+          secretName: karmada-ah-config
+  volumeClaimTemplates:
+  - metadata:
+      name: actions-handler-store
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi

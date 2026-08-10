@@ -1,0 +1,393 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-user-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-user-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-auth-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-auth-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-route-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-route-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-contacts-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-contacts-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-order-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-order-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-order-other-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-order-other-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-config-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-config-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-station-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-station-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-train-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-train-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-travel-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-travel-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-travel2-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-travel2-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-price-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-price-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-security-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-security-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-inside-payment-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-inside-payment-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-payment-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-payment-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-assurance-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-assurance-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-ticket-office-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-ticket-office-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-voucher-mysql
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-voucher-mysql
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-food-map-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-food-map-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-consign-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-consign-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-consign-price-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-consign-price-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-food-mongo
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-food-mongo
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3

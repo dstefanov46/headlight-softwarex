@@ -1,0 +1,35 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ExperimentRun
+metadata:
+  name: static__gradual-ramp__multi-cluster-static
+spec:
+  controller_profile: experiments/configs/baselines/static.yaml
+  topology_profile: experiments/configs/topologies/multi-cluster-static.yaml
+  workload_profile: experiments/configs/workloads/gradual-ramp.yaml
+  seeds:
+  - 101
+  - 102
+  - 103
+  - 104
+  - 105
+  duration_seconds: 3000
+  warmup_seconds: 300
+  sampling_interval_seconds: 15
+  sla:
+    p95_latency_ms: 1000
+    minimum_success_rate: 0.99
+    max_violation_window_seconds: 60
+  output_dir: results/softwarex/static-gradual-ramp-multi-cluster-static
+  reset_policy:
+    between_seeds: true
+    delete_pods: true
+    clear_controller_state: true
+  capture:
+    raw_logs: true
+    prometheus_snapshots: true
+    kubernetes_events: true
+    crp_state_transitions: true
+    actions_handler_batches: true
+    ai_inference_times: true
+    model_checkpoints: true
+  notes: Generated measured comparison run using common paired seeds.

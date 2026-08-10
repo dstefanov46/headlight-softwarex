@@ -1,0 +1,10 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ModelVariant
+metadata:
+  name: no_graph
+spec:
+  controller: headlight
+  graph_enabled: false
+  adaptive_adjacency: false
+  attention_enabled: false
+  residual_bound: 0.0

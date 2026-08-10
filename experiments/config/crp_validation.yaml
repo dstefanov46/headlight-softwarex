@@ -1,0 +1,22 @@
+schema_version: headlight.crp-validation/v1
+description: Controlled Replica Propagation validation contract.
+namespace: trainticket
+max_unavailable: 0
+required_events:
+  - replica_propagation
+  - scaling
+  - offloading
+optional_events:
+  - migration
+record_fields:
+  - timestamp
+  - service
+  - desired_replicas
+  - available_replicas
+  - source_cluster
+  - destination_cluster
+  - placement_decision
+  - event_type
+  - availability_invariant_status
+extension_points:
+  migration: Provide measured event rows with event_type=migration once migration support is enabled in the runner.

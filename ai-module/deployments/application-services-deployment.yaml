@@ -1,0 +1,2050 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-basic-info
+spec:
+  selector:
+    matchLabels:
+      app: ts-admin-basic-info
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-admin-basic-info
+    spec:
+      containers:
+      - name: ts-admin-basic-info
+        image: codewisdom/ts-admin-basic-info-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18767
+        resources:
+          requests:
+            cpu: 25m
+            memory: 50Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18767
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-order
+spec:
+  selector:
+    matchLabels:
+      app: ts-admin-order
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-admin-order
+    spec:
+      containers:
+      - name: ts-admin-order
+        image: codewisdom/ts-admin-order-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16112
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16112
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-route
+spec:
+  selector:
+    matchLabels:
+      app: ts-admin-route
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-admin-route
+    spec:
+      containers:
+      - name: ts-admin-route
+        image: codewisdom/ts-admin-route-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16113
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16113
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-travel
+spec:
+  selector:
+    matchLabels:
+      app: ts-admin-travel
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-admin-travel
+    spec:
+      containers:
+      - name: ts-admin-travel
+        image: codewisdom/ts-admin-travel-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16114
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16114
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-admin-user
+spec:
+  selector:
+    matchLabels:
+      app: ts-admin-user
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-admin-user
+    spec:
+      containers:
+      - name: ts-admin-user
+        image: codewisdom/ts-admin-user-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16115
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16115
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-assurance
+spec:
+  selector:
+    matchLabels:
+      app: ts-assurance
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-assurance
+    spec:
+      containers:
+      - name: ts-assurance
+        image: codewisdom/ts-assurance-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18888
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18888
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-basic
+spec:
+  selector:
+    matchLabels:
+      app: ts-basic
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-basic
+    spec:
+      containers:
+      - name: ts-basic
+        image: codewisdom/ts-basic-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15680
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 15680
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-cancel
+spec:
+  selector:
+    matchLabels:
+      app: ts-cancel
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-cancel
+    spec:
+      containers:
+      - name: ts-cancel
+        image: codewisdom/ts-cancel-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18885
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18885
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-config
+spec:
+  selector:
+    matchLabels:
+      app: ts-config
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-config
+    spec:
+      containers:
+      - name: ts-config
+        image: codewisdom/ts-config-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15679
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 15679
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-consign-price
+spec:
+  selector:
+    matchLabels:
+      app: ts-consign-price
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-consign-price
+    spec:
+      containers:
+      - name: ts-consign-price
+        image: codewisdom/ts-consign-price-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16110
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16110
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-consign
+spec:
+  selector:
+    matchLabels:
+      app: ts-consign
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-consign
+    spec:
+      containers:
+      - name: ts-consign
+        image: codewisdom/ts-consign-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16111
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16111
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-contacts
+spec:
+  selector:
+    matchLabels:
+      app: ts-contacts
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-contacts
+    spec:
+      containers:
+      - name: ts-contacts
+        image: codewisdom/ts-contacts-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12347
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12347
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-execute
+spec:
+  selector:
+    matchLabels:
+      app: ts-execute
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-execute
+    spec:
+      containers:
+      - name: ts-execute
+        image: codewisdom/ts-execute-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12386
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12386
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-food-map
+spec:
+  selector:
+    matchLabels:
+      app: ts-food-map
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-food-map
+    spec:
+      containers:
+      - name: ts-food-map
+        image: codewisdom/ts-food-map-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18855
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18855
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-food
+spec:
+  selector:
+    matchLabels:
+      app: ts-food
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-food
+    spec:
+      containers:
+      - name: ts-food
+        image: codewisdom/ts-food-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18856
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18856
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-inside-payment
+spec:
+  selector:
+    matchLabels:
+      app: ts-inside-payment
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-inside-payment
+    spec:
+      containers:
+      - name: ts-inside-payment
+        image: codewisdom/ts-inside-payment-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18673
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18673
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-auth
+spec:
+  selector:
+    matchLabels:
+      app: ts-auth
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-auth
+    spec:
+      containers:
+      - name: ts-auth
+        image: codewisdom/ts-auth-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12340
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12340
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-news
+spec:
+  selector:
+    matchLabels:
+      app: ts-news
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-news
+    spec:
+      containers:
+      - name: ts-news
+        image: codewisdom/ts-news-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12862
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12862
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-notification
+spec:
+  selector:
+    matchLabels:
+      app: ts-notification
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-notification
+    spec:
+      containers:
+      - name: ts-notification
+        image: codewisdom/ts-notification-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 17853
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 17853
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-order-other
+spec:
+  selector:
+    matchLabels:
+      app: ts-order-other
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-order-other
+    spec:
+      containers:
+      - name: ts-order-other
+        image: codewisdom/ts-order-other-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12032
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12032
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-order
+spec:
+  selector:
+    matchLabels:
+      app: ts-order
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-order
+    spec:
+      containers:
+      - name: ts-order
+        image: codewisdom/ts-order-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12031
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12031
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-payment
+spec:
+  selector:
+    matchLabels:
+      app: ts-payment
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-payment
+    spec:
+      containers:
+      - name: ts-payment
+        image: codewisdom/ts-payment-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 19001
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 19001
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-preserve-other
+spec:
+  selector:
+    matchLabels:
+      app: ts-preserve-other
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-preserve-other
+    spec:
+      containers:
+      - name: ts-preserve-other
+        image: codewisdom/ts-preserve-other-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14569
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 14569
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-preserve
+spec:
+  selector:
+    matchLabels:
+      app: ts-preserve
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-preserve
+    spec:
+      containers:
+      - name: ts-preserve
+        image: codewisdom/ts-preserve-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14568
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 14568
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-price
+spec:
+  selector:
+    matchLabels:
+      app: ts-price
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-price
+    spec:
+      containers:
+      - name: ts-price
+        image: codewisdom/ts-price-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16579
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16579
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-rebook
+spec:
+  selector:
+    matchLabels:
+      app: ts-rebook
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-rebook
+    spec:
+      containers:
+      - name: ts-rebook
+        image: codewisdom/ts-rebook-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18886
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18886
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-route-plan
+spec:
+  selector:
+    matchLabels:
+      app: ts-route-plan
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-route-plan
+    spec:
+      containers:
+      - name: ts-route-plan
+        image: codewisdom/ts-route-plan-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14578
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 14578
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-route
+spec:
+  selector:
+    matchLabels:
+      app: ts-route
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-route
+    spec:
+      containers:
+      - name: ts-route
+        image: codewisdom/ts-route-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11178
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 11178
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-seat
+spec:
+  selector:
+    matchLabels:
+      app: ts-seat
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-seat
+    spec:
+      containers:
+      - name: ts-seat
+        image: codewisdom/ts-seat-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18898
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 18898
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-security
+spec:
+  selector:
+    matchLabels:
+      app: ts-security
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-security
+    spec:
+      containers:
+      - name: ts-security
+        image: codewisdom/ts-security-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11188
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 11188
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-user
+spec:
+  selector:
+    matchLabels:
+      app: ts-user
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-user
+    spec:
+      containers:
+      - name: ts-user
+        image: codewisdom/ts-user-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12342
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12342
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-station
+spec:
+  selector:
+    matchLabels:
+      app: ts-station
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-station
+    spec:
+      containers:
+      - name: ts-station
+        image: codewisdom/ts-station-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12345
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12345
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ticket-office
+spec:
+  selector:
+    matchLabels:
+      app: ts-ticket-office
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-ticket-office
+    spec:
+      containers:
+      - name: ts-ticket-office
+        image: codewisdom/ts-ticket-office-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16108
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16108
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ticketinfo
+spec:
+  selector:
+    matchLabels:
+      app: ts-ticketinfo
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-ticketinfo
+    spec:
+      containers:
+      - name: ts-ticketinfo
+        image: codewisdom/ts-ticketinfo-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15681
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 15681
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-train
+spec:
+  selector:
+    matchLabels:
+      app: ts-train
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-train
+    spec:
+      containers:
+      - name: ts-train
+        image: codewisdom/ts-train-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14567
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 14567
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel2
+spec:
+  selector:
+    matchLabels:
+      app: ts-travel2
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-travel2
+    spec:
+      containers:
+      - name: ts-travel2
+        image: codewisdom/ts-travel2-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16346
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16346
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel-plan
+spec:
+  selector:
+    matchLabels:
+      app: ts-travel-plan
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-travel-plan
+    spec:
+      containers:
+      - name: ts-travel-plan
+        image: codewisdom/ts-travel-plan-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14322
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 14322
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-travel
+spec:
+  selector:
+    matchLabels:
+      app: ts-travel
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-travel
+    spec:
+      containers:
+      - name: ts-travel
+        image: codewisdom/ts-travel-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12346
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 12346
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-verification-code
+spec:
+  selector:
+    matchLabels:
+      app: ts-verification-code
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-verification-code
+    spec:
+      containers:
+      - name: ts-verification-code
+        image: codewisdom/ts-verification-code-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15678
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 15678
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-voucher
+spec:
+  selector:
+    matchLabels:
+      app: ts-voucher
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-voucher
+    spec:
+      containers:
+      - name: ts-voucher
+        image: codewisdom/ts-voucher-service:0.0.4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16101
+        resources:
+          requests:
+            cpu: 25m
+            memory: 80Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 16101
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-avatar
+spec:
+  selector:
+    matchLabels:
+      app: ts-avatar
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ts-avatar
+    spec:
+      containers:
+      - name: ts-avatar
+        image: codewisdom/ts-avatar-service:0.1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 17001
+        resources:
+          requests:
+            cpu: 25m
+            memory: 200Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+            ephemeral-storage: 1Gi
+        readinessProbe:
+          tcpSocket:
+            port: 17001
+          initialDelaySeconds: 160
+          periodSeconds: 10
+          timeoutSeconds: 5
+      automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-basic-info-service
+spec:
+  ports:
+  - name: http
+    port: 18767
+  selector:
+    app: ts-admin-basic-info
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-order-service
+spec:
+  ports:
+  - name: http
+    port: 16112
+  selector:
+    app: ts-admin-order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-route-service
+spec:
+  ports:
+  - name: http
+    port: 16113
+  selector:
+    app: ts-admin-route
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-travel-service
+spec:
+  ports:
+  - name: http
+    port: 16114
+  selector:
+    app: ts-admin-travel
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-user-service
+spec:
+  ports:
+  - name: http
+    port: 16115
+  selector:
+    app: ts-admin-user
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-assurance-service
+spec:
+  ports:
+  - name: http
+    port: 18888
+  selector:
+    app: ts-assurance
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-basic-service
+spec:
+  ports:
+  - name: http
+    port: 15680
+  selector:
+    app: ts-basic
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-cancel-service
+spec:
+  ports:
+  - name: http
+    port: 18885
+  selector:
+    app: ts-cancel
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-config-service
+spec:
+  ports:
+  - name: http
+    port: 15679
+  selector:
+    app: ts-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-price-service
+spec:
+  ports:
+  - name: http
+    port: 16110
+  selector:
+    app: ts-consign-price
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-service
+spec:
+  ports:
+  - name: http
+    port: 16111
+  selector:
+    app: ts-consign
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-contacts-service
+spec:
+  ports:
+  - name: http
+    port: 12347
+  selector:
+    app: ts-contacts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-execute-service
+spec:
+  ports:
+  - name: http
+    port: 12386
+  selector:
+    app: ts-execute
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-map-service
+spec:
+  ports:
+  - name: http
+    port: 18855
+  selector:
+    app: ts-food-map
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-service
+spec:
+  ports:
+  - name: http
+    port: 18856
+  selector:
+    app: ts-food
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-inside-payment-service
+spec:
+  ports:
+  - name: http
+    port: 18673
+  selector:
+    app: ts-inside-payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-user-service
+spec:
+  ports:
+  - name: http
+    port: 12342
+  selector:
+    app: ts-user
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-notification-service
+spec:
+  ports:
+  - name: http
+    port: 17853
+  selector:
+    app: ts-notification
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-news-service
+spec:
+  ports:
+  - name: http
+    port: 12862
+  selector:
+    app: ts-news
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-other-service
+spec:
+  ports:
+  - name: http
+    port: 12032
+  selector:
+    app: ts-order-other
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-service
+spec:
+  ports:
+  - name: http
+    port: 12031
+  selector:
+    app: ts-order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-payment-service
+spec:
+  ports:
+  - name: http
+    port: 19001
+  selector:
+    app: ts-payment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-preserve-other-service
+spec:
+  ports:
+  - name: http
+    port: 14569
+  selector:
+    app: ts-preserve-other
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-preserve-service
+spec:
+  ports:
+  - name: http
+    port: 14568
+  selector:
+    app: ts-preserve
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-price-service
+spec:
+  ports:
+  - name: http
+    port: 16579
+  selector:
+    app: ts-price
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-rebook-service
+spec:
+  ports:
+  - name: http
+    port: 18886
+  selector:
+    app: ts-rebook
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-route-plan-service
+spec:
+  ports:
+  - name: http
+    port: 14578
+  selector:
+    app: ts-route-plan
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-route-service
+spec:
+  ports:
+  - name: http
+    port: 11178
+  selector:
+    app: ts-route
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-seat-service
+spec:
+  ports:
+  - name: http
+    port: 18898
+  selector:
+    app: ts-seat
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-security-service
+spec:
+  ports:
+  - name: http
+    port: 11188
+  selector:
+    app: ts-security
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-auth-service
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 12340
+  selector:
+    app: ts-auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-station-service
+spec:
+  ports:
+  - name: http
+    port: 12345
+  selector:
+    app: ts-station
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-ticket-office-service
+spec:
+  ports:
+  - name: http
+    port: 16108
+  selector:
+    app: ts-ticket-office
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-ticketinfo-service
+spec:
+  ports:
+  - name: http
+    port: 15681
+  selector:
+    app: ts-ticketinfo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-train-service
+spec:
+  ports:
+  - name: http
+    port: 14567
+  selector:
+    app: ts-train
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel2-service
+spec:
+  ports:
+  - name: http
+    port: 16346
+  selector:
+    app: ts-travel2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel-plan-service
+spec:
+  ports:
+  - name: http
+    port: 14322
+  selector:
+    app: ts-travel-plan
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel-service
+spec:
+  ports:
+  - name: http
+    port: 12346
+  selector:
+    app: ts-travel
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-verification-code-service
+spec:
+  ports:
+  - name: http
+    port: 15678
+  selector:
+    app: ts-verification-code
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-voucher-service
+spec:
+  ports:
+  - name: http
+    port: 16101
+  selector:
+    app: ts-voucher
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-avatar-service
+spec:
+  ports:
+  - name: http
+    port: 17001
+  selector:
+    app: ts-avatar

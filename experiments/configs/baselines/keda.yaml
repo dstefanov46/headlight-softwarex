@@ -1,0 +1,15 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ControllerProfile
+metadata:
+  name: keda
+spec:
+  controller: keda
+  implementation_state: ready
+  setup_script: experiments/scripts/install_keda_baseline.sh
+  metrics_collector: ai-module/metrics/fetch_service_metrics.py
+  actuation_path: keda
+  notes: Native KEDA baseline using CPU plus Prometheus/Istio request-rate ScaledObject triggers.
+  sampling_interval_seconds: 15
+  controller_variant: native-keda
+  helm_repository: https://kedacore.github.io/charts
+  helm_namespace: keda

@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: Actions Handler API
+  version: 1.0.0
+  description: API for handling workload placements across clusters.
+servers:
+  - url: http://actions-handler.actions-handler-system.svc.cluster.local:8080
+    description: Internal Actions Handler Service
+paths:
+  /placements:
+    post:
+      summary: Update workload placements across clusters
+      description: Submits a list of workload placements that specify a new desired number of replicas for some workload in some cluster.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Placement'
+              example:
+                - workload:
+                    apiVersion: apps/v1
+                    kind: Deployment
+                    namespace: default
+                    name: crp-example
+                  clusterName: cluster2
+                  replicas: 5
+                - workload:
+                    apiVersion: apps/v1
+                    kind: Deployment
+                    namespace: default
+                    name: crp-example
+                  clusterName: cluster3
+                  replicas: 0
+      responses:
+        '202':
+          description: Placement request successfully batched.
+        '400':
+          description: Invalid request payload.
+        '500':
+          description: Internal server error.
+components:
+  schemas:
+    Placement:
+      type: object
+      required:
+        - workload
+        - clusterName
+        - replicas
+      properties:
+        workload:
+          type: object
+          description: Details of the workload to be placed.
+          required:
+            - apiVersion
+            - kind
+            - namespace
+            - name
+          properties:
+            apiVersion:
+              type: string
+              description: API version of the workload (e.g., 'apps/v1').
+            kind:
+              type: string
+              description: Kind of the workload (e.g., 'Deployment').
+            namespace:
+              type: string
+              description: Namespace of the workload.
+            name:
+              type: string
+              description: Name of the workload.
+        clusterName:
+          type: string
+          description: Name of the target cluster for the placement.
+        replicas:
+          type: integer
+          format: int32
+          description: Number of replicas for the workload on the specified cluster.
+          minimum: 0

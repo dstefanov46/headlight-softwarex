@@ -1,0 +1,22 @@
+namespace: trainticket
+containerPort: 8089
+
+master:
+  replicaCount: 2
+  image:
+    repository: dstefanov46/locust-test:0.66.0
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+
+worker:
+  replicaCount: 2
+  image:
+    repository: dstefanov46/locust-test:0.66.0
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"

@@ -1,0 +1,86 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ResolvedExperimentManifest
+metadata:
+  name: lstm__diurnal__multi-cluster-headlight
+spec:
+  controller:
+    controller: lstm
+    implementation_state: ready
+    setup_script: ai-module/lstm_autoscaler_setup.sh
+    deployment_manifest: ai-module/deployments/lstm-autoscaler-deployment.yaml
+    training_entrypoint: ai-module/baselines/lstm_train.py
+    inference_entrypoint: ai-module/baselines/lstm_autoscaler.py
+    metrics_collector: ai-module/metrics/fetch_service_metrics.py
+    actuation_path: actions-handler
+    notes: Per-service time-series baseline without graph structure.
+    sampling_interval_seconds: 15
+    controller_variant: per-service-lstm
+    image_tag_env: HEADLIGHT_LSTM_IMAGE
+    training_trace: results/calibration/train-ticket-calibration.csv
+    features: same_as_headlight_without_graph
+    service_profile: ai-module/configs/service_profiles/advanced-ticket.json
+    model_bundle_env: HEADLIGHT_LSTM_BUNDLE_DIR
+    lookback_samples: 24
+    forecast_horizon_samples: 12
+    forecast_horizon_seconds: 180
+    online_retraining: false
+  topology:
+    mode: multi-cluster-headlight
+    namespace: trainticket
+    active_clusters:
+    - cluster2
+    - cluster3
+    clusters_file: ai-module/configs/clusters.json
+    services_file: ai-module/configs/application_services.json
+    additional_services_file: ai-module/configs/additional_services.json
+    placement_source: actions-handler
+    notes: Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation.
+  workload:
+    pattern: diurnal
+    duration_seconds: 3600
+    warmup_seconds: 300
+    locust:
+      spawn_rate: 20
+      min_users: 25
+      max_users: 250
+      cycle_seconds: 3600
+      phase_offset_seconds: 0
+    notes: One-hour compressed daily cycle for repeatable measured runs.
+    sampling_interval_seconds: 15
+    shape_parameters:
+      spawn_rate: 20
+      min_users: 25
+      max_users: 250
+      cycle_seconds: 3600
+      phase_offset_seconds: 0
+  run:
+    controller_profile: experiments/configs/baselines/lstm.yaml
+    topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
+    workload_profile: experiments/configs/workloads/diurnal.yaml
+    seeds:
+    - 101
+    - 102
+    - 103
+    - 104
+    - 105
+    duration_seconds: 3600
+    warmup_seconds: 300
+    sampling_interval_seconds: 15
+    sla:
+      p95_latency_ms: 1000
+      minimum_success_rate: 0.99
+      max_violation_window_seconds: 60
+    output_dir: results/softwarex/lstm-diurnal-multi-cluster-headlight
+    reset_policy:
+      between_seeds: true
+      delete_pods: true
+      clear_controller_state: true
+    capture:
+      raw_logs: true
+      prometheus_snapshots: true
+      kubernetes_events: true
+      crp_state_transitions: true
+      actions_handler_batches: true
+      ai_inference_times: true
+      model_checkpoints: true
+    notes: Generated measured comparison run using common paired seeds.

@@ -1,0 +1,5 @@
+namespace: actions-handler-test
+
+resources:
+  - namespace.yaml
+  - test.yaml

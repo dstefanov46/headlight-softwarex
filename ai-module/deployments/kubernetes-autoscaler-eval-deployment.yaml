@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-autoscaler-eval
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-autoscaler-eval
+  template:
+    metadata:
+      labels:
+        app: kubernetes-autoscaler-eval
+    spec:
+      containers:
+      - name: kubernetes-autoscaler-eval
+        image: dstefanov46/nephele-kubernetes-autoscaler:0.22.0
+        env:
+        - name: KUBECONFIG
+          value: /home/appuser/.kube/config
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/appuser/.kube/config
+          subPath: config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+            ephemeral-storage: 1Gi
+      volumes:
+      - name: kubeconfig
+        secret:
+          secretName: pod-kubeconfig-trainticket
+      automountServiceAccountToken: false

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-master
+spec:
+  replicas: {{ .Values.master.replicaCount }}
+  selector:
+    matchLabels:
+      app: locust-master
+  template:
+    metadata:
+      labels:
+        app: locust-master
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: locust-master
+        image: {{ .Values.master.image.repository }}
+        args: ["--master", "-f", "/app/load_generator.py"]
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+        env:
+        - name: KUBECONFIG
+          value: /home/locust/.kube/config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+            ephemeral-storage: 1Gi
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/locust/.kube/config
+          subPath: config
+      volumes:
+      - name: kubeconfig
+        secret:
+          secretName: pod-kubeconfig-locust
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: locust-master
+spec:
+  type: NodePort
+  ports:
+    - name: web-ui
+      port: 8889
+      targetPort: 8889
+      nodePort: 31963
+    - name: worker-comm
+      port: 5557
+      targetPort: 5557
+      protocol: TCP
+    - name: worker-report
+      port: 5558
+      targetPort: 5558
+      protocol: TCP
+  selector:
+    app: locust-master

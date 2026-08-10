@@ -1,0 +1,12 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ModelVariant
+metadata:
+  name: full
+spec:
+  controller: headlight
+  graph_enabled: true
+  adaptive_adjacency: true
+  attention_enabled: true
+  residual_bound: 0.3
+  residual_mask: observed_plus_two_hop
+  adjacency_normalization: row

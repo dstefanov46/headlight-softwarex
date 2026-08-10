@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: threshold-autoscaler
+  namespace: trainticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: threshold-autoscaler
+  template:
+    metadata:
+      labels:
+        app: threshold-autoscaler
+    spec:
+      containers:
+      - name: autoscaler
+        image: ${HEADLIGHT_THRESHOLD_IMAGE}
+        imagePullPolicy: IfNotPresent
+        command:
+        - python3
+        - /app/threshold_autoscaler.py
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+            ephemeral-storage: 1Gi
+      automountServiceAccountToken: false

@@ -1,0 +1,19 @@
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: crp-example
+    app.kubernetes.io/managed-by: kustomize
+  name: crp-example
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: crp-example
+  placements:
+    - clusterName: cluster2
+      replicas: 5
+    - clusterName: cluster3
+      replicas: 5

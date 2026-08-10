@@ -1,0 +1,1596 @@
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-admin-basic-info
+  name: ts-admin-basic-info
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-admin-basic-info
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-admin-order
+  name: ts-admin-order
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-admin-order
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-admin-route
+  name: ts-admin-route
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-admin-route
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-admin-travel
+  name: ts-admin-travel
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-admin-travel
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-admin-user
+  name: ts-admin-user
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-admin-user
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-assurance
+  name: ts-assurance
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-assurance
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-basic
+  name: ts-basic
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-basic
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-cancel
+  name: ts-cancel
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-cancel
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-config
+  name: ts-config
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-config
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-consign-price
+  name: ts-consign-price
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-consign-price
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-consign
+  name: ts-consign
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-consign
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-contacts
+  name: ts-contacts
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-contacts
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-execute
+  name: ts-execute
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-execute
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-food-map
+  name: ts-food-map
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-food-map
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-food
+  name: ts-food
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-food
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-inside-payment
+  name: ts-inside-payment
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-inside-payment
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-auth
+  name: ts-auth
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-auth
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-news
+  name: ts-news
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-news
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-notification
+  name: ts-notification
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-notification
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-order-other
+  name: ts-order-other
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-order-other
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-order
+  name: ts-order
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-order
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-payment
+  name: ts-payment
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-payment
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-preserve-other
+  name: ts-preserve-other
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-preserve-other
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-preserve
+  name: ts-preserve
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-preserve
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-price
+  name: ts-price
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-price
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-rebook
+  name: ts-rebook
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-rebook
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-route-plan
+  name: ts-route-plan
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-route-plan
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-route
+  name: ts-route
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-route
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-seat
+  name: ts-seat
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-seat
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-security
+  name: ts-security
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-security
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-user
+  name: ts-user
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-user
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-station
+  name: ts-station
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-station
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-ticket-office
+  name: ts-ticket-office
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-ticket-office
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-ticketinfo
+  name: ts-ticketinfo
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-ticketinfo
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-train
+  name: ts-train
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-train
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-travel2
+  name: ts-travel2
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-travel2
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-travel-plan
+  name: ts-travel-plan
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-travel-plan
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-travel
+  name: ts-travel
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-travel
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-verification-code
+  name: ts-verification-code
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-verification-code
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-voucher
+  name: ts-voucher
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-voucher
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.nephele-project.eu/v1alpha1
+kind: ControlledReplicaPropagation
+metadata:
+  labels:
+    app.kubernetes.io/name: ts-avatar
+  name: ts-avatar
+spec:
+  strategy:
+    maxUnavailable: 0
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ts-avatar
+  placements:
+    - clusterName: cluster2
+      replicas: 1
+    - clusterName: cluster3
+      replicas: 1
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-admin-basic-info-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-admin-basic-info-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-admin-order-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-admin-order-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-admin-route-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-admin-route-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-admin-travel-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-admin-travel-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-admin-user-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-admin-user-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-assurance-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-assurance-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-basic-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-basic-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-cancel-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-cancel-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-config-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-config-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-consign-price-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-consign-price-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-consign-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-consign-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-contacts-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-contacts-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-execute-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-execute-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-food-map-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-food-map-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-food-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-food-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-inside-payment-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-inside-payment-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-user-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-user-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-notification-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-notification-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-news-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-news-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-order-other-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-order-other-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-order-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-order-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-payment-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-payment-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-preserve-other-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-preserve-other-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-preserve-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-preserve-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-price-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-price-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-rebook-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-rebook-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-route-plan-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-route-plan-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-route-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-route-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-seat-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-seat-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-security-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-security-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-auth-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-auth-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-station-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-station-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-ticket-office-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-ticket-office-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-ticketinfo-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-ticketinfo-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-train-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-train-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-travel2-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-travel2-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-travel-plan-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-travel-plan-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-travel-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-travel-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-verification-code-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-verification-code-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-voucher-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-voucher-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: ts-avatar-service
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: ts-avatar-service
+      namespace: nephele
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3

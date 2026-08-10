@@ -1,0 +1,25 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ControllerProfile
+metadata:
+  name: lstm
+spec:
+  controller: lstm
+  implementation_state: ready
+  setup_script: ai-module/lstm_autoscaler_setup.sh
+  deployment_manifest: ai-module/deployments/lstm-autoscaler-deployment.yaml
+  training_entrypoint: ai-module/baselines/lstm_train.py
+  inference_entrypoint: ai-module/baselines/lstm_autoscaler.py
+  metrics_collector: ai-module/metrics/fetch_service_metrics.py
+  actuation_path: actions-handler
+  notes: Per-service time-series baseline without graph structure.
+  sampling_interval_seconds: 15
+  controller_variant: per-service-lstm
+  image_tag_env: HEADLIGHT_LSTM_IMAGE
+  training_trace: results/calibration/train-ticket-calibration.csv
+  features: same_as_headlight_without_graph
+  service_profile: ai-module/configs/service_profiles/advanced-ticket.json
+  model_bundle_env: HEADLIGHT_LSTM_BUNDLE_DIR
+  lookback_samples: 24
+  forecast_horizon_samples: 12
+  forecast_horizon_seconds: 180
+  online_retraining: false

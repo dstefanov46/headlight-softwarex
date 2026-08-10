@@ -1,0 +1,61 @@
+{
+  "schema_version": "headlight.service-profile/v1",
+  "profile_name": "login-route",
+  "profile_version": 1,
+  "namespace": "trainticket",
+  "sampling_interval_seconds": 15,
+  "cluster_limits": {
+    "cluster2": {
+      "min_replicas": 1,
+      "initial_replicas": 1,
+      "max_replicas": 3
+    },
+    "cluster3": {
+      "min_replicas": 1,
+      "initial_replicas": 1,
+      "max_replicas": 5
+    }
+  },
+  "node_order": [
+    "ts-auth",
+    "ts-auth-mongo",
+    "ts-route",
+    "ts-route-mongo"
+  ],
+  "nodes": [
+    {
+      "name": "ts-auth",
+      "workload": "ts-auth",
+      "service_name": "ts-auth-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-auth-mongo",
+      "workload": "ts-auth-mongo",
+      "service_name": "ts-auth-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-route",
+      "workload": "ts-route",
+      "service_name": "ts-route-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-route-mongo",
+      "workload": "ts-route-mongo",
+      "service_name": "ts-route-mongo",
+      "service_type": "database",
+      "scalable": false
+    }
+  ],
+  "source": {
+    "generator": "experiments/scripts/generate_service_profiles.py",
+    "rendered_manifest_sha256": "e977aadda2eaa3bfef9c564eb906ec9d84d57f13620f1eb30061323dbff5ec20",
+    "resource_profile": "local-tiny"
+  },
+  "profile_hash": "1956d67bc96d05fe6d448095a6180c5de63ae57e5fe205366d08b2399c07d7fb"
+}

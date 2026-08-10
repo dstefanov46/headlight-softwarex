@@ -1,0 +1,25 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ControllerProfile
+metadata:
+  name: threshold
+spec:
+  controller: threshold
+  implementation_state: ready
+  setup_script: ai-module/ai_module_setup.sh
+  deployment_manifest: ai-module/deployments/threshold-autoscaler-deployment.yaml
+  entrypoint: ai-module/baselines/threshold_autoscaler.py
+  metrics_collector: ai-module/metrics/fetch_service_metrics.py
+  actuation_path: actions-handler
+  notes: Simple threshold policy using the same actuation path as Headlight for fairness.
+  sampling_interval_seconds: 15
+  controller_variant: multi-metric-reactive
+  image_tag_env: HEADLIGHT_THRESHOLD_IMAGE
+  policy:
+    scale_up:
+      p95_latency_ms_gt: 300
+      cpu_utilization_gt: 0.7
+    scale_down:
+      stable_windows: 2
+      p95_latency_ms_lt: 180
+      cpu_utilization_lt: 0.35
+    cooldown_seconds: 60

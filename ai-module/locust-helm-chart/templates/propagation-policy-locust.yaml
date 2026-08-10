@@ -1,0 +1,99 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: {{ .Release.Name }}-master
+  namespace: {{ .Values.namespace }}
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: {{ .Release.Name }}-master
+      namespace: {{ .Values.namespace }}
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - cluster2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - cluster3
+            weight: 1
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: {{ .Release.Name }}-worker
+  namespace: {{ .Values.namespace }}
+spec:
+  resourceSelectors:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: {{ .Release.Name }}-worker
+      namespace: {{ .Values.namespace }}
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+    replicaScheduling:
+      replicaDivisionPreference: Weighted
+      replicaSchedulingType: Divided
+      weightPreference:
+        staticWeightList:
+          - targetCluster:
+              clusterNames:
+                - cluster2
+            weight: 1
+          - targetCluster:
+              clusterNames:
+                - cluster3
+            weight: 1
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: {{ .Release.Name }}-master-service
+  namespace: {{ .Values.namespace }}
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: {{ .Release.Name }}-master
+      namespace: {{ .Values.namespace }}
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
+
+---
+
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: {{ .Release.Name }}-worker-service
+  namespace: {{ .Values.namespace }}
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Service
+      name: {{ .Release.Name }}-worker
+      namespace: {{ .Values.namespace }}
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - cluster2
+        - cluster3
