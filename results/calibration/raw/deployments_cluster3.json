@@ -1,0 +1,2530 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"threshold-autoscaler\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"threshold-autoscaler\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"threshold-autoscaler\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"command\":[\"python3\",\"/app/baselines/threshold_controller.py\"],\"env\":[{\"name\":\"HEADLIGHT_SERVICE_PROFILE_FILE\",\"value\":\"/config/profile/profile.json\"},{\"name\":\"HEADLIGHT_POLICY_CONFIG\",\"value\":\"/config/policy/policy.json\"},{\"name\":\"HEADLIGHT_POD_KUBECONFIG\",\"value\":\"/var/run/headlight/kubeconfig/config\"},{\"name\":\"HEADLIGHT_ACTION_LOG\",\"value\":\"/artifacts/actions.jsonl\"},{\"name\":\"HEADLIGHT_INTERVAL_SECONDS\",\"value\":\"15\"},{\"name\":\"HEADLIGHT_NAMESPACE\",\"value\":\"trainticket\"},{\"name\":\"HEADLIGHT_ACTION_HANDLER_URL\",\"value\":\"http://actions-handler.actions-handler-system.svc.cluster.local:8080/placements\"},{\"name\":\"HEADLIGHT_PROMETHEUS_URL\",\"value\":\"http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090\"},{\"name\":\"KUBECONFIG\",\"value\":\"/var/run/headlight/kubeconfig/config\"}],\"image\":\"local/headlight-ai-module:dev\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"autoscaler\",\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/run/headlight/kubeconfig\",\"name\":\"pod-kubeconfig\",\"readOnly\":true},{\"mountPath\":\"/config/profile\",\"name\":\"profile\",\"readOnly\":true},{\"mountPath\":\"/config/policy\",\"name\":\"policy\",\"readOnly\":true},{\"mountPath\":\"/artifacts\",\"name\":\"artifacts\"}]}],\"volumes\":[{\"name\":\"pod-kubeconfig\",\"secret\":{\"secretName\":\"pod-kubeconfig-trainticket\"}},{\"configMap\":{\"name\":\"headlight-service-profile\"},\"name\":\"profile\"},{\"configMap\":{\"name\":\"headlight-policy-config\"},\"name\":\"policy\"},{\"emptyDir\":{},\"name\":\"artifacts\"}]}}}}\n"
+                },
+                "creationTimestamp": "2026-08-19T12:05:25Z",
+                "generation": 2,
+                "name": "threshold-autoscaler",
+                "namespace": "trainticket",
+                "resourceVersion": "13429",
+                "uid": "f474cf60-09c1-48dd-a410-77d04e833571"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "threshold-autoscaler"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": "25%"
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "threshold-autoscaler"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "command": [
+                                    "python3",
+                                    "/app/baselines/threshold_controller.py"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "HEADLIGHT_SERVICE_PROFILE_FILE",
+                                        "value": "/config/profile/profile.json"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_POLICY_CONFIG",
+                                        "value": "/config/policy/policy.json"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_POD_KUBECONFIG",
+                                        "value": "/var/run/headlight/kubeconfig/config"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_ACTION_LOG",
+                                        "value": "/artifacts/actions.jsonl"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_INTERVAL_SECONDS",
+                                        "value": "15"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_NAMESPACE",
+                                        "value": "trainticket"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_ACTION_HANDLER_URL",
+                                        "value": "http://172.18.0.2:30173/placements"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_PROMETHEUS_URL",
+                                        "value": "http://172.18.0.4:31733,http://172.18.0.5:31539"
+                                    },
+                                    {
+                                        "name": "KUBECONFIG",
+                                        "value": "/var/run/headlight/kubeconfig/config"
+                                    },
+                                    {
+                                        "name": "HEADLIGHT_SHADOW_MODE",
+                                        "value": "0"
+                                    }
+                                ],
+                                "image": "local/headlight-ai-module:dev",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "autoscaler",
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "500m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "50m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "128Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/var/run/headlight/kubeconfig",
+                                        "name": "pod-kubeconfig",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/config/profile",
+                                        "name": "profile",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/config/policy",
+                                        "name": "policy",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/artifacts",
+                                        "name": "artifacts"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30,
+                        "volumes": [
+                            {
+                                "name": "pod-kubeconfig",
+                                "secret": {
+                                    "defaultMode": 420,
+                                    "secretName": "pod-kubeconfig-trainticket"
+                                }
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "headlight-service-profile"
+                                },
+                                "name": "profile"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "headlight-policy-config"
+                                },
+                                "name": "policy"
+                            },
+                            {
+                                "emptyDir": {},
+                                "name": "artifacts"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:05:29Z",
+                        "lastUpdateTime": "2026-08-19T12:05:29Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:05:25Z",
+                        "lastUpdateTime": "2026-08-19T12:05:29Z",
+                        "message": "ReplicaSet \"threshold-autoscaler-79c996cd6f\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 2,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-auth\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-auth\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-auth\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-auth-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-auth\",\"ports\":[{\"containerPort\":12340}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12340},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-auth",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-auth-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "27",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "57ba0396-57c9-4c53-bac3-2faf30698e47",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-auth-695f7bfdc4",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T14:43:30Z",
+                "generation": 1,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "1bee99f7-b394-4b81-84f6-1571747a931f",
+                    "resourcebinding.karmada.io/permanent-id": "f6f3fa8a-c82c-4e8a-b99f-b2511549f501",
+                    "work.karmada.io/permanent-id": "85423fa4-ef74-40bd-b4cd-210b84a37719"
+                },
+                "name": "ts-auth",
+                "namespace": "trainticket",
+                "resourceVersion": "36562",
+                "uid": "79de6e0e-b0c8-4316-9132-6f1443bf8b80"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-auth"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-auth"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-auth-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-auth",
+                                "ports": [
+                                    {
+                                        "containerPort": 12340,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 12340
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T14:47:37Z",
+                        "lastUpdateTime": "2026-08-19T14:47:37Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:43:30Z",
+                        "lastUpdateTime": "2026-08-19T14:47:37Z",
+                        "message": "ReplicaSet \"ts-auth-77b7755f5d\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-auth-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-auth-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-auth-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-auth-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-auth-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-auth-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "53b9a324-73b5-477a-973c-c66f13ce7064",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-auth-mongo-7fccf7999c",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T14:43:26Z",
+                "generation": 1,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "78e9ffe4-a736-4b2a-887a-dc217938905b",
+                    "resourcebinding.karmada.io/permanent-id": "d2fd0e9a-d683-4dbc-a2cd-099b54d880de",
+                    "work.karmada.io/permanent-id": "6cece059-02a5-440e-ac6b-deb4bdd0ac7d"
+                },
+                "name": "ts-auth-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "35973",
+                "uid": "e2a2255f-d3db-4516-af46-9ca6bb4435cd"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-auth-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-auth-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-auth-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T14:43:27Z",
+                        "lastUpdateTime": "2026-08-19T14:43:27Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:43:26Z",
+                        "lastUpdateTime": "2026-08-19T14:43:27Z",
+                        "message": "ReplicaSet \"ts-auth-mongo-7497d9897\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 1,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-basic\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-basic\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-basic\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-basic-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-basic\",\"ports\":[{\"containerPort\":15680}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":15680},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-basic",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-basic-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "31",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "9583cd68-f5ec-44a0-83aa-240fef0c2290",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-basic-6b8fc75466",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T13:44:05Z",
+                "generation": 8,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "6a09c63b-c9bf-4cea-ab22-b23b237b54f1",
+                    "resourcebinding.karmada.io/permanent-id": "56230449-f5b6-4233-acb4-f025fb17735e",
+                    "work.karmada.io/permanent-id": "9e902349-4a6f-49c0-ad23-fb8e34e4ba8e"
+                },
+                "name": "ts-basic",
+                "namespace": "trainticket",
+                "resourceVersion": "38087",
+                "uid": "0d6ff9cc-7ca4-4f7a-8cdc-9115e3d0d466"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 2,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-basic"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-basic"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-basic-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-basic",
+                                "ports": [
+                                    {
+                                        "containerPort": 15680,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 15680
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 2,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T13:44:05Z",
+                        "lastUpdateTime": "2026-08-19T13:50:43Z",
+                        "message": "ReplicaSet \"ts-basic-698bb9c878\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:57:01Z",
+                        "lastUpdateTime": "2026-08-19T14:57:01Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 8,
+                "readyReplicas": 2,
+                "replicas": 2,
+                "updatedReplicas": 2
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-price\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-price\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-price\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-price-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-price\",\"ports\":[{\"containerPort\":16579}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":16579},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-price",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-price-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "31",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "81539198-0054-47eb-bd79-07735acb1278",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-price-f68447b79",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T13:44:06Z",
+                "generation": 10,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "e82bf3ed-b9d1-4d4b-ac45-cf649cc55489",
+                    "resourcebinding.karmada.io/permanent-id": "5c192385-5010-40d2-8176-1830162efa55",
+                    "work.karmada.io/permanent-id": "fc19f748-6278-4f0e-a53e-98e921a1ae48"
+                },
+                "name": "ts-price",
+                "namespace": "trainticket",
+                "resourceVersion": "36881",
+                "uid": "8f76a336-1d57-4c20-80f9-2a874f996656"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-price"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-price"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-price-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-price",
+                                "ports": [
+                                    {
+                                        "containerPort": 16579,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 16579
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T13:44:06Z",
+                        "lastUpdateTime": "2026-08-19T13:51:22Z",
+                        "message": "ReplicaSet \"ts-price-dc7d66cf5\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:11:13Z",
+                        "lastUpdateTime": "2026-08-19T14:11:13Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 10,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-price-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-price-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-price-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-price-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-price-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-price-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "c706d1b4-c1e6-4864-b280-182542032016",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-price-mongo-b77d65cdd",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T13:14:40Z",
+                "generation": 6,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "e50e2d02-3067-4edf-a038-99cb184065f1",
+                    "resourcebinding.karmada.io/permanent-id": "cf825904-3665-4f12-95f0-a54938238f53",
+                    "work.karmada.io/permanent-id": "045c79a8-f826-4cd7-a821-ea198c889991"
+                },
+                "name": "ts-price-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "35957",
+                "uid": "0f8d207a-34a6-46ea-8b76-c1b503c5726f"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-price-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-price-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-price-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T13:14:41Z",
+                        "lastUpdateTime": "2026-08-19T13:14:41Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T13:14:40Z",
+                        "lastUpdateTime": "2026-08-19T13:14:41Z",
+                        "message": "ReplicaSet \"ts-price-mongo-6945f7f8f5\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 6,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-route\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-route-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-route\",\"ports\":[{\"containerPort\":11178}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":11178},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-route",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-route-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "26",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "068f796a-73eb-42e2-96bc-75a80000044f",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-route-86cf679d47",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:16Z",
+                "generation": 17,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "182ac07d-105f-4eba-8e1c-0e839c931233",
+                    "resourcebinding.karmada.io/permanent-id": "e3a686a9-90e5-4c0c-bc31-59d2e095d28f",
+                    "work.karmada.io/permanent-id": "b887c8f4-465d-43f0-85b0-b281fe8e35cf"
+                },
+                "name": "ts-route",
+                "namespace": "trainticket",
+                "resourceVersion": "35987",
+                "uid": "0b8e7975-1974-462e-8a88-34aa199a0b45"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-route"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-route"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-route-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-route",
+                                "ports": [
+                                    {
+                                        "containerPort": 11178,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 11178
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:16Z",
+                        "lastUpdateTime": "2026-08-19T12:18:22Z",
+                        "message": "ReplicaSet \"ts-route-66c48647d7\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:56:49Z",
+                        "lastUpdateTime": "2026-08-19T12:56:49Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 17,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-route-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-route-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-route-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-route-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "733052c8-3754-4d3b-b75a-c8b4dd2ecbc0",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-route-mongo-7c8f98b768",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T14:04:42Z",
+                "generation": 3,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "2fdaacb2-5f97-495b-adbd-9de53270b34d",
+                    "resourcebinding.karmada.io/permanent-id": "2dae9fe1-8b92-4583-acd5-526e432cd01c",
+                    "work.karmada.io/permanent-id": "4761b12d-9b73-40ff-ba75-fde643510d89"
+                },
+                "name": "ts-route-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "35946",
+                "uid": "df92b9ae-d79d-44d2-9310-e023321eddcc"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-route-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-route-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-route-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T14:04:43Z",
+                        "lastUpdateTime": "2026-08-19T14:04:43Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:04:42Z",
+                        "lastUpdateTime": "2026-08-19T14:04:43Z",
+                        "message": "ReplicaSet \"ts-route-mongo-7596748d87\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 3,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route-plan\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-route-plan\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-route-plan-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-route-plan\",\"ports\":[{\"containerPort\":14578}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14578},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-route-plan",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-route-plan-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "21",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "83a5fcc0-623a-4145-99b3-8e7725ecdb26",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-route-plan-8cf8657b9",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:09Z",
+                "generation": 11,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "097e8f85-d5ac-4b2d-9309-b6c7ee024137",
+                    "resourcebinding.karmada.io/permanent-id": "81f91e3f-36b6-4ed5-850a-954eacc3304e",
+                    "work.karmada.io/permanent-id": "a34c7a68-cedb-43a6-88cd-407cbe1aa1da"
+                },
+                "name": "ts-route-plan",
+                "namespace": "trainticket",
+                "resourceVersion": "35983",
+                "uid": "3bc1e934-8bd9-4458-bfd7-1eedb2dbf041"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-route-plan"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-route-plan"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-route-plan-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-route-plan",
+                                "ports": [
+                                    {
+                                        "containerPort": 14578,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 14578
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:09Z",
+                        "lastUpdateTime": "2026-08-19T12:18:30Z",
+                        "message": "ReplicaSet \"ts-route-plan-85d8557985\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:22:56Z",
+                        "lastUpdateTime": "2026-08-19T12:22:56Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 11,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-station\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-station\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-station\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-station-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-station\",\"ports\":[{\"containerPort\":12345}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12345},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-station",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-station-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "44",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "9e194152-4240-4858-bfcd-163476681c77",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-station-65854db764",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:17Z",
+                "generation": 41,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "714d8c49-32c6-4ecc-b8c1-d84f25189079",
+                    "resourcebinding.karmada.io/permanent-id": "e838499c-694f-4b9b-8951-783984fee322",
+                    "work.karmada.io/permanent-id": "9775ce43-2479-4d22-a755-c6a4233c798c"
+                },
+                "name": "ts-station",
+                "namespace": "trainticket",
+                "resourceVersion": "53864",
+                "uid": "a590d70d-a24c-4039-a4d4-2fb4cd0be4ef"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 8,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-station"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-station"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-station-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-station",
+                                "ports": [
+                                    {
+                                        "containerPort": 12345,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 12345
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 8,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:17Z",
+                        "lastUpdateTime": "2026-08-19T12:18:56Z",
+                        "message": "ReplicaSet \"ts-station-75dfdf564b\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T17:07:06Z",
+                        "lastUpdateTime": "2026-08-19T17:07:06Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 41,
+                "readyReplicas": 8,
+                "replicas": 8,
+                "updatedReplicas": 8
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-station-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-station-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-station-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-station-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-station-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-station-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "bdf712bd-8dad-41b3-91cf-a28ff85067ac",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-station-mongo-56b6b8c48c",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T13:44:04Z",
+                "generation": 6,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "fac4a536-6d93-4fd8-92ec-ebd1bc5d3024",
+                    "resourcebinding.karmada.io/permanent-id": "2675bc89-3367-48d4-9dc6-326ff3e49d9e",
+                    "work.karmada.io/permanent-id": "ff057e94-1ddf-4305-9b92-71b12d16344e"
+                },
+                "name": "ts-station-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "35960",
+                "uid": "dc441224-3b2f-4f8e-baa4-0e268a3062bb"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-station-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-station-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-station-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T13:44:05Z",
+                        "lastUpdateTime": "2026-08-19T13:44:05Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T13:44:04Z",
+                        "lastUpdateTime": "2026-08-19T13:44:05Z",
+                        "message": "ReplicaSet \"ts-station-mongo-55ff6df475\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 6,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-ticketinfo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-ticketinfo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-ticketinfo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-ticketinfo-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-ticketinfo\",\"ports\":[{\"containerPort\":15681}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":15681},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-ticketinfo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-ticketinfo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "30",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "6256cacb-7c2c-4fae-afa2-80b6387cb494",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-ticketinfo-64d979b448",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:17Z",
+                "generation": 21,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "4053d964-f3e0-4c10-ae2f-c5c54fb874ea",
+                    "resourcebinding.karmada.io/permanent-id": "81b8cf76-3bdb-4bea-a0ef-3a05d7115af9",
+                    "work.karmada.io/permanent-id": "01e5065f-785b-4bb1-ae9b-6c4ab39aa41c"
+                },
+                "name": "ts-ticketinfo",
+                "namespace": "trainticket",
+                "resourceVersion": "42279",
+                "uid": "963b12a7-5159-442f-bc3d-013ef329b8d6"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 5,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-ticketinfo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-ticketinfo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-ticketinfo-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-ticketinfo",
+                                "ports": [
+                                    {
+                                        "containerPort": 15681,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 15681
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 5,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:17Z",
+                        "lastUpdateTime": "2026-08-19T12:18:23Z",
+                        "message": "ReplicaSet \"ts-ticketinfo-96f886498\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T15:29:26Z",
+                        "lastUpdateTime": "2026-08-19T15:29:26Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 21,
+                "readyReplicas": 5,
+                "replicas": 5,
+                "updatedReplicas": 5
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-train\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-train\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-train\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-train-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-train\",\"ports\":[{\"containerPort\":14567}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14567},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-train",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-train-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "21",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "12a0b942-f011-48fd-9720-4024782b78fd",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-train-787cd75f74",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:12Z",
+                "generation": 11,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "7a583ebb-023f-4576-998b-975436c54df0",
+                    "resourcebinding.karmada.io/permanent-id": "aa68a8fd-0142-43a3-8b88-6a06cf9cce48",
+                    "work.karmada.io/permanent-id": "61508688-9a41-47d8-92bf-59852cbed5c1"
+                },
+                "name": "ts-train",
+                "namespace": "trainticket",
+                "resourceVersion": "36004",
+                "uid": "6cbe2c46-3bbf-47d8-8848-5f30453016f3"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-train"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-train"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-train-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-train",
+                                "ports": [
+                                    {
+                                        "containerPort": 14567,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 14567
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:12Z",
+                        "lastUpdateTime": "2026-08-19T12:18:41Z",
+                        "message": "ReplicaSet \"ts-train-7cf546fd6d\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:23:43Z",
+                        "lastUpdateTime": "2026-08-19T12:23:43Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 11,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-train-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-train-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-train-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-train-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-train-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-train-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "0acf01ec-f4a5-4e42-a2a8-a926c4bd1221",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-train-mongo-75cdb89549",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T14:04:42Z",
+                "generation": 4,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "bc284abc-a017-4a7d-8d87-411c7b59b133",
+                    "resourcebinding.karmada.io/permanent-id": "a3d65c74-195e-4339-9371-4eb3e358b0f3",
+                    "work.karmada.io/permanent-id": "f7756fe6-34ec-477d-adc4-14534c40e280"
+                },
+                "name": "ts-train-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "35980",
+                "uid": "76bce427-423e-4e73-9d79-a9e9af2a1663"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-train-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-train-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-train-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T14:04:43Z",
+                        "lastUpdateTime": "2026-08-19T14:04:43Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:04:42Z",
+                        "lastUpdateTime": "2026-08-19T14:04:43Z",
+                        "message": "ReplicaSet \"ts-train-mongo-6d59c7d7bc\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 4,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-travel\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel\",\"ports\":[{\"containerPort\":12346}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12346},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-travel",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-travel-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "35",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "ed1306b0-e302-4825-b14c-61677fe9a859",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-travel-75dfffc676",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:14Z",
+                "generation": 26,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "b2530775-6e68-421c-bc42-7be224d481d0",
+                    "resourcebinding.karmada.io/permanent-id": "60c133c7-6f32-4387-b056-7fb5ab40bbd5",
+                    "work.karmada.io/permanent-id": "388cacf4-310a-4b40-8f97-1a1af36b51f5"
+                },
+                "name": "ts-travel",
+                "namespace": "trainticket",
+                "resourceVersion": "47609",
+                "uid": "55bdc284-7069-4c69-8656-c8d363174533"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 8,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-travel"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-travel"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-travel-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-travel",
+                                "ports": [
+                                    {
+                                        "containerPort": 12346,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 12346
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 8,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:14Z",
+                        "lastUpdateTime": "2026-08-19T12:18:37Z",
+                        "message": "ReplicaSet \"ts-travel-866b99f4cb\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T16:15:39Z",
+                        "lastUpdateTime": "2026-08-19T16:15:39Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 26,
+                "readyReplicas": 8,
+                "replicas": 8,
+                "updatedReplicas": 8
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-travel-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-travel-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-travel-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-travel-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "583bbc3a-7bfe-44e0-ada5-519beca6d08d",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-travel-mongo-757f954659",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:15Z",
+                "generation": 15,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "d7eeb993-7f8d-4334-b392-66dc295e43aa",
+                    "resourcebinding.karmada.io/permanent-id": "607bd45f-dc9a-4224-bca3-40d1ddc08e87",
+                    "work.karmada.io/permanent-id": "1c52a0fe-2510-4f39-b8fb-f089ba7e9646"
+                },
+                "name": "ts-travel-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "36011",
+                "uid": "d90ff631-e24b-4182-94dc-4c39ed760f0f"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-travel-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-travel-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-travel-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:17Z",
+                        "lastUpdateTime": "2026-08-19T12:02:17Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:15Z",
+                        "lastUpdateTime": "2026-08-19T12:13:47Z",
+                        "message": "ReplicaSet \"ts-travel-mongo-7746b94cbf\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 15,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel-plan\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-travel-plan\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel-plan-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel-plan\",\"ports\":[{\"containerPort\":14322}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14322},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-travel-plan",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-travel-plan-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "21",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "53ecdc82-f446-4e53-83da-93b80429d949",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-travel-plan-fc9fcc5d8",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:14Z",
+                "generation": 11,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "cd8e2dab-38d0-4302-87f1-8f45870d201a",
+                    "resourcebinding.karmada.io/permanent-id": "01042930-8df4-480c-84b2-5383670f2ec4",
+                    "work.karmada.io/permanent-id": "2f50dc18-0311-4cf0-a297-b4aa83016f2c"
+                },
+                "name": "ts-travel-plan",
+                "namespace": "trainticket",
+                "resourceVersion": "36014",
+                "uid": "7f65c417-46a5-4799-9b9e-3f299cad68d8"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-travel-plan"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-travel-plan"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-travel-plan-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-travel-plan",
+                                "ports": [
+                                    {
+                                        "containerPort": 14322,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 14322
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:14Z",
+                        "lastUpdateTime": "2026-08-19T12:17:57Z",
+                        "message": "ReplicaSet \"ts-travel-plan-795686bf9b\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:22:46Z",
+                        "lastUpdateTime": "2026-08-19T12:22:46Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 11,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "2",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel2\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel2\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"10m\",\"sidecar.istio.io/proxyCPULimit\":\"100m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"128Mi\"},\"labels\":{\"app\":\"ts-travel2\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel2-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel2\",\"ports\":[{\"containerPort\":16346}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":16346},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"150m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"96Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-travel2",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-travel2-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "21",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "03d4eaf8-c696-4903-bcfe-0caa2bba18d8",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-travel2-75c67c465d",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T12:02:12Z",
+                "generation": 11,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "1a81bb74-d996-4a1f-9ee7-3ae3464e009b",
+                    "resourcebinding.karmada.io/permanent-id": "f7b36ec7-2c50-4cac-91d0-9ccaab40c6ec",
+                    "work.karmada.io/permanent-id": "c5847342-da06-499a-a9ef-216c45085e95"
+                },
+                "name": "ts-travel2",
+                "namespace": "trainticket",
+                "resourceVersion": "36008",
+                "uid": "dd4ff0a4-d01f-4df8-b2d0-8797455058b2"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-travel2"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "true",
+                            "sidecar.istio.io/proxyCPU": "10m",
+                            "sidecar.istio.io/proxyCPULimit": "100m",
+                            "sidecar.istio.io/proxyMemory": "64Mi",
+                            "sidecar.istio.io/proxyMemoryLimit": "128Mi"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-travel2"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "codewisdom/ts-travel2-service:0.0.4",
+                                "imagePullPolicy": "Always",
+                                "name": "ts-travel2",
+                                "ports": [
+                                    {
+                                        "containerPort": 16346,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "initialDelaySeconds": 160,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "tcpSocket": {
+                                        "port": 16346
+                                    },
+                                    "timeoutSeconds": 5
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "150m",
+                                        "ephemeral-storage": "1Gi",
+                                        "memory": "512Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "128Mi",
+                                        "memory": "96Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T12:02:12Z",
+                        "lastUpdateTime": "2026-08-19T12:19:14Z",
+                        "message": "ReplicaSet \"ts-travel2-574d8c646\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T12:24:02Z",
+                        "lastUpdateTime": "2026-08-19T12:24:02Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 11,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "deployment.kubernetes.io/revision": "1",
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel2-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel2-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-travel2-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-travel2-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"10m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"64Mi\"}}}]}}}}\n",
+                    "propagationpolicy.karmada.io/name": "crp-owned-ts-travel2-mongo",
+                    "propagationpolicy.karmada.io/namespace": "trainticket",
+                    "resourcebinding.karmada.io/name": "ts-travel2-mongo-deployment",
+                    "resourcebinding.karmada.io/namespace": "trainticket",
+                    "resourcetemplate.karmada.io/generation": "19",
+                    "resourcetemplate.karmada.io/managed-annotations": "kubectl.kubernetes.io/last-applied-configuration,propagationpolicy.karmada.io/name,propagationpolicy.karmada.io/namespace,resourcebinding.karmada.io/name,resourcebinding.karmada.io/namespace,resourcetemplate.karmada.io/generation,resourcetemplate.karmada.io/managed-annotations,resourcetemplate.karmada.io/managed-labels,resourcetemplate.karmada.io/uid,work.karmada.io/conflict-resolution,work.karmada.io/name,work.karmada.io/namespace",
+                    "resourcetemplate.karmada.io/managed-labels": "karmada.io/managed,propagationpolicy.karmada.io/permanent-id,resourcebinding.karmada.io/permanent-id,work.karmada.io/permanent-id",
+                    "resourcetemplate.karmada.io/uid": "9117524a-d640-4c1b-a4a5-54871e55fb87",
+                    "work.karmada.io/conflict-resolution": "abort",
+                    "work.karmada.io/name": "ts-travel2-mongo-68dd98d69c",
+                    "work.karmada.io/namespace": "karmada-es-cluster3"
+                },
+                "creationTimestamp": "2026-08-19T14:04:45Z",
+                "generation": 3,
+                "labels": {
+                    "karmada.io/managed": "true",
+                    "propagationpolicy.karmada.io/permanent-id": "6b4cf51b-d955-4b5e-86d0-99cc252389ef",
+                    "resourcebinding.karmada.io/permanent-id": "52f59e11-d426-4886-8832-ba36d1c9dda0",
+                    "work.karmada.io/permanent-id": "7221916b-3acb-46dd-9a17-0be05f0b79d4"
+                },
+                "name": "ts-travel2-mongo",
+                "namespace": "trainticket",
+                "resourceVersion": "35974",
+                "uid": "68ef5694-0b1b-40ef-a2e9-92a474990ea1"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "ts-travel2-mongo"
+                    }
+                },
+                "strategy": {
+                    "rollingUpdate": {
+                        "maxSurge": "25%",
+                        "maxUnavailable": 0
+                    },
+                    "type": "RollingUpdate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "sidecar.istio.io/inject": "false"
+                        },
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "ts-travel2-mongo"
+                        }
+                    },
+                    "spec": {
+                        "automountServiceAccountToken": false,
+                        "containers": [
+                            {
+                                "image": "mongo:4.0",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ts-travel2-mongo",
+                                "ports": [
+                                    {
+                                        "containerPort": 27017,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "200m",
+                                        "ephemeral-storage": "2Gi",
+                                        "memory": "384Mi"
+                                    },
+                                    "requests": {
+                                        "cpu": "10m",
+                                        "ephemeral-storage": "256Mi",
+                                        "memory": "64Mi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Always",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-08-19T14:04:46Z",
+                        "lastUpdateTime": "2026-08-19T14:04:46Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    },
+                    {
+                        "lastTransitionTime": "2026-08-19T14:04:45Z",
+                        "lastUpdateTime": "2026-08-19T14:04:46Z",
+                        "message": "ReplicaSet \"ts-travel2-mongo-768bfb9d4c\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    }
+                ],
+                "observedGeneration": 3,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "updatedReplicas": 1
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

@@ -62,7 +62,6 @@ spec:
       - command:
         - /manager
         args:
-          - --leader-elect
           - --health-probe-bind-address=:8081
           - --kubeconfig=/karmadaconfig/karmada.config
         image: controller:0.2.1

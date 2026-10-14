@@ -4,12 +4,14 @@ metadata:
   name: bursty
 spec:
   pattern: bursty
-  duration_seconds: 2400
-  warmup_seconds: 300
+  duration_seconds: 1200
+  warmup_seconds: 480
+  capacity_users: 10
+  capacity_users_env: HEADLIGHT_EVALUATION_CAPACITY
   locust:
     spawn_rate: 30
-    base_users: 35
-    burst_users: 220
+    base_users: "0.2C"
+    burst_users: C
     burst_probability: 0.12
     burst_window_seconds: 120
   notes: Optional stretch workload with stochastic bursts.

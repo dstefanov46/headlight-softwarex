@@ -1,36 +1,30 @@
 # AI Module
 
-![Metrics collection pipeline](../assets/metrics-collection-pipeline.png)
+The AI Module collects Prometheus, Istio and cAdvisor observations, assembles
+causal service and edge windows, loads a frozen Headlight bundle and proposes
+bounded replica and placement actions.
 
-The AI Module collects Prometheus metrics, converts them to the service-profile
-feature schema, loads one immutable hash-verified model bundle, and emits
-placement actions. Training is offline, and live inference uses a frozen bundle
-without retraining. The active Headlight bundle contains a checkpoint, scaler,
-feature schema, service profile, adjacency, capacity, model config, learned
-edges, and metadata hashes.
+The evaluated input dimensions are `B × 24 × 18 × 19` for node state and
+`B × 24 × 18 × 18 × 7` for directional edges. Samples are spaced by 15 s and
+forecast horizons are 30, 60 and 180 s. The encoder has width 48 and temporal
+dilations 1, 2 and 4, with an adjacency residual bounded by 0.1.
 
-The active forecaster uses seven base metrics: `replicas`, `request_rate`,
-`cpu_usage_cores`, `cpu_utilization`, `mean_latency_ms`, `p95_latency_ms`, and
-`error_rate`. Each is paired with a missing-value indicator, giving 14 model
-input channels. The implemented architecture is input projection, temporal
-scoring/aggregation, graph message passing, and a multitask output head. The
-forecasting graph is a service-level adjacency over the ordered service profile
-with the bounded learnable residual implemented by `headlight.graph`.
+Demand outputs are q50 and q90. Candidate-conditioned endpoint outputs describe
+p95 latency, SLA violation risk and success probability. Node features preserve
+missing and stale state, and distinguish desired, ready and pending replicas.
+The runtime holds decisions when predictive inputs or candidate outputs are
+incomplete. Its default shadow mode requires explicit actuation enablement.
 
-The current model outputs are `request_q50`, `request_q90`, `cpu_q90`,
-`p95_latency_q90`, and `sla_violation_logit`; decoded runtime forecasts expose
-the last channel as an SLA-violation probability. Legacy model modules are
-retained for provenance and comparison only.
-
-Train and run the runtime with the package entry points:
+The bundle contains checkpoint, model configuration, feature schema, adjacency,
+calibration and hash metadata. The service profile and policy are checked before
+inference. See [model](../research-v4/headlight-v2-model.md) and
+[policy](../research-v4/headlight-v2-policy.md).
 
 ```bash
-cd ai-module/ai-module
-python train_model.py --once --controller headlight --help
-python live_inference.py --help
+python experiments/generate_headlight_v2_synthetic.py --help
+python experiments/train_headlight_v2_synthetic.py --help
+python ai-module/ai-module/live_inference_v2.py --help
 ```
 
-Deployment setup and baseline scripts are in `ai-module/`. The dry-run path
-checks configuration and bundle contracts and demonstrates sample output format.
-Measured model-quality and autoscaling tables use the measured artifact
-workflow.
+The [evaluation](../experiments.md) reports 60 measured runs. Deployment manifests
+and setup helpers live under `ai-module/`. A dry-run checks contracts and wiring.

@@ -12,14 +12,18 @@ spec:
   - 103
   - 104
   - 105
-  duration_seconds: 2400
-  warmup_seconds: 300
+  duration_seconds: 1200
+  warmup_seconds: 480
   sampling_interval_seconds: 15
+  protocol:
+    version: research-v3
+    hash: 833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545
+    path: experiments/configs/protocols/research-v3.yaml
   sla:
     p95_latency_ms: 1000
     minimum_success_rate: 0.99
     max_violation_window_seconds: 60
-  output_dir: results/softwarex/hpa-flash-crowd-multi-cluster-headlight
+  output_dir: results/socc26/hpa-flash-crowd-multi-cluster-headlight
   reset_policy:
     between_seeds: true
     delete_pods: true
@@ -32,4 +36,4 @@ spec:
     actions_handler_batches: true
     ai_inference_times: true
     model_checkpoints: true
-  notes: Two-cluster measured comparison run using common paired seeds.
+  notes: Two-cluster paper comparison run using common paired seeds.

@@ -1,29 +1,21 @@
 {
+  "title": "Headlight: Predictive multi-cluster autoscaling and controlled replica propagation",
+  "upload_type": "software",
+  "description": "SoftwareX validation snapshot for Headlight.",
+  "license": "Apache-2.0",
   "creators": [
     {
-      "name": "Stefanov, Dimitar",
-      "affiliation": "Sunesis d.o.o., Ljubljana, Slovenia",
-      "type": "ProjectMember"
+      "name": "Stefanov, Dimitar"
     },
     {
-      "name": "Jurič, Matjaž Branko",
-      "affiliation": "University of Ljubljana, Faculty of Computer and Information Science, Ljubljana, Slovenia",
-      "type": "Researcher"
+      "name": "Branko Jurič, Matjaž"
     }
   ],
-  "title": "Headlight: dependency-aware predictive orchestration for Kubernetes multi-cluster federations",
-  "version": "1.0.0",
-  "access_right": "open",
-  "license": "Apache-2.0",
-  "upload_type": "software",
-  "language": "eng",
   "keywords": [
     "Kubernetes",
     "Karmada",
-    "multi-cluster orchestration",
-    "predictive autoscaling",
-    "graph neural networks",
-    "edge-cloud continuum"
+    "autoscaling",
+    "controlled replica propagation"
   ],
-  "description": "Headlight v1.0.0 SoftwareX release: an open-source experimental orchestration stack for predictive autoscaling and availability-aware replica placement across Kubernetes multi-cluster federations managed by Karmada. The release includes the predictive AI module, Actions Handler, Controlled Replica Propagation controller, reproducible experiment tooling, baseline controllers, workload profiles, validation gates, and documentation."
+  "version": "2.0.0"
 }

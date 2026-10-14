@@ -1,0 +1,53 @@
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: trainticket-local-gateway
+  namespace: trainticket
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: trainticket-local-routes
+  namespace: trainticket
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - trainticket-local-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /api/v1/users/
+        - uri:
+            prefix: /api/v1/auth/
+      route:
+        - destination:
+            host: ts-auth-service.trainticket.svc.cluster.local
+            port:
+              number: 12340
+    - match:
+        - uri:
+            prefix: /api/v1/routeservice/
+      route:
+        - destination:
+            host: ts-route-service.trainticket.svc.cluster.local
+            port:
+              number: 11178
+    - match:
+        - uri:
+            prefix: /api/v1/travelservice/
+      route:
+        - destination:
+            host: ts-travel-service.trainticket.svc.cluster.local
+            port:
+              number: 12346

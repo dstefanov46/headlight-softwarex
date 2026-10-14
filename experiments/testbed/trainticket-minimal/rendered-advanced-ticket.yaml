@@ -23,6 +23,7 @@ spec:
         app: ts-auth-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-auth-mongo
@@ -39,7 +40,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: apps/v1
@@ -60,6 +71,7 @@ spec:
         app: ts-route-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-route-mongo
@@ -76,7 +88,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: apps/v1
@@ -97,6 +119,7 @@ spec:
         app: ts-station-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-station-mongo
@@ -113,7 +136,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: apps/v1
@@ -134,6 +167,7 @@ spec:
         app: ts-train-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-train-mongo
@@ -150,7 +184,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: apps/v1
@@ -171,6 +215,7 @@ spec:
         app: ts-travel-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-travel-mongo
@@ -187,7 +232,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: apps/v1
@@ -208,6 +263,7 @@ spec:
         app: ts-travel2-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-travel2-mongo
@@ -224,7 +280,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: apps/v1
@@ -245,6 +311,7 @@ spec:
         app: ts-price-mongo
       annotations:
         sidecar.istio.io/inject: 'false'
+        headlight.research/mongo-storage: pod-emptydir-v1
     spec:
       containers:
       - name: ts-price-mongo
@@ -261,7 +328,17 @@ spec:
             cpu: 200m
             memory: 1Gi
             ephemeral-storage: 2Gi
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        - name: mongo-configdb
+          mountPath: /data/configdb
       automountServiceAccountToken: false
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
+      - name: mongo-configdb
+        emptyDir: {}
   replicas: 1
 ---
 apiVersion: v1

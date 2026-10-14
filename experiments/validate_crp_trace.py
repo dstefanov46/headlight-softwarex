@@ -112,7 +112,7 @@ def write_dry_run_plan(config: dict[str, Any], output: Path) -> None:
                 "event_type": "extension-point",
                 "availability_invariant_status": "not-evaluated",
                 "max_unavailable": config["max_unavailable"],
-                "validation_status": "dry-run-unvalidated",
+                "validation_status": "dry-run",
             }
         )
 

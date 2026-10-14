@@ -2,6 +2,10 @@
 FROM python:3.11.9-slim-bookworm
 
 ARG KUBECTL_VERSION=v1.32.0
+ARG HEADLIGHT_CODE_REVISION=unknown
+ARG HEADLIGHT_IMAGE_REVISION=unknown
+ENV HEADLIGHT_CODE_REVISION=$HEADLIGHT_CODE_REVISION HEADLIGHT_IMAGE_REVISION=$HEADLIGHT_IMAGE_REVISION
+LABEL org.opencontainers.image.revision=$HEADLIGHT_CODE_REVISION
 
 # Set working directory
 WORKDIR /app
@@ -25,6 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Copy local code and experiment config used by the runtime scripts.
 COPY ai-module/ .
+COPY baselines/ /app/baselines/
 COPY metrics/fetch_service_metrics.py .
 COPY metrics/SLA_thresholds.json .
 COPY configs/application_services.json .

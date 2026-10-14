@@ -1,0 +1,22 @@
+{
+  "cpu_target_average_utilization": 90,
+  "initialization_behavior": "Kubernetes default CPU HPA initialization behavior.",
+  "native_controller_path": true,
+  "scale_down_behavior": {
+    "policies": [
+      {
+        "periodSeconds": 600,
+        "type": "Pods",
+        "value": 1
+      }
+    ],
+    "stabilizationWindowSeconds": 600
+  },
+  "scale_up_behavior": "kubernetes-default",
+  "schema_version": "headlight.hpa-controller-metadata/v1",
+  "sync_period_seconds": {
+    "expected": 15,
+    "observed": null,
+    "source": "Kubernetes kube-controller-manager default unless cluster configuration exposes a different value"
+  }
+}

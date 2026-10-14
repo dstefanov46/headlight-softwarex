@@ -7,6 +7,7 @@ import argparse
 import json
 
 from headlight.bundle import ModelBundle
+from headlight.policy import PolicyConfig
 from headlight.profile import load_service_profile
 
 
@@ -14,7 +15,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", required=True)
     parser.add_argument("--service-profile", required=True)
-    parser.add_argument("--controller", choices=["headlight", "lstm"], required=True)
+    parser.add_argument("--controller", choices=["headlight"], required=True)
+    parser.add_argument("--policy-config")
     args = parser.parse_args()
     profile = load_service_profile(args.service_profile)
     bundle = ModelBundle.load(
@@ -22,6 +24,7 @@ def main() -> int:
         runtime_profile=profile,
         expected_model_type=args.controller,
     )
+    policy = PolicyConfig.load(args.policy_config)
     print(
         json.dumps(
             {
@@ -30,6 +33,8 @@ def main() -> int:
                 "controller": args.controller,
                 "profile_hash": profile.profile_hash,
                 "node_order": list(profile.node_order),
+                "policy_id": policy.payload["policy_id"],
+                "policy_configuration_hash": policy.configuration_hash,
             },
             sort_keys=True,
         )

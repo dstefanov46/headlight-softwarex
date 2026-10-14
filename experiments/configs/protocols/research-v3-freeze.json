@@ -1,0 +1,36 @@
+{
+  "capacity_contract": {
+    "path": "results/capacity-qualification/capacity-contract.json",
+    "selected_capacity": 4,
+    "sha256": "f006de7117cc04b15af03af8399e721be8033934b95bd99ca4fd4fb706d1e025"
+  },
+  "model_bundles": {
+    "headlight": {
+      "bundle_id": "8cfd3f854cd2742e42b2fe25c607cb6a0a9cb663d5fea7ddaa441679cd7d5940",
+      "path": "results/calibration/headlight-bundle",
+      "sha256": "0d2a97c31c4e6925726914cfa725e0c34e472ecabd3a5621f7f587f6170a4754"
+    },
+    "lstm": {
+      "bundle_id": "ace6045c601957d7786107e09e1c28f1a0077ec298c9969a0de1c7251d265ff8",
+      "path": "results/calibration/lstm-bundle",
+      "sha256": "4bf424fa06e8a29d1f1ed33a6ef2568aebcfea4559ee4e40596b9a0d9d1f81b8"
+    }
+  },
+  "policy": {
+    "path": "ai-module/configs/policies/research-v3-forecast-policy.json",
+    "sha256": "66356072a651a451b56a46a7e7db7c0953c9a597c4195ea13368205262f958a0"
+  },
+  "protocol": {
+    "hash": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "path": "experiments/configs/protocols/research-v3.yaml",
+    "version": "research-v3"
+  },
+  "release_root": "external/research-v3-release",
+  "schema_version": "headlight.research-v3-freeze/v1",
+  "static_plan": {
+    "path": "results/capacity-qualification/static-plan.json",
+    "plan_hash": "dc8f36c79d5523219d37bc5586b829f4145c2cb84f6889df63e21ab8af04fc27",
+    "sha256": "58e4bfce437fd11c1f53f5b63db1b23c95b6ad8d7f7cdd87eabee5b0517f3be9"
+  },
+  "status": "frozen"
+}

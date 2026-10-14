@@ -8,6 +8,7 @@ kubeconfig="${HEADLIGHT_KUBECONFIG:-$repo_root/.kube/headlight-testbed.config}"
 context="${HEADLIGHT_KEDA_CONTEXT:-cluster3}"
 namespace="${HEADLIGHT_TRAINTICKET_NAMESPACE:-trainticket}"
 manifest="${HEADLIGHT_KEDA_SCALEDOBJECTS:-$repo_root/results/keda-scaledobjects.yaml}"
+keda_chart_version="${HEADLIGHT_KEDA_CHART_VERSION:-2.19.0}"
 prometheus_address="${HEADLIGHT_KEDA_PROMETHEUS_ADDRESS:-http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090}"
 min_replicas="${HEADLIGHT_KEDA_MIN_REPLICAS:-1}"
 max_replicas="${HEADLIGHT_KEDA_MAX_REPLICAS:-8}"
@@ -20,7 +21,10 @@ export KUBECONFIG="$kubeconfig"
 
 helm repo add kedacore https://kedacore.github.io/charts --force-update >/dev/null
 helm repo update kedacore >/dev/null
-helm --kube-context "$context" upgrade --install keda kedacore/keda --namespace keda --create-namespace
+helm --kube-context "$context" upgrade --install keda kedacore/keda \
+  --version "$keda_chart_version" \
+  --namespace keda \
+  --create-namespace
 kubectl --context="$context" -n keda rollout status deployment/keda-operator --timeout="${HEADLIGHT_KEDA_WAIT_TIMEOUT:-300s}"
 kubectl --context="$context" -n keda rollout status deployment/keda-operator-metrics-apiserver --timeout="${HEADLIGHT_KEDA_WAIT_TIMEOUT:-300s}"
 

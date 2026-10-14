@@ -1,0 +1,356 @@
+{
+  "protocol": {
+    "version": "research-v3",
+    "hash": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "path": "experiments/configs/protocols/research-v3.yaml"
+  },
+  "spec": {
+    "version": "research-v3",
+    "status": "pre-execution",
+    "upstream_base_commit": "367e833458312fd2021e02ebbc3f70e9fca02ecc",
+    "seeds": {
+      "capacity": [
+        11
+      ],
+      "calibration": [
+        12,
+        13,
+        14,
+        15
+      ],
+      "tuning": [
+        41,
+        43
+      ],
+      "evaluation": [
+        101,
+        102,
+        103,
+        104,
+        105
+      ]
+    },
+    "controllers": {
+      "primary": [
+        {
+          "id": "headlight",
+          "label": "Headlight",
+          "actuation_path": "actions-handler",
+          "controller_pod_cluster": "cluster3"
+        },
+        {
+          "id": "lstm",
+          "label": "LSTM-P",
+          "actuation_path": "actions-handler",
+          "controller_pod_cluster": "cluster3"
+        },
+        {
+          "id": "threshold",
+          "label": "Threshold",
+          "actuation_path": "actions-handler",
+          "controller_pod_cluster": "cluster3",
+          "controller_variant": "multi-metric-reactive"
+        }
+      ],
+      "auxiliary": [
+        {
+          "id": "hpa",
+          "label": "HPA",
+          "actuation_path": "kubernetes-hpa",
+          "controller_pod_cluster": "native-member-control-planes",
+          "exclusion_reason": "Native Kubernetes HPA is retained as an auxiliary reference because it does not use the shared Actions Handler/CRP path."
+        },
+        {
+          "id": "static",
+          "label": "Static",
+          "actuation_path": "fixed-crp-patch",
+          "controller_pod_cluster": "none",
+          "exclusion_reason": "Static provisioning is retained as a calibration-derived resource reference, not as a control-loop participant."
+        }
+      ],
+      "excluded_from_primary": [
+        "keda",
+        "hpa",
+        "static"
+      ]
+    },
+    "workloads": {
+      "primary": [
+        "gradual-ramp",
+        "flash-crowd",
+        "diurnal"
+      ]
+    },
+    "primary_matrix": {
+      "expected_cell_count": 45,
+      "concurrency": "sequential-only",
+      "order_rule": "research-v3/order/v1: for each evaluation seed, shuffle the 9 controller-workload pairs with random.Random(seed)",
+      "explicit_execute_flag_required": true,
+      "refuse_dirty_worktree_unless_override_recorded": true,
+      "no_data_dependent_seed_promotion": true,
+      "performance_on_seed_101_must_not_gate_later_seeds": true,
+      "resume_source": "append-only-attempt-registry",
+      "live_matrix_excludes": [
+        "keda",
+        "hpa",
+        "static"
+      ]
+    },
+    "timing": {
+      "warmup_seconds": 480,
+      "measurement_seconds": {
+        "gradual-ramp": 1200,
+        "flash-crowd": 1200,
+        "diurnal": 2400
+      },
+      "cooldown_seconds": 60,
+      "diurnal_cycle_seconds": 1200,
+      "diurnal_cycle_count": 2
+    },
+    "capacity_normalization": {
+      "contract_path": "results/capacity-qualification/capacity-contract.json",
+      "capacity_symbol": "C",
+      "base_users": "0.2C",
+      "peak_users": "C",
+      "capacity_seed": 11,
+      "health_rule": {
+        "name": "p95-relative-knee",
+        "p95_latency_ceiling_ms": 1000,
+        "max_p95_multiplier_over_baseline": 2.0
+      },
+      "evaluation_requires_immutable_contract": true,
+      "prohibit_recalculation_after_evaluation": true
+    },
+    "common_topology": {
+      "trainticket_path": "advanced-ticket",
+      "resource_profile": "capacity-vm",
+      "namespace": "trainticket",
+      "active_clusters": [
+        "cluster2",
+        "cluster3"
+      ],
+      "ingress_cluster": "cluster2",
+      "load_generator_cluster": "cluster2",
+      "workload_deploy_modes": {
+        "headlight": "karmada",
+        "lstm": "karmada",
+        "threshold": "karmada",
+        "hpa": "native-per-cluster",
+        "static": "karmada"
+      },
+      "identical_data_plane_required": {
+        "service_set": true,
+        "manifests": true,
+        "namespaces": true,
+        "requests_limits": true,
+        "image_versions": true,
+        "ingress_path": true,
+        "load_generator_placement": true
+      }
+    },
+    "controller_placement": {
+      "default_controller_cluster": "cluster3",
+      "headlight": "cluster3",
+      "lstm": "cluster3",
+      "threshold": "cluster3",
+      "hpa": "native-member-control-planes",
+      "static": "none"
+    },
+    "replica_bounds": {
+      "min_replicas_per_cluster": 1,
+      "per_cluster_max_replicas": {
+        "cluster2": 6,
+        "cluster3": 8
+      },
+      "aggregate_max_replicas_per_service": 14,
+      "required_peak_headroom_fraction": 0.2,
+      "ceiling_hit_invalidates_run": false,
+      "uninformative_threshold": {
+        "minimum_fraction_of_services_at_ceiling": 0.5,
+        "minimum_fraction_of_measurement_at_ceiling": 0.8
+      }
+    },
+    "forecast_policy": {
+      "policy_config": "ai-module/configs/policies/research-v3-forecast-policy.json",
+      "shared_by": [
+        "headlight",
+        "lstm"
+      ],
+      "isolation_goal": "Headlight and LSTM-P use the same deterministic forecast-to-replica policy so controller differences isolate forecasting quality.",
+      "evaluation_seed_leakage_forbidden": true
+    },
+    "hpa_fairness": {
+      "native_controller_path": true,
+      "scale_up_behavior": "kubernetes-default",
+      "omit_custom_scale_up_behavior": true,
+      "expected_sync_period_seconds": 15,
+      "cpu_target_average_utilization": 90,
+      "initialization_behavior": "Kubernetes default CPU HPA initialization behavior.",
+      "downscale_behavior": {
+        "stabilizationWindowSeconds": 600,
+        "policies": [
+          {
+            "type": "Pods",
+            "value": 1,
+            "periodSeconds": 600
+          }
+        ]
+      },
+      "neutrality_note": "HPA is retained as native Kubernetes control-plane behavior; KEDA remains functional but excluded from the primary registered matrix to keep the primary comparison to the preregistered controller set."
+    },
+    "static_baseline": {
+      "plan_path": "results/capacity-qualification/static-plan.json",
+      "schema_version": "headlight.static-plan/v1",
+      "selection_data": "calibration-only",
+      "freeze_required_before_evaluation": true,
+      "evaluation_seed_leakage_forbidden": true
+    },
+    "offline_ablations": {
+      "campaign": "offline-ablation",
+      "separate_from_live_matrix": true,
+      "variants": [
+        "full",
+        "static_adjacency",
+        "no_attention",
+        "no_graph"
+      ],
+      "training_seeds": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "seed_count_bounds": {
+        "min": 5,
+        "max": 10
+      },
+      "seeds_distinct_from_evaluation": true,
+      "paired_by": "training_seed",
+      "identical_folds_preprocessing_and_training_budget": true,
+      "independent_unit": "one_training_seed"
+    },
+    "statistics": {
+      "independent_unit": "seed_run",
+      "paired_controller_contrasts_by_workload": true,
+      "default_interval": "95_percent_descriptive_uncertainty_interval",
+      "five_run_claim_limit": "descriptive_only_no_strong_significance_claim",
+      "include_registered_cells_and_invalid_attempts": true,
+      "neutral_placeholders_before_measurement": true,
+      "required_reported_metrics": [
+        "success_rate",
+        "successful_throughput_rps",
+        "offered_throughput_rps",
+        "p50_latency_ms",
+        "p95_latency_ms",
+        "p99_latency_ms",
+        "sla_violation_rate",
+        "cpu_seconds",
+        "pod_seconds",
+        "action_churn"
+      ]
+    },
+    "sla": {
+      "p95_latency_ms": 1000,
+      "minimum_success_rate": 0.99,
+      "successful_request_status_definition": {
+        "min_status_inclusive": 200,
+        "max_status_exclusive": 400,
+        "exception_field_must_be_empty": true
+      }
+    },
+    "technical_invalidity_rules": [
+      "missing_required_kube_context",
+      "stale_kind_or_karmada_api_port",
+      "member_cluster_not_ready",
+      "missing_required_dependency_for_selected_controller",
+      "controller_install_failure",
+      "predictive_controller_pod_not_ready",
+      "frozen_model_bundle_validation_failure",
+      "workload_render_or_deploy_failure",
+      "expected_service_missing_before_measurement",
+      "workload_not_ready_before_measurement",
+      "locust_job_start_failure",
+      "locust_exits_before_measurement_coverage",
+      "empty_request_telemetry",
+      "request_coverage_below_90_percent",
+      "prometheus_empty_or_insufficient_required_telemetry",
+      "missing_or_unparsable_required_artifact",
+      "infrastructure_pod_failure_unrelated_to_controller_behaviour",
+      "required_controller_action_log_missing",
+      "clock_window_mismatch_below_90_percent_coverage",
+      "incorrect_configuration_topology_commit_or_model_bundle",
+      "contamination_by_another_controller_or_attempt",
+      "experiment_runner_failure",
+      "unplanned_manual_intervention"
+    ],
+    "measured_outcomes_never_invalid_by_themselves": [
+      "high_latency",
+      "high_sla_violation_rate",
+      "low_success_rate",
+      "locust_http_errors",
+      "application_exceptions",
+      "high_pod_seconds",
+      "high_cpu",
+      "action_churn",
+      "failure_to_scale_enough",
+      "over_scaling",
+      "oscillation",
+      "timeout_like_user_experience",
+      "hpa_or_static_underperformance",
+      "ceiling_hit",
+      "controller_induced_pod_failures_or_unavailability",
+      "headlight_worse_than_baseline"
+    ],
+    "retry_rules": {
+      "max_attempts_per_seed_run": 2,
+      "retry_only_for_technical_invalidity": true,
+      "cooldown_between_attempts_seconds": 60,
+      "retry_same_seed_controller_workload": true,
+      "retry_manifest_and_protocol_must_match": true,
+      "record_failed_attempt_artifacts": true,
+      "manual_intervention_invalidates_attempt": true
+    },
+    "required_captured_artifacts": [
+      "manifest.yaml",
+      "environment.json",
+      "raw/protocol.json",
+      "raw/topology.json",
+      "raw/workload_manifest_hashes.json",
+      "raw/phase_timestamps.json",
+      "raw/measurement_window.json",
+      "raw/load_profile.csv",
+      "raw/model_bundle_provenance.json",
+      "raw/policy_config.json",
+      "raw/static_plan.json",
+      "raw/hpa_controller_metadata.json",
+      "raw/request_events.csv",
+      "raw/request_events_measurement.csv",
+      "raw/resource_calculation.json",
+      "raw/prometheus_queries.json",
+      "raw/prometheus_range_data.json",
+      "raw/kubernetes_events.json",
+      "raw/crp_transitions.json",
+      "raw/actions_handler_batches.json",
+      "raw/ai_inference_times.csv",
+      "raw/ceiling_binding.json",
+      "logs/runner.log",
+      "summaries/summary.csv"
+    ],
+    "freeze_requirements": {
+      "tracked_release_manifest": "experiments/configs/protocols/research-v3-freeze.json",
+      "external_artifact_release_required": true,
+      "model_bundle_frozen_before_evaluation": true,
+      "tuning_winner_frozen_before_evaluation": true,
+      "capacity_contract_frozen_before_evaluation": true,
+      "static_plan_frozen_before_evaluation": true,
+      "service_profile_hash_frozen_before_evaluation": true,
+      "no_model_policy_threshold_capacity_or_static_plan_selection_from_evaluation_data": true
+    }
+  }
+}

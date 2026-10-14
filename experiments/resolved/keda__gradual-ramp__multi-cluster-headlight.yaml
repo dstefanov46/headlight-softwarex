@@ -28,22 +28,24 @@ spec:
     notes: Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation.
   workload:
     pattern: gradual-ramp
-    duration_seconds: 3000
-    warmup_seconds: 300
+    duration_seconds: 1200
+    warmup_seconds: 480
+    capacity_users: 10
+    capacity_users_env: HEADLIGHT_EVALUATION_CAPACITY
     locust:
       spawn_rate: 15
-      start_users: 20
-      end_users: 320
-      ramp_seconds: 1200
-      hold_seconds: 600
+      start_users: 0.2C
+      end_users: C
+      ramp_seconds: 900
+      hold_seconds: 300
     notes: Monotonic growth workload used to measure anticipation of sustained demand.
     sampling_interval_seconds: 15
     shape_parameters:
       spawn_rate: 15
-      start_users: 20
-      end_users: 320
-      ramp_seconds: 1200
-      hold_seconds: 600
+      start_users: 0.2C
+      end_users: C
+      ramp_seconds: 900
+      hold_seconds: 300
   run:
     controller_profile: experiments/configs/baselines/keda.yaml
     topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
@@ -54,14 +56,18 @@ spec:
     - 103
     - 104
     - 105
-    duration_seconds: 3000
-    warmup_seconds: 300
+    duration_seconds: 1200
+    warmup_seconds: 480
     sampling_interval_seconds: 15
+    protocol:
+      version: research-v3
+      hash: 833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545
+      path: experiments/configs/protocols/research-v3.yaml
     sla:
       p95_latency_ms: 1000
       minimum_success_rate: 0.99
       max_violation_window_seconds: 60
-    output_dir: results/softwarex/keda-gradual-ramp-multi-cluster-headlight
+    output_dir: results/socc26/keda-gradual-ramp-multi-cluster-headlight
     reset_policy:
       between_seeds: true
       delete_pods: true
@@ -74,4 +80,4 @@ spec:
       actions_handler_batches: true
       ai_inference_times: true
       model_checkpoints: true
-    notes: Two-cluster measured comparison run using common paired seeds for KEDA.
+    notes: Two-cluster paper comparison run using common paired seeds for KEDA.

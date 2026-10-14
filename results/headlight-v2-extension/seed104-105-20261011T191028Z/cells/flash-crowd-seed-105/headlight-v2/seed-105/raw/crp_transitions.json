@@ -1,0 +1,711 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-auth\"},\"name\":\"ts-auth\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-auth\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 3,
+        "labels": {
+          "app.kubernetes.io/name": "ts-auth"
+        },
+        "name": "ts-auth",
+        "namespace": "trainticket",
+        "resourceVersion": "53393",
+        "uid": "9048294b-b062-4c6d-8f83-17bc029625cd"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 2
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-auth"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-auth-mongo\"},\"name\":\"ts-auth-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-auth-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-auth-mongo"
+        },
+        "name": "ts-auth-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48615",
+        "uid": "3f7c9352-ce5c-4cdd-b127-75df0a7814bd"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-auth-mongo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-basic\"},\"name\":\"ts-basic\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-basic\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-basic"
+        },
+        "name": "ts-basic",
+        "namespace": "trainticket",
+        "resourceVersion": "48822",
+        "uid": "9a60bded-cf18-4759-8c89-dbd8352ff864"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-basic"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-price\"},\"name\":\"ts-price\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-price\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-price"
+        },
+        "name": "ts-price",
+        "namespace": "trainticket",
+        "resourceVersion": "48887",
+        "uid": "28b2b5b2-07cc-4ad5-9e5d-257343dee7a7"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-price"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-price-mongo\"},\"name\":\"ts-price-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-price-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-price-mongo"
+        },
+        "name": "ts-price-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48788",
+        "uid": "6e0f308b-b41c-4a48-9f99-e9209031eaa3"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-price-mongo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-route\"},\"name\":\"ts-route\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-route\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 4,
+        "labels": {
+          "app.kubernetes.io/name": "ts-route"
+        },
+        "name": "ts-route",
+        "namespace": "trainticket",
+        "resourceVersion": "54108",
+        "uid": "d9e3a7ed-91ed-4347-ada2-b810e945262c"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 4
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-route"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-route-mongo\"},\"name\":\"ts-route-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-route-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-route-mongo"
+        },
+        "name": "ts-route-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48653",
+        "uid": "1a7d8b06-f2d1-4a56-9584-b5021126e8bd"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-route-mongo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-route-plan\"},\"name\":\"ts-route-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-route-plan\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-route-plan"
+        },
+        "name": "ts-route-plan",
+        "namespace": "trainticket",
+        "resourceVersion": "48910",
+        "uid": "12600e1a-df7e-4427-a6b6-72f83d7047ab"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-route-plan"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-station\"},\"name\":\"ts-station\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-station\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-station"
+        },
+        "name": "ts-station",
+        "namespace": "trainticket",
+        "resourceVersion": "48945",
+        "uid": "f8e92b33-b1c8-494e-a5eb-8646f6d40955"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-station"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-station-mongo\"},\"name\":\"ts-station-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-station-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-station-mongo"
+        },
+        "name": "ts-station-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48678",
+        "uid": "23e1a075-6e2c-437b-aa59-425cb90dacef"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-station-mongo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-ticketinfo\"},\"name\":\"ts-ticketinfo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-ticketinfo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 2,
+        "labels": {
+          "app.kubernetes.io/name": "ts-ticketinfo"
+        },
+        "name": "ts-ticketinfo",
+        "namespace": "trainticket",
+        "resourceVersion": "54278",
+        "uid": "c2b0d0dd-5e95-4cef-ad2e-0009b26fcc15"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 2
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-ticketinfo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-train\"},\"name\":\"ts-train\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-train\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-train"
+        },
+        "name": "ts-train",
+        "namespace": "trainticket",
+        "resourceVersion": "48985",
+        "uid": "9d20ae5f-5436-48c0-b86b-bca6c13308b1"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-train"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-train-mongo\"},\"name\":\"ts-train-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-train-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-train-mongo"
+        },
+        "name": "ts-train-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48706",
+        "uid": "ea5e520e-b25f-4051-a4ac-437848bbfa3b"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-train-mongo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-travel\"},\"name\":\"ts-travel\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-travel\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-travel"
+        },
+        "name": "ts-travel",
+        "namespace": "trainticket",
+        "resourceVersion": "49027",
+        "uid": "5f63cf38-1e72-4723-af43-97b3bc2d3e82"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-travel"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-travel-mongo\"},\"name\":\"ts-travel-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-travel-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-travel-mongo"
+        },
+        "name": "ts-travel-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48731",
+        "uid": "11d685e9-9be7-435a-ab13-22bf700f863d"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-travel-mongo"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-travel-plan\"},\"name\":\"ts-travel-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-travel-plan\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-travel-plan"
+        },
+        "name": "ts-travel-plan",
+        "namespace": "trainticket",
+        "resourceVersion": "49015",
+        "uid": "b007759a-ef7f-4de1-8581-765edf5ab90d"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-travel-plan"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-travel2\"},\"name\":\"ts-travel2\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-travel2\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-travel2"
+        },
+        "name": "ts-travel2",
+        "namespace": "trainticket",
+        "resourceVersion": "49002",
+        "uid": "b7bc42d5-3c94-40b8-9be1-fafaadf8fc50"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-travel2"
+        }
+      }
+    },
+    {
+      "apiVersion": "policy.nephele-project.eu/v1alpha1",
+      "kind": "ControlledReplicaPropagation",
+      "metadata": {
+        "annotations": {
+          "headlight.nephele-project.eu/reconcile-at": "1791759847332433737",
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"policy.nephele-project.eu/v1alpha1\",\"kind\":\"ControlledReplicaPropagation\",\"metadata\":{\"annotations\":{},\"labels\":{\"app.kubernetes.io/name\":\"ts-travel2-mongo\"},\"name\":\"ts-travel2-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"placements\":[{\"clusterName\":\"cluster2\",\"replicas\":1},{\"clusterName\":\"cluster3\",\"replicas\":1}],\"strategy\":{\"maxUnavailable\":0},\"targetRef\":{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"name\":\"ts-travel2-mongo\"}}}\n"
+        },
+        "creationTimestamp": "2026-10-11T23:04:05Z",
+        "generation": 1,
+        "labels": {
+          "app.kubernetes.io/name": "ts-travel2-mongo"
+        },
+        "name": "ts-travel2-mongo",
+        "namespace": "trainticket",
+        "resourceVersion": "48760",
+        "uid": "f0d6190b-e7fc-48a3-9ff6-409cae576567"
+      },
+      "spec": {
+        "placements": [
+          {
+            "clusterName": "cluster2",
+            "replicas": 1
+          },
+          {
+            "clusterName": "cluster3",
+            "replicas": 1
+          }
+        ],
+        "strategy": {
+          "maxUnavailable": 0
+        },
+        "targetRef": {
+          "apiVersion": "apps/v1",
+          "kind": "Deployment",
+          "name": "ts-travel2-mongo"
+        }
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": ""
+  }
+}

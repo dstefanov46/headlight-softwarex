@@ -1,0 +1,173 @@
+{
+  "schema_version": "headlight.service-profile/v1",
+  "profile_name": "advanced-ticket",
+  "profile_version": 1,
+  "namespace": "trainticket",
+  "sampling_interval_seconds": 15,
+  "cluster_limits": {
+    "cluster2": {
+      "min_replicas": 1,
+      "initial_replicas": 1,
+      "max_replicas": 2
+    },
+    "cluster3": {
+      "min_replicas": 1,
+      "initial_replicas": 1,
+      "max_replicas": 2
+    }
+  },
+  "node_order": [
+    "ts-auth",
+    "ts-auth-mongo",
+    "ts-basic",
+    "ts-price",
+    "ts-price-mongo",
+    "ts-route",
+    "ts-route-mongo",
+    "ts-route-plan",
+    "ts-station",
+    "ts-station-mongo",
+    "ts-ticketinfo",
+    "ts-train",
+    "ts-train-mongo",
+    "ts-travel",
+    "ts-travel-mongo",
+    "ts-travel-plan",
+    "ts-travel2",
+    "ts-travel2-mongo"
+  ],
+  "nodes": [
+    {
+      "name": "ts-auth",
+      "workload": "ts-auth",
+      "service_name": "ts-auth-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-auth-mongo",
+      "workload": "ts-auth-mongo",
+      "service_name": "ts-auth-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-basic",
+      "workload": "ts-basic",
+      "service_name": "ts-basic-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-price",
+      "workload": "ts-price",
+      "service_name": "ts-price-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-price-mongo",
+      "workload": "ts-price-mongo",
+      "service_name": "ts-price-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-route",
+      "workload": "ts-route",
+      "service_name": "ts-route-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-route-mongo",
+      "workload": "ts-route-mongo",
+      "service_name": "ts-route-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-route-plan",
+      "workload": "ts-route-plan",
+      "service_name": "ts-route-plan-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-station",
+      "workload": "ts-station",
+      "service_name": "ts-station-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-station-mongo",
+      "workload": "ts-station-mongo",
+      "service_name": "ts-station-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-ticketinfo",
+      "workload": "ts-ticketinfo",
+      "service_name": "ts-ticketinfo-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-train",
+      "workload": "ts-train",
+      "service_name": "ts-train-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-train-mongo",
+      "workload": "ts-train-mongo",
+      "service_name": "ts-train-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-travel",
+      "workload": "ts-travel",
+      "service_name": "ts-travel-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-travel-mongo",
+      "workload": "ts-travel-mongo",
+      "service_name": "ts-travel-mongo",
+      "service_type": "database",
+      "scalable": false
+    },
+    {
+      "name": "ts-travel-plan",
+      "workload": "ts-travel-plan",
+      "service_name": "ts-travel-plan-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-travel2",
+      "workload": "ts-travel2",
+      "service_name": "ts-travel2-service",
+      "service_type": "application",
+      "scalable": true
+    },
+    {
+      "name": "ts-travel2-mongo",
+      "workload": "ts-travel2-mongo",
+      "service_name": "ts-travel2-mongo",
+      "service_type": "database",
+      "scalable": false
+    }
+  ],
+  "source": {
+    "generator": "experiments/scripts/generate_service_profiles.py",
+    "rendered_manifest_sha256": "b6dfa4967e7129b9bde9793b1a055c6d2ed3fcebcfdd3db1a266f61182b36fde",
+    "resource_profile": "local-24gb-tested"
+  },
+  "profile_hash": "4ca996ff0e21813d07c5aa777582af4be8dab5137d4deaabeec9a6fcedca1665"
+}

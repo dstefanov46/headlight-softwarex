@@ -19,4 +19,4 @@ record_fields:
   - event_type
   - availability_invariant_status
 extension_points:
-  migration: Provide measured event rows with event_type=migration once migration support is enabled in the runner.
+  migration: Provide live event rows with event_type=migration once migration support is enabled in the runner.

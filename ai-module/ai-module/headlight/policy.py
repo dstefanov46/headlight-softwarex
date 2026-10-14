@@ -5,13 +5,109 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 import requests
 
 from .profile import ServiceNode, ServiceProfile
+
+
+POLICY_SCHEMA_VERSION = "headlight.policy/v1"
+DEFAULT_POLICY_CONFIG = Path(__file__).resolve().parents[2] / "configs" / "policies" / "research-v3-forecast-policy.json"
+EVALUATION_SEEDS = {101, 102, 103, 104, 105}
+
+
+def _canonical_json_hash(payload: dict[str, Any]) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    ).hexdigest()
+
+
+def policy_config_hash(payload: dict[str, Any]) -> str:
+    without_hash = dict(payload)
+    without_hash.pop("policy_configuration_hash", None)
+    return _canonical_json_hash(without_hash)
+
+
+def _metadata_seeds(value: Any) -> set[int]:
+    seeds: set[int] = set()
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key in {"seed", "seeds", "calibration_seeds", "tuning_seeds", "capacity_seed"}:
+                if isinstance(item, list):
+                    for candidate in item:
+                        try:
+                            seeds.add(int(candidate))
+                        except (TypeError, ValueError):
+                            pass
+                else:
+                    try:
+                        seeds.add(int(item))
+                    except (TypeError, ValueError):
+                        pass
+            seeds.update(_metadata_seeds(item))
+    elif isinstance(value, list):
+        for item in value:
+            seeds.update(_metadata_seeds(item))
+    return seeds
+
+
+@dataclass(frozen=True)
+class PolicyConfig:
+    path: Path
+    payload: dict[str, Any]
+    configuration_hash: str
+    sla_latency_ms: float
+    cpu_guard: float
+    sla_probability_guard: float
+    max_scale_up_step: int
+    scale_down_healthy_windows: int
+    scale_down_cooldown_seconds: int
+    reactive_freshness_seconds: int
+    allocation_weights: dict[str, int]
+
+    @classmethod
+    def load(cls, path: str | Path | None = None) -> "PolicyConfig":
+        configured = path or os.environ.get("HEADLIGHT_POLICY_CONFIG") or DEFAULT_POLICY_CONFIG
+        config_path = Path(configured)
+        payload = json.loads(config_path.read_text(encoding="utf-8"))
+        if payload.get("schema_version") != POLICY_SCHEMA_VERSION:
+            raise ValueError("unsupported policy configuration schema")
+        actual_hash = policy_config_hash(payload)
+        if payload.get("policy_configuration_hash") != actual_hash:
+            raise ValueError(
+                f"policy configuration hash mismatch: expected={payload.get('policy_configuration_hash')} actual={actual_hash}"
+            )
+        forbidden = {int(seed) for seed in payload.get("forbidden_seed_set", [])}
+        referenced = _metadata_seeds(payload.get("provenance", {}))
+        leaked = sorted((forbidden or EVALUATION_SEEDS) & referenced)
+        if leaked:
+            raise ValueError(f"policy configuration references evaluation seeds: {leaked}")
+        provenance = payload.get("provenance", {})
+        required_provenance = {"calibration_trace", "selection_procedure", "selected_at", "commit", "parameters"}
+        missing_provenance = sorted(required_provenance - set(provenance))
+        if missing_provenance:
+            raise ValueError(f"policy configuration provenance is missing: {', '.join(missing_provenance)}")
+        params = payload.get("parameters", {})
+        allocation = params.get("replica_allocation", {})
+        staleness = params.get("staleness", {})
+        return cls(
+            path=config_path,
+            payload=payload,
+            configuration_hash=actual_hash,
+            sla_latency_ms=float(params["sla_latency_ms"]),
+            cpu_guard=float(params["cpu_guard"]),
+            sla_probability_guard=float(params["sla_probability_guard"]),
+            max_scale_up_step=int(params["max_scale_up_step"]),
+            scale_down_healthy_windows=int(params["scale_down_healthy_windows"]),
+            scale_down_cooldown_seconds=int(params["scale_down_cooldown_seconds"]),
+            reactive_freshness_seconds=int(staleness["reactive_freshness_seconds"]),
+            allocation_weights={key: int(value) for key, value in allocation.get("weights", {}).items()},
+        )
 
 
 @dataclass(frozen=True)
@@ -83,7 +179,10 @@ def largest_remainder_split(
     if total_replicas <= 0:
         raise ValueError("total_replicas must be positive")
     clusters = tuple(cluster_limits)
-    weights = weights or {"cluster2": 3, "cluster3": 5}
+    weights = weights or {
+        cluster: int(cluster_limits[cluster]["max_replicas"])
+        for cluster in clusters
+    }
     if set(clusters) != set(weights):
         raise ValueError("placement weights must cover exactly the configured clusters")
     minima = {cluster: int(cluster_limits[cluster]["min_replicas"]) for cluster in clusters}
@@ -140,21 +239,22 @@ class ForecastPlacementPolicy:
         self,
         profile: ServiceProfile,
         capacities: dict[str, Any],
-        sla_latency_ms: float = 1000.0,
-        cpu_guard: float = 0.8,
-        max_scale_up_step: int = 2,
-        scale_down_healthy_windows: int = 12,
-        scale_down_cooldown_seconds: int = 180,
-        sla_probability_guard: float = 0.5,
+        policy_config: PolicyConfig | str | Path | None = None,
     ) -> None:
         self.profile = profile
         self.capacities = capacities
-        self.sla_latency_ms = sla_latency_ms
-        self.cpu_guard = cpu_guard
-        self.max_scale_up_step = max_scale_up_step
-        self.scale_down_healthy_windows = scale_down_healthy_windows
-        self.scale_down_cooldown_seconds = scale_down_cooldown_seconds
-        self.sla_probability_guard = sla_probability_guard
+        self.policy_config = (
+            policy_config
+            if isinstance(policy_config, PolicyConfig)
+            else PolicyConfig.load(policy_config)
+        )
+        self.sla_latency_ms = self.policy_config.sla_latency_ms
+        self.cpu_guard = self.policy_config.cpu_guard
+        self.max_scale_up_step = self.policy_config.max_scale_up_step
+        self.scale_down_healthy_windows = self.policy_config.scale_down_healthy_windows
+        self.scale_down_cooldown_seconds = self.policy_config.scale_down_cooldown_seconds
+        self.sla_probability_guard = self.policy_config.sla_probability_guard
+        self.allocation_weights = dict(self.policy_config.allocation_weights)
         self.memory = {node.name: _ServiceMemory() for node in profile.nodes}
 
     def _forecast_total(self, node: ServiceNode, forecast: ServiceForecast) -> int:
@@ -248,7 +348,11 @@ class ForecastPlacementPolicy:
         if timestamp - memory.last_scale_down_at < self.scale_down_cooldown_seconds:
             return self._decision(node, prediction, "scale-down-cooldown", current, current, False)
         minimum = sum(limits["min_replicas"] for limits in self.profile.cluster_limits.values())
-        desired = largest_remainder_split(max(minimum, current_total - 1), self.profile.cluster_limits)
+        desired = largest_remainder_split(
+            max(minimum, current_total - 1),
+            self.profile.cluster_limits,
+            self.allocation_weights,
+        )
         memory.last_scale_down_at = timestamp
         memory.healthy_windows = 0
         return self._decision(node, prediction, "healthy-scale-down", current, desired, False)
@@ -283,7 +387,7 @@ class ForecastPlacementPolicy:
         if target_total > current_total:
             memory.healthy_windows = 0
             desired_total = min(target_total, current_total + self.max_scale_up_step)
-            desired = largest_remainder_split(desired_total, self.profile.cluster_limits)
+            desired = largest_remainder_split(desired_total, self.profile.cluster_limits, self.allocation_weights)
             return self._decision(node, prediction, reason, current, desired, False)
 
         return self._scale_down_or_hold(node, prediction, state, memory, current, current_total, target_total, timestamp)

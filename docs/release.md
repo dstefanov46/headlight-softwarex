@@ -8,13 +8,13 @@ Before a release:
    `validation_status=validated`.
 3. Record commit, dependency, cluster, image, seed, workload, and model bundle
    metadata; archive the validated data and figures.
-4. Update `CITATION.cff`, version metadata, and the release notes with the real
-   version and DOI only after the tag and Zenodo deposit exist.
+4. Keep the source version in `VERSION`, `CITATION.cff`, and `.zenodo.json`
+   aligned. This branch identifies code version 2.0.0. Add a release date and
+   DOI only after creating the corresponding tag and Zenodo record.
 
-Keep `CITATION.cff` and `.zenodo.json` explicitly `unreleased`, with no DOI or
-publication claim, until the release tag and Zenodo deposit exist. Cite the
-repository using `CITATION.cff`; use the eventual Zenodo record only after it
-exists.
+The metadata identifies version 2.0.0 without claiming that a Zenodo record or
+DOI exists. Cite the repository using `CITATION.cff`; cite a Zenodo record only
+after it has been created.
 
 The reproduction dry run remains a documentation and contract check. It is not
-part of the measured artifact workflow.
+measured release evidence.

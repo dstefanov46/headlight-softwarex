@@ -7,7 +7,7 @@ import json
 import math
 import time
 import urllib.parse
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Iterable
 
@@ -52,6 +52,7 @@ class MetricSample:
     missing: np.ndarray
     ages_seconds: np.ndarray
     stale_nodes: np.ndarray
+    cluster_values: dict[str, dict[str, dict[str, float]]] = field(default_factory=dict)
 
     def model_values(self, scaler: "NodeFeatureScaler") -> np.ndarray:
         transformed = scaler.transform(self.values[np.newaxis, ...])[0]
@@ -464,22 +465,43 @@ def load_calibration_csv(path: str | Path, profile: ServiceProfile) -> AlignedSe
     )
 
 
-def prometheus_queries(namespace: str, window: str = "60s") -> dict[str, str]:
+def prometheus_queries(
+    namespace: str,
+    window: str = "60s",
+    *,
+    cpu_window: str | None = None,
+    observed_zero_error_rate: bool = False,
+) -> dict[str, str]:
     labels = f'namespace="{namespace}"'
     destination = f'destination_workload_namespace="{namespace}"'
+    cpu_window = cpu_window or window
+    request_rate = (
+        "sum by (destination_workload) "
+        f"(rate(istio_requests_total{{{destination}}}[{window}]))"
+    )
+    error_numerator = (
+        "sum by (destination_workload) "
+        f'(rate(istio_requests_total{{{destination},response_code!~"2..|3.."}}[{window}]))'
+    )
+    error_rate = f"{error_numerator} / clamp_min({request_rate}, 0.001)"
+    if observed_zero_error_rate:
+        # Istio normally has no non-success series when every request succeeds.
+        # Preserve absence for services without traffic, but represent the
+        # traffic-bearing, zero-error case as the observed value zero.
+        error_rate = (
+            f"({error_rate}) or on (destination_workload) "
+            f"(0 * {request_rate})"
+        )
     return {
         "replicas": f"sum by (deployment) (kube_deployment_status_replicas_ready{{{labels}}})",
-        "request_rate": (
-            "sum by (destination_workload) "
-            f"(rate(istio_requests_total{{{destination}}}[{window}]))"
-        ),
+        "request_rate": request_rate,
         "cpu_usage_cores": (
             "sum by (pod) "
-            f'(rate(container_cpu_usage_seconds_total{{{labels},container!="",pod!=""}}[{window}]))'
+            f'(rate(container_cpu_usage_seconds_total{{{labels},container!="",pod!=""}}[{cpu_window}]))'
         ),
         "cpu_utilization": (
             "sum by (pod) "
-            f'(rate(container_cpu_usage_seconds_total{{{labels},container!="",pod!=""}}[{window}])) '
+            f'(rate(container_cpu_usage_seconds_total{{{labels},container!="",pod!=""}}[{cpu_window}])) '
             "/ clamp_min(sum by (pod) "
             f'(kube_pod_container_resource_requests{{{labels},resource="cpu"}}), 0.001)'
         ),
@@ -493,12 +515,7 @@ def prometheus_queries(namespace: str, window: str = "60s") -> dict[str, str]:
             "histogram_quantile(0.95, sum by (le, destination_workload) "
             f"(rate(istio_request_duration_milliseconds_bucket{{{destination}}}[{window}])))"
         ),
-        "error_rate": (
-            "sum by (destination_workload) "
-            f'(rate(istio_requests_total{{{destination},response_code!~"2..|3.."}}[{window}])) '
-            "/ clamp_min(sum by (destination_workload) "
-            f"(rate(istio_requests_total{{{destination}}}[{window}])), 0.001)"
-        ),
+        "error_rate": error_rate,
     }
 
 
@@ -513,6 +530,11 @@ class PrometheusMetricCollector:
         forward_fill_seconds: int = 30,
         timeout_seconds: float = 5.0,
         query_function: Callable[[str, int], list[dict[str, Any]]] | None = None,
+        diagnostic_logging: bool = False,
+        cluster_names: tuple[str, ...] | None = None,
+        cpu_rate_window: str | None = None,
+        observed_zero_error_rate: bool = False,
+        capture_observations: bool = False,
     ) -> None:
         self.base_urls = tuple(
             endpoint.strip().rstrip("/")
@@ -527,27 +549,144 @@ class PrometheusMetricCollector:
         self.forward_fill_seconds = int(forward_fill_seconds)
         self.timeout_seconds = timeout_seconds
         self.query_function = query_function
+        self.diagnostic_logging = bool(diagnostic_logging)
+        self.cpu_rate_window = cpu_rate_window
+        self.observed_zero_error_rate = bool(observed_zero_error_rate)
+        self.capture_observations = bool(capture_observations)
+        self.observation_evidence: dict[str, Any] = {}
+        if cluster_names is not None:
+            if (
+                len(cluster_names) != len(self.base_urls)
+                or len(set(cluster_names)) != len(cluster_names)
+                or set(cluster_names) != set(profile.cluster_limits)
+            ):
+                raise ValueError("Prometheus cluster names must map one-to-one to profile clusters and URLs")
+        self.cluster_names = cluster_names
+        self._cluster_values: dict[str, dict[str, dict[str, float]]] = {}
+        self._query_diagnostics: list[dict[str, Any]] = []
         self.session = requests.Session()
         shape = (len(profile.nodes), len(BASE_FEATURES))
         self.last_values = np.full(shape, np.nan, dtype=np.float32)
         self.last_observed_at = np.full(shape, -1, dtype=np.int64)
 
-    def _query(self, query: str, timestamp: int) -> list[dict[str, Any]]:
+    def _query(self, query: str, timestamp: int, feature_name: str) -> list[dict[str, Any]]:
+        evidence = {"query": query, "timestamp": timestamp, "endpoints": []}
+        if self.capture_observations:
+            self.observation_evidence[feature_name] = evidence
         if self.query_function is not None:
-            return self.query_function(query, timestamp)
+            started = time.perf_counter()
+            try:
+                result = self.query_function(query, timestamp)
+            except Exception as exc:
+                if self.capture_observations:
+                    evidence["endpoints"].append({"endpoint": "query_function", "cluster": None,
+                        "status": "error", "error_type": type(exc).__name__})
+                self._query_diagnostics.append({
+                    "endpoint": "query_function", "status": "error",
+                    "duration_ms": round((time.perf_counter() - started) * 1000, 3),
+                    "error_type": type(exc).__name__,
+                })
+                raise
+            self._query_diagnostics.append({
+                "endpoint": "query_function", "status": "ok", "result_count": len(result),
+                "duration_ms": round((time.perf_counter() - started) * 1000, 3),
+                **self._result_diagnostic(result, feature_name),
+            })
+            if self.capture_observations:
+                evidence["endpoints"].append({"endpoint": "query_function", "cluster": None,
+                    "status": "ok", "result": result})
+            return result
         params = urllib.parse.urlencode({"query": query, "time": timestamp})
         combined: list[dict[str, Any]] = []
-        for base_url in self.base_urls:
-            response = self.session.get(
-                f"{base_url}/api/v1/query?{params}",
-                timeout=self.timeout_seconds,
-            )
-            response.raise_for_status()
-            payload = response.json()
-            if payload.get("status") != "success":
-                raise RuntimeError(f"Prometheus query failed at {base_url}: {payload}")
-            combined.extend(payload.get("data", {}).get("result", []))
+        for endpoint_index, base_url in enumerate(self.base_urls):
+            started = time.perf_counter()
+            try:
+                response = self.session.get(
+                    f"{base_url}/api/v1/query?{params}",
+                    timeout=self.timeout_seconds,
+                )
+                response.raise_for_status()
+                payload = response.json()
+                if payload.get("status") != "success":
+                    raise RuntimeError(f"Prometheus query failed at {base_url}: {payload}")
+                result = payload.get("data", {}).get("result", [])
+            except Exception as exc:
+                if self.capture_observations:
+                    evidence["endpoints"].append({"endpoint": base_url,
+                        "cluster": self.cluster_names[endpoint_index] if self.cluster_names else None,
+                        "status": "error", "error_type": type(exc).__name__})
+                self._query_diagnostics.append({
+                    "endpoint": base_url, "status": "error",
+                    "duration_ms": round((time.perf_counter() - started) * 1000, 3),
+                    "error_type": type(exc).__name__,
+                })
+                raise
+            if self.capture_observations:
+                evidence["endpoints"].append({"endpoint": base_url,
+                    "cluster": self.cluster_names[endpoint_index] if self.cluster_names else None,
+                    "status": "ok", "result": result})
+            self._query_diagnostics.append({
+                "endpoint": base_url, "status": "ok", "result_count": len(result),
+                "duration_ms": round((time.perf_counter() - started) * 1000, 3),
+                **self._result_diagnostic(result, feature_name),
+            })
+            if self.cluster_names is not None and feature_name in {"request_rate", "cpu_utilization"}:
+                cluster = self.cluster_names[endpoint_index]
+                matched: dict[str, list[float]] = {}
+                for series in result:
+                    node = self._result_node(series.get("metric", {}))
+                    raw = series.get("value", [None, None])
+                    value = _float_or_nan(raw[1] if len(raw) > 1 else None)
+                    if node is not None and math.isfinite(value):
+                        matched.setdefault(node, []).append(value)
+                for node, node_values in matched.items():
+                    aggregate = sum(node_values) if feature_name == "request_rate" else max(node_values)
+                    self._cluster_values.setdefault(feature_name, {}).setdefault(node, {})[cluster] = float(aggregate)
+            combined.extend(result)
         return combined
+
+    def _result_diagnostic(self, result: list[dict[str, Any]], feature_name: str) -> dict[str, Any]:
+        if not self.diagnostic_logging:
+            return {}
+        matched: dict[str, list[float]] = {}
+        for series in result:
+            node = self._result_node(series.get("metric", {}))
+            if node is None:
+                continue
+            raw_value = series.get("value", [None, None])
+            value = _float_or_nan(raw_value[1] if len(raw_value) > 1 else None)
+            if math.isfinite(value):
+                matched.setdefault(node, []).append(value)
+        summary: dict[str, Any] = {"matched_nodes": sorted(matched)}
+        if feature_name == "cpu_utilization":
+            summary["matched_values"] = {node: max(values) for node, values in matched.items()}
+        return summary
+
+    def _log_feature_diagnostic(
+        self, feature_name: str, timestamp: int, values: np.ndarray, missing: np.ndarray,
+        error: Exception | None = None,
+    ) -> None:
+        if not self.diagnostic_logging:
+            return
+        payload: dict[str, Any] = {
+            "event": "HEADLIGHT_V2_METRIC_FEATURE",
+            "timestamp": timestamp,
+            "feature": feature_name,
+            "status": "error" if error is not None else "ok",
+            "endpoints": self._query_diagnostics,
+            "observed_nodes": [name for i, name in enumerate(self.profile.node_order) if not missing[i]],
+            "missing_nodes": [name for i, name in enumerate(self.profile.node_order) if missing[i]],
+        }
+        if error is not None:
+            payload["error_type"] = type(error).__name__
+            payload["error_message"] = str(error)[:300]
+        if feature_name == "cpu_utilization":
+            payload["observed_values"] = {
+                name: float(values[i])
+                for i, name in enumerate(self.profile.node_order)
+                if not missing[i]
+            }
+        print(json.dumps(payload, separators=(",", ":")), flush=True)
 
     def _result_node(self, metric: dict[str, Any]) -> str | None:
         name = str(
@@ -568,9 +707,12 @@ class PrometheusMetricCollector:
     def _collect_feature(self, feature_name: str, query: str, timestamp: int) -> tuple[np.ndarray, np.ndarray]:
         values = np.full(len(self.profile.nodes), np.nan, dtype=np.float32)
         missing = np.ones(len(self.profile.nodes), dtype=bool)
+        self._query_diagnostics = []
         try:
-            result = self._query(query, timestamp)
-        except Exception:
+            result = self._query(query, timestamp, feature_name)
+        except Exception as exc:
+            self._cluster_values.pop(feature_name, None)
+            self._log_feature_diagnostic(feature_name, timestamp, values, missing, exc)
             return values, missing
         aggregates: dict[int, list[float]] = {}
         for series in result:
@@ -585,13 +727,19 @@ class PrometheusMetricCollector:
             aggregate = sum(node_values) if feature_name in {"replicas", "request_rate", "cpu_usage_cores"} else max(node_values)
             values[node_index] = float(aggregate)
             missing[node_index] = False
+        self._log_feature_diagnostic(feature_name, timestamp, values, missing)
         return values, missing
 
     def collect(self, timestamp: int | None = None) -> MetricSample:
         aligned_timestamp = int(timestamp if timestamp is not None else time.time())
+        self._cluster_values = {}
         values = np.full_like(self.last_values, np.nan)
         missing = np.ones_like(values, dtype=bool)
-        queries = prometheus_queries(self.namespace)
+        queries = prometheus_queries(
+            self.namespace,
+            cpu_window=self.cpu_rate_window,
+            observed_zero_error_rate=self.observed_zero_error_rate,
+        )
         for feature_index, feature_name in enumerate(BASE_FEATURES):
             feature_values, feature_missing = self._collect_feature(feature_name, queries[feature_name], aligned_timestamp)
             values[:, feature_index] = feature_values
@@ -620,6 +768,7 @@ class PrometheusMetricCollector:
             missing=missing,
             ages_seconds=ages.astype(np.int64),
             stale_nodes=stale_nodes,
+            cluster_values=self._cluster_values,
         )
 
 

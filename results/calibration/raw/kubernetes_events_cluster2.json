@@ -1,0 +1,40 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:50:52Z",
+            "involvedObject": {
+                "apiVersion": "batch/v1",
+                "kind": "Job",
+                "name": "headlight-calibration-locust",
+                "namespace": "trainticket",
+                "resourceVersion": "56302",
+                "uid": "6aaa4163-87fb-4c86-bdda-7e445f9626cd"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:50:52Z",
+            "message": "Job completed",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:50:52Z",
+                "name": "headlight-calibration-locust.18cd463c61906811",
+                "namespace": "trainticket",
+                "resourceVersion": "56305",
+                "uid": "be0eac2a-e405-4b03-b12b-d049e52521fa"
+            },
+            "reason": "Completed",
+            "reportingComponent": "job-controller",
+            "reportingInstance": "",
+            "source": {
+                "component": "job-controller"
+            },
+            "type": "Normal"
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

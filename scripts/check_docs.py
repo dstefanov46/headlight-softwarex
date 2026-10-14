@@ -4,25 +4,32 @@
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 README_PATH = "results/README.md"
-ARTIFACTS_POLICY_PATH = "results/ARTIFACTS_POLICY.md"
+VALIDATION_ARTIFACTS_PATH = "results/controller-archive/README.md"
+# These selected reports are intentionally committed and indexed from results/README.md.
+CURATED_RESULT_DOCS = {
+    "results/controller-archive/README.md",
+    "results/headlight-v2-live/seed101-103-aggregate-20261005/all-metrics.md",
+    "results/headlight-v2-live/seed101-103-aggregate-20261005/report.md",
+}
 REQUIRED = (
     "README.md",
     "docs/README.md",
     "docs/architecture.md",
     "docs/reproduction.md",
     "docs/experiments.md",
-    "docs/softwarex.md",
+    "docs/evaluation.md",
     "docs/release.md",
     "docs/components/actions-handler.md",
     "docs/components/controlled-replica-propagation.md",
     "docs/components/ai-module.md",
     README_PATH,
-    ARTIFACTS_POLICY_PATH,
+    VALIDATION_ARTIFACTS_PATH,
 )
 REMOVED = (
     "AGENTS.md",
@@ -32,7 +39,7 @@ REMOVED = (
     "PUBLICATION_ROADMAP.md",
     "SOCC_ACTION_PLAN.md",
     "SOCC_PAPERS_TO_REVIEW.md",
-    "REPRODUCTION" + ".md",
+    "REPRODUCTION.md",
     "SOFTWAREX_VALIDATION_RUNBOOK.md",
     "PERFORMANCE_VM_VALIDATION.md",
     "RELEASE_CHECKLIST.md",
@@ -48,16 +55,30 @@ PUBLIC_DOCS = (
     Path("ai-module/ai-module/README.md"),
     Path("experiments/README.md"),
     Path(README_PATH),
-    Path(ARTIFACTS_POLICY_PATH),
+    Path(VALIDATION_ARTIFACTS_PATH),
 )
 
 
 def markdown_files() -> list[Path]:
-    result = []
-    for path in ROOT.rglob("*.md"):
-        if ".git" not in path.parts:
-            result.append(path)
-    return sorted(result)
+    tracked = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "--", "*.md"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return sorted(ROOT / name for name in tracked.stdout.splitlines() if (ROOT / name).is_file())
+
+
+def tracked_files() -> set[str]:
+    tracked = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return {name for name in tracked.stdout.splitlines() if (ROOT / name).is_file()}
 
 
 def selected_public_docs() -> list[Path]:
@@ -82,6 +103,7 @@ def check_required_docs(errors: list[str]) -> None:
 
 
 def check_markdown_links(errors: list[str]) -> None:
+    repository_files = tracked_files()
     for path in markdown_files():
         text = path.read_text(encoding="utf-8")
         for token in REMOVED + PLACEHOLDERS:
@@ -92,8 +114,19 @@ def check_markdown_links(errors: list[str]) -> None:
             target = raw_target.strip().split()[0].split("#", 1)[0]
             if not target or re.match(r"(?:[a-z][a-z0-9+.-]*:|//)", target):
                 continue
+            if Path(target).is_absolute():
+                fail(f"{path.relative_to(ROOT)} has non-portable absolute link: {raw_target}", errors)
+                continue
+            target = re.sub(r":\d+$", "", target)
             candidate = (path.parent / target).resolve()
-            if not candidate.exists():
+            if not candidate.is_relative_to(ROOT):
+                fail(f"{path.relative_to(ROOT)} has broken relative link: {raw_target}", errors)
+                continue
+            relative_candidate = candidate.relative_to(ROOT).as_posix()
+            if relative_candidate not in repository_files and not any(
+                tracked_path.startswith(relative_candidate.rstrip("/") + "/")
+                for tracked_path in repository_files
+            ):
                 fail(f"{path.relative_to(ROOT)} has broken relative link: {raw_target}", errors)
 
 
@@ -102,14 +135,18 @@ def check_public_docs(errors: list[str]) -> None:
         text = path.read_text(encoding="utf-8").lower()
         if "dry-run" not in text or "measured" not in text:
             fail(
-                f"{path.relative_to(ROOT)} must distinguish dry-run/sample output from measured artifacts",
+                f"{path.relative_to(ROOT)} must distinguish dry-run validation from measured evidence",
                 errors,
             )
 
 
 def check_result_docs(errors: list[str]) -> None:
     result_markdown = [p for p in markdown_files() if Path("results") in p.relative_to(ROOT).parents]
-    allowed_results = {ROOT / README_PATH, ROOT / ARTIFACTS_POLICY_PATH}
+    allowed_results = {
+        ROOT / README_PATH,
+        ROOT / VALIDATION_ARTIFACTS_PATH,
+        *(ROOT / path for path in CURATED_RESULT_DOCS),
+    }
     for path in result_markdown:
         if path not in allowed_results:
             fail(f"generated or historical result Markdown is tracked: {path.relative_to(ROOT)}", errors)

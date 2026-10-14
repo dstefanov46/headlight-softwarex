@@ -16,13 +16,17 @@ else
 fi
 rendered="${HEADLIGHT_MINIMAL_TRAINTICKET_MANIFEST:-$repo_root/experiments/testbed/trainticket-minimal/rendered-${path}.yaml}"
 allow_unready=" ${HEADLIGHT_WORKLOAD_ALLOW_UNREADY_DEPLOYMENTS:-} "
+seed_only="${HEADLIGHT_TRAINTICKET_SEED_ONLY:-0}"
+mongo_storage="${HEADLIGHT_TRAINTICKET_MONGO_STORAGE:-pod-emptydir}"
 
 export KUBECONFIG="$kubeconfig"
 
+if [[ "$seed_only" != "1" ]]; then
 render_args=(
   --namespace "$namespace"
   --path "$path"
   --resource-profile "$resource_profile"
+  --mongo-storage "$mongo_storage"
   --output "$rendered"
 )
 if [[ "$deploy_mode" = "single-cluster" ]]; then
@@ -53,6 +57,71 @@ with open(sys.argv[1], encoding="utf-8") as handle:
 PY
 )
 
+mapfile -t sidecar_deployments < <(python3 - "$rendered" <<'PY'
+import sys
+import yaml
+
+with open(sys.argv[1], encoding="utf-8") as handle:
+    for doc in yaml.safe_load_all(handle):
+        if doc and doc.get("kind") == "Deployment":
+            annotations = doc.get("spec", {}).get("template", {}).get("metadata", {}).get("annotations", {})
+            if annotations.get("sidecar.istio.io/inject") == "true":
+                print(doc["metadata"]["name"])
+PY
+)
+
+refresh_crp_dispatch() {
+  if [[ "$deploy_mode" == "single-cluster" ]]; then
+    return
+  fi
+
+  # The CRP controller briefly suspends its generated PropagationPolicy while
+  # updating replicas. Karmada can occasionally retain that suspension in the
+  # ResourceBinding after the policy is unsuspended, leaving one member
+  # without a deployment. Touch the CRPs first, wait for their policies to be
+  # unsuspended, then touch the policies so Karmada refreshes the bindings.
+  local deployment policy dispatch pending reconcile_token
+  reconcile_token="$(date +%s%N)"
+  for deployment in "${deployments[@]}"; do
+    kubectl --context=karmada-apiserver -n "$namespace" annotate \
+      controlledreplicapropagation "$deployment" \
+      headlight.nephele-project.eu/reconcile-at="$reconcile_token" \
+      --overwrite >/dev/null 2>&1 || true
+  done
+
+  for _ in $(seq 1 30); do
+    pending=0
+    for deployment in "${deployments[@]}"; do
+      policy="crp-owned-$deployment"
+      if ! kubectl --context=karmada-apiserver -n "$namespace" get \
+        propagationpolicy "$policy" >/dev/null 2>&1; then
+        pending=1
+        break
+      fi
+      dispatch="$(kubectl --context=karmada-apiserver -n "$namespace" get \
+        propagationpolicy "$policy" \
+        -o jsonpath='{.spec.suspension.dispatching}' 2>/dev/null || true)"
+      if [[ "$dispatch" == "true" ]]; then
+        pending=1
+        break
+      fi
+    done
+    if [[ "$pending" -eq 0 ]]; then
+      break
+    fi
+    sleep 1
+  done
+
+  reconcile_token="$(date +%s%N)"
+  for deployment in "${deployments[@]}"; do
+    policy="crp-owned-$deployment"
+    kubectl --context=karmada-apiserver -n "$namespace" annotate \
+      propagationpolicy "$policy" \
+      headlight.nephele-project.eu/dispatch-at="$reconcile_token" \
+      --overwrite >/dev/null 2>&1 || true
+  done
+}
+
 if [[ "$deploy_mode" != "single-cluster" ]]; then
   for cluster in $active_clusters; do
     kubectl --context="$cluster" get namespace "$namespace" >/dev/null 2>&1 || \
@@ -61,31 +130,97 @@ if [[ "$deploy_mode" != "single-cluster" ]]; then
   done
 fi
 
-for cluster in $active_clusters; do
-  for deployment in "${deployments[@]}"; do
-    for _ in $(seq 1 120); do
-      if kubectl --context="$cluster" -n "$namespace" get deployment "$deployment" >/dev/null 2>&1; then
+wait_for_workload() {
+  for cluster in $active_clusters; do
+    for deployment in "${deployments[@]}"; do
+      for _ in $(seq 1 120); do
+        if kubectl --context="$cluster" -n "$namespace" get deployment "$deployment" >/dev/null 2>&1; then
+          break
+        fi
+        sleep 5
+      done
+      if ! kubectl --context="$cluster" -n "$namespace" get deployment "$deployment" >/dev/null 2>&1; then
+        echo "Deployment $cluster/$namespace/$deployment was not propagated in time" >&2
+        return 1
+      fi
+      if kubectl --context="$cluster" -n "$namespace" rollout status \
+        "deployment/$deployment" \
+        --timeout="${HEADLIGHT_WORKLOAD_WAIT_TIMEOUT:-600s}"; then
+        continue
+      fi
+      if [[ "$allow_unready" == *" $deployment "* ]]; then
+        echo "Allowing unready deployment $deployment in $cluster"
+        continue
+      fi
+      echo "Deployment $cluster/$namespace/$deployment did not become ready" >&2
+      return 1
+    done
+
+    echo "Workload pods in $cluster:"
+    kubectl --context="$cluster" -n "$namespace" get pods \
+      -o custom-columns='NAME:.metadata.name,READY:.status.containerStatuses[*].ready,CONTAINERS:.spec.containers[*].name'
+  done
+}
+
+ensure_istio_sidecars() {
+  local cluster attempt pod_json deployment
+  local -a missing_pods
+  for cluster in $active_clusters; do
+    for attempt in 1 2 3; do
+      pod_json="$(kubectl --context="$cluster" -n "$namespace" get pods -o json)"
+      mapfile -t missing_pods < <(python3 -c '
+import json
+import sys
+
+expected = set(sys.argv[1:])
+for pod in json.load(sys.stdin)["items"]:
+    if pod["metadata"].get("labels", {}).get("app") not in expected:
+        continue
+    if "istio-proxy" not in {container["name"] for container in pod["spec"]["containers"]}:
+        print(pod["metadata"]["name"])
+' "${sidecar_deployments[@]}" <<<"$pod_json")
+      if (( ${#missing_pods[@]} == 0 )); then
         break
       fi
-      sleep 5
+      if (( attempt == 3 )); then
+        echo "Istio injection missing after two repairs in $cluster: ${missing_pods[*]}" >&2
+        return 1
+      fi
+      echo "Recreating pods without required Istio sidecars in $cluster: ${missing_pods[*]}" >&2
+      kubectl --context="$cluster" -n "$namespace" delete pod "${missing_pods[@]}" --wait=true
+      for deployment in "${sidecar_deployments[@]}"; do
+        kubectl --context="$cluster" -n "$namespace" rollout status \
+          "deployment/$deployment" --timeout="${HEADLIGHT_WORKLOAD_WAIT_TIMEOUT:-600s}"
+      done
     done
-    kubectl --context="$cluster" -n "$namespace" get deployment "$deployment" >/dev/null
-    if kubectl --context="$cluster" -n "$namespace" rollout status \
-      "deployment/$deployment" \
-      --timeout="${HEADLIGHT_WORKLOAD_WAIT_TIMEOUT:-600s}"; then
-      continue
-    fi
-    if [[ "$allow_unready" == *" $deployment "* ]]; then
-      echo "Allowing unready deployment $deployment in $cluster"
-      continue
-    fi
-    exit 1
   done
+}
 
-  echo "Workload pods in $cluster:"
-  kubectl --context="$cluster" -n "$namespace" get pods \
-    -o custom-columns='NAME:.metadata.name,READY:.status.containerStatuses[*].ready,CONTAINERS:.spec.containers[*].name'
+deployment_attempts="${HEADLIGHT_WORKLOAD_DEPLOY_ATTEMPTS:-3}"
+refresh_crp_dispatch
+for attempt in $(seq 1 "$deployment_attempts"); do
+  if wait_for_workload; then
+    break
+  fi
+  if [[ "$attempt" -eq "$deployment_attempts" ]]; then
+    echo "TrainTicket deployment did not converge after $deployment_attempts attempts" >&2
+    exit 1
+  fi
+  echo "TrainTicket propagation incomplete; reapplying manifest (attempt $((attempt + 1))/$deployment_attempts)" >&2
+  if [[ "$deploy_mode" = "single-cluster" ]]; then
+    for cluster in $active_clusters; do
+      kubectl --context="$cluster" -n "$namespace" apply -f "$rendered" >/dev/null
+    done
+  else
+    kubectl --context=karmada-apiserver apply -f "$rendered" >/dev/null
+  fi
+  refresh_crp_dispatch
+  sleep 10
 done
+
+ensure_istio_sidecars
+
+fi
 
 seed_auth_user() {
   local cluster="$1"
@@ -206,4 +341,6 @@ for cluster in $active_clusters; do
   route_seed_port=$((route_seed_port + 1))
 done
 
-echo "Rendered minimal TrainTicket manifest: $rendered"
+if [[ "$seed_only" != "1" ]]; then
+  echo "Rendered minimal TrainTicket manifest: $rendered"
+fi

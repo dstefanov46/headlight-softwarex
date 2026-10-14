@@ -30,16 +30,36 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from experiments.lib.config import REPO_ROOT, resolve_run, write_yaml
-from experiments.lib.quality import BundleQualityError, capacity_is_healthy, request_summary
-from experiments.run_experiment import environment, run_one_seed
+from experiments.lib.capacity_contract import (
+    build_capacity_contract,
+    contract_path_from_env,
+    evaluation_results_exist,
+    maximum_headroom_safe_capacity,
+    write_capacity_contract,
+)
+from experiments.lib.quality import BundleQualityError, capacity_is_healthy, request_summary, validate_bundle
+from experiments.run_experiment import (
+    CAPACITY_SEEDS,
+    CALIBRATION_SEEDS,
+    DEFAULT_CLUSTER_REPLICA_SPLIT,
+    EVALUATION_SEEDS,
+    GATEWAY_PROTOCOL,
+    PROTOCOL,
+    REPLICA_CEILING,
+    TUNING_SEEDS,
+    _rendered_workload_hashes,
+    apply_protocol_metadata,
+    environment,
+    run_one_seed,
+)
 
 
-SEED = 101
-PILOT_LEVELS = (5, 6, 8, 10)
+SEED = CAPACITY_SEEDS[0]
+PILOT_LEVELS = (2, 4, 6, 8, 10)
 REQUIRED_CONTEXTS = ("karmada-apiserver", "karmada-host", "cluster1", "cluster2", "cluster3")
 MEMBER_CONTEXTS = ("karmada-host", "cluster1", "cluster2", "cluster3")
 TRAINTICKET_PATHS = ("login-route", "advanced-ticket", "full")
-RESOURCE_PROFILES = ("local-tiny", "capacity-vm", "source")
+RESOURCE_PROFILES = ("local-tiny", "local-24gb-tested", "capacity-vm", "source")
 LOCUST_MODE_BY_PATH = {
     "login-route": "login-route",
     "advanced-ticket": "advanced-ticket",
@@ -49,9 +69,25 @@ RUN_CONFIGS = {
     "headlight": "experiments/configs/runs/headlight-gradual-ramp-multi-cluster-headlight.yaml",
     "hpa": "experiments/configs/runs/hpa-gradual-ramp-multi-cluster-headlight.yaml",
     "keda": "experiments/configs/runs/keda-gradual-ramp-multi-cluster-headlight.yaml",
-    "lstm": "experiments/configs/runs/lstm-gradual-ramp-multi-cluster-headlight.yaml",
+    "threshold": "experiments/configs/runs/threshold-gradual-ramp-multi-cluster-headlight.yaml",
 }
-PILOT_CONFIG = "experiments/configs/runs/static-gradual-ramp-multi-cluster-static.yaml"
+DEFAULT_CONTROLLERS = ("headlight", "hpa", "keda", "threshold")
+PILOT_CONFIG = "experiments/configs/runs/headlight-gradual-ramp-multi-cluster-headlight.yaml"
+CAPACITY_PILOT_SETUP = "experiments/scripts/setup_capacity_pilot_bootstrap.sh"
+
+
+def resource_replica_limits(resource_profile: str) -> tuple[dict[str, int], int]:
+    if resource_profile == "local-24gb-tested":
+        split = {"cluster2": 2, "cluster3": 2}
+        return split, sum(split.values())
+    split = dict(DEFAULT_CLUSTER_REPLICA_SPLIT)
+    return split, REPLICA_CEILING
+
+
+def service_profile_path(trainticket_path: str, resource_profile: str) -> str:
+    if trainticket_path == "advanced-ticket" and resource_profile == "local-24gb-tested":
+        return "ai-module/configs/service_profiles/advanced-ticket-local-24gb-tested.json"
+    return f"ai-module/configs/service_profiles/{trainticket_path}.json"
 
 
 def _stable_order_key(seed: int, value: str) -> bytes:
@@ -76,7 +112,8 @@ class CampaignOptions:
     candidate_metadata: dict[str, Any] | None = None
     skip_pilots: bool = False
     selected_capacity_override: int | None = None
-    controllers: tuple[str, ...] = tuple(RUN_CONFIGS)
+    resume_pilots: bool = False
+    controllers: tuple[str, ...] = DEFAULT_CONTROLLERS
 
     @property
     def locust_mode(self) -> str:
@@ -233,8 +270,18 @@ def pilot_manifest(
     candidate_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     locust_mode = LOCUST_MODE_BY_PATH[trainticket_path]
+    cluster_split, replica_ceiling = resource_replica_limits(resource_profile)
     manifest = copy.deepcopy(resolve_run(Path(PILOT_CONFIG)))
     manifest["metadata"]["name"] = f"capacity-pilot-{users}-users"
+    manifest["spec"]["controller"].update(
+        {
+            "controller": "static",
+            "setup_script": CAPACITY_PILOT_SETUP,
+            "controller_variant": "capacity-pilot-fixed-bootstrap",
+            "bootstrap_mode": "profile-minimum-fixed-placement",
+            "requires_static_plan": False,
+        }
+    )
     manifest["spec"]["workload"].update(
         {
             "pattern": "gradual-ramp",
@@ -259,10 +306,23 @@ def pilot_manifest(
                 "kind": "capacity-pilot",
                 "users": users,
                 "seed": seed,
+                "capacity_seeds": list(CAPACITY_SEEDS),
+                "calibration_seeds": list(CALIBRATION_SEEDS),
+                "evaluation_seeds_excluded": list(EVALUATION_SEEDS),
+                "headlight_tuning_seeds": list(TUNING_SEEDS),
+                "replica_ceiling_per_service": replica_ceiling,
+                "cluster_replica_split": cluster_split,
+                "pilot_capacity_fractions": [0.2, 0.4, 0.6, 0.8, 1.0],
                 "trainticket_path": trainticket_path,
                 "transaction_mix": locust_mode,
                 "resource_profile": resource_profile,
                 "headlight_candidate": candidate_metadata or {},
+                "bootstrap_placement": {
+                    "source": "service-profile-minima",
+                    "cluster2": 1,
+                    "cluster3": 1,
+                    "static_plan_required": False,
+                },
             },
         }
     )
@@ -280,10 +340,11 @@ def qualification_manifest(
     candidate_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     locust_mode = LOCUST_MODE_BY_PATH[trainticket_path]
+    cluster_split, replica_ceiling = resource_replica_limits(resource_profile)
     manifest = copy.deepcopy(resolve_run(Path(RUN_CONFIGS[controller])))
     if "service_profile" in manifest["spec"]["controller"]:
         manifest["spec"]["controller"]["service_profile"] = (
-            f"ai-module/configs/service_profiles/{trainticket_path}.json"
+            service_profile_path(trainticket_path, resource_profile)
         )
     common_topology = resolve_run(Path(RUN_CONFIGS["headlight"]))["spec"]["topology"]
     manifest["spec"]["topology"] = copy.deepcopy(common_topology)
@@ -313,9 +374,16 @@ def qualification_manifest(
             "output_dir": str(output_dir),
             "qualification_overrides": {
                 "kind": "capacity-qualification",
-                "publishable_as_softwarex_five_seed_result": False,
+                "publishable_as_socc26_five_seed_result": False,
                 "seed": seed,
+                "capacity_seeds": list(CAPACITY_SEEDS),
+                "calibration_seeds": list(CALIBRATION_SEEDS),
+                "evaluation_seeds_excluded": list(EVALUATION_SEEDS),
+                "headlight_tuning_seeds": list(TUNING_SEEDS),
                 "selected_user_cap": user_cap,
+                "selected_capacity": user_cap,
+                "replica_ceiling_per_service": replica_ceiling,
+                "cluster_replica_split": cluster_split,
                 "qualification_start_users": start_users,
                 "qualification_end_users": end_users,
                 "trainticket_path": trainticket_path,
@@ -325,8 +393,8 @@ def qualification_manifest(
                 "topology": copy.deepcopy(common_topology),
                 "resource_bounds": {
                     "min_replicas_per_cluster": 1,
-                    "cluster_max_replicas": {"cluster2": 3, "cluster3": 5},
-                    "max_total_replicas_per_service": 8,
+                    "cluster_max_replicas": cluster_split,
+                    "max_total_replicas_per_service": replica_ceiling,
                 },
             },
         }
@@ -360,15 +428,50 @@ class CapacityCampaign:
             handle.write(line + "\n")
 
     def _execute_manifest(self, manifest: dict[str, Any], output: Path) -> None:
-        if self.options.smoke:
-            manifest["spec"]["run"]["smoke_validation"] = True
-            manifest["spec"]["run"].setdefault("reset_policy", {})["delete_pods"] = False
+        self._prepare_manifest(manifest)
         output.mkdir(parents=True, exist_ok=True)
         write_yaml(output / "manifest.yaml", manifest)
         (output / "environment.json").write_text(
             json.dumps(environment(self.options.dry_run), indent=2) + "\n", encoding="utf-8"
         )
         self.execute(manifest, output, self.options.seed, self.options.dry_run)
+
+    def _prepare_manifest(self, manifest: dict[str, Any]) -> None:
+        if self.options.smoke:
+            manifest["spec"]["run"]["smoke_validation"] = True
+            manifest["spec"]["run"].setdefault("reset_policy", {})["delete_pods"] = False
+        apply_protocol_metadata(manifest)
+
+    def _resumable_pilot_summary(
+        self, manifest: dict[str, Any], output: Path
+    ) -> dict[str, Any] | None:
+        """Return a prior pilot result only when its manifest and bundle are valid."""
+        if not self.options.resume_pilots or self.options.dry_run:
+            return None
+        manifest_path = output / "manifest.yaml"
+        summary_path = output / "pilot_summary.json"
+        seed_dir = output / f"seed-{self.options.seed}"
+        if not manifest_path.exists() or not summary_path.exists() or not seed_dir.exists():
+            return None
+        try:
+            previous_manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+            expected_manifest = copy.deepcopy(manifest)
+            self._prepare_manifest(expected_manifest)
+            if previous_manifest != expected_manifest:
+                return None
+            # A capacity knee is an expected pilot outcome; all other quality
+            # failures make the old bundle unsafe to reuse.
+            try:
+                validate_bundle(seed_dir, previous_manifest, dry_run=False)
+            except BundleQualityError as exc:
+                if not exc.issues or not all(issue.capacity_knee for issue in exc.issues):
+                    return None
+            record = json.loads(summary_path.read_text(encoding="utf-8"))
+            if int(record.get("users", -1)) != int(manifest["spec"]["run"]["qualification_overrides"]["users"]):
+                return None
+            return record
+        except (OSError, TypeError, ValueError, yaml.YAMLError, KeyError, json.JSONDecodeError):
+            return None
 
     def _cooldown(self) -> None:
         if not self.options.dry_run and self.options.cooldown_seconds:
@@ -401,6 +504,11 @@ class CapacityCampaign:
             f"running capacity pilot users={users} seed={self.options.seed} "
             f"trainticket_path={self.options.trainticket_path} locust_mode={self.options.locust_mode}"
         )
+        resumed = self._resumable_pilot_summary(manifest, output)
+        if resumed is not None:
+            self.selected_capacity = users if resumed["healthy"] else self.selected_capacity
+            self.log(f"reusing validated capacity pilot users={users} seed={self.options.seed}")
+            return resumed
         knee_from_requests = False
         knee_reason: str | None = None
         try:
@@ -435,7 +543,7 @@ class CapacityCampaign:
             record = self._run_pilot(users, baseline_p95)
             pilot_results.append(record)
             if users == PILOT_LEVELS[0] and not record["healthy"]:
-                raise CampaignFailure(f"5-user capacity baseline failed: {record['reason']}")
+                raise CampaignFailure(f"{PILOT_LEVELS[0]}-user capacity baseline failed: {record['reason']}")
             if not record["healthy"]:
                 self.log(f"expected relative capacity knee reached: {record['reason']}")
                 break
@@ -446,19 +554,65 @@ class CapacityCampaign:
 
         if self.selected_capacity is None:
             raise CampaignFailure("no safe pilot capacity was selected")
-        (self.options.output_dir / "capacity_summary.json").write_text(
-            json.dumps(
-                {
-                    "baseline_users": 5,
-                    "selected_capacity": self.selected_capacity,
-                    "pilots": pilot_results,
-                    "pilots_skipped": self.options.skip_pilots,
-                },
-                indent=2,
+        maximum_safe_capacity = maximum_headroom_safe_capacity(
+            REPLICA_CEILING,
+            float(PROTOCOL["spec"]["replica_bounds"]["required_peak_headroom_fraction"]),
+        )
+        if self.selected_capacity > maximum_safe_capacity:
+            raise CampaignFailure(
+                f"selected capacity C={self.selected_capacity} exceeds headroom-safe maximum "
+                f"C={maximum_safe_capacity}"
             )
-            + "\n",
+        summary_payload = {
+            "baseline_users": PILOT_LEVELS[0],
+            "selected_capacity": self.selected_capacity,
+            "replica_ceiling_per_service": REPLICA_CEILING,
+            "cluster_replica_split": dict(DEFAULT_CLUSTER_REPLICA_SPLIT),
+            "required_peak_headroom_fraction": PROTOCOL["spec"]["replica_bounds"]["required_peak_headroom_fraction"],
+            "maximum_headroom_safe_capacity": maximum_safe_capacity,
+            "capacity_seeds": list(CAPACITY_SEEDS),
+            "calibration_seeds": list(CALIBRATION_SEEDS),
+            "evaluation_seeds_excluded": list(EVALUATION_SEEDS),
+            "headlight_tuning_seeds": list(TUNING_SEEDS),
+            "pilots": pilot_results,
+            "pilots_skipped": self.options.skip_pilots,
+        }
+        (self.options.output_dir / "capacity_summary.json").write_text(
+            json.dumps(summary_payload, indent=2) + "\n",
             encoding="utf-8",
         )
+        qualification_inputs = {
+            "pilot_levels": list(PILOT_LEVELS),
+            "pilot_duration_seconds": self.options.pilot_duration,
+            "qualification_duration_seconds": self.options.qualification_duration,
+            "cooldown_seconds": self.options.cooldown_seconds,
+            "seed": self.options.seed,
+            "trainticket_path": self.options.trainticket_path,
+            "resource_profile": self.options.resource_profile,
+            "controllers": list(self.options.controllers),
+            "skip_pilots": self.options.skip_pilots,
+        }
+        contract_manifest = pilot_manifest(
+            self.selected_capacity,
+            self.options.pilot_duration,
+            self.options.output_dir,
+            self.options.trainticket_path,
+            self.options.resource_profile,
+            self.options.seed,
+            self.options.candidate_metadata,
+        )
+        contract = build_capacity_contract(
+            selected_capacity=self.selected_capacity,
+            seed=self.options.seed,
+            qualification_inputs=qualification_inputs,
+            environment=environment(self.options.dry_run),
+            pilot_results=pilot_results,
+            workload_manifest_hashes=_rendered_workload_hashes(contract_manifest),
+            gateway_protocol=GATEWAY_PROTOCOL["reference"] if GATEWAY_PROTOCOL is not None else None,
+        )
+        write_capacity_contract(self.options.output_dir / "capacity-contract.json", contract)
+        if self.execute is run_one_seed:
+            write_capacity_contract(contract_path_from_env(), contract)
         return pilot_results
 
     def _run_qualifications(self) -> None:
@@ -501,6 +655,12 @@ class CapacityCampaign:
             "selected_capacity": self.selected_capacity,
             "controller_order": self.controller_order,
             "seed": self.options.seed,
+            "capacity_seeds": list(CAPACITY_SEEDS),
+            "calibration_seeds": list(CALIBRATION_SEEDS),
+            "evaluation_seeds_excluded": list(EVALUATION_SEEDS),
+            "headlight_tuning_seeds": list(TUNING_SEEDS),
+            "replica_ceiling_per_service": REPLICA_CEILING,
+            "cluster_replica_split": dict(DEFAULT_CLUSTER_REPLICA_SPLIT),
             "dry_run": self.options.dry_run,
             "smoke": self.options.smoke,
             "trainticket_path": self.options.trainticket_path,
@@ -525,10 +685,11 @@ def capture_failure_diagnostics(output_dir: Path, log: Callable[[str], None]) ->
         commands[f"{context}-pods.txt"] = ["kubectl", "--context", context, "get", "pods", "-A", "-o", "wide"]
         commands[f"{context}-events.txt"] = ["kubectl", "--context", context, "get", "events", "-A", "--sort-by=.lastTimestamp"]
         commands[f"{context}-deployments.txt"] = ["kubectl", "--context", context, "get", "deployments", "-A", "-o", "wide"]
-    for selector in ["app=ai-module", "app=lstm-autoscaler"]:
+    controller_context = os.environ.get("HEADLIGHT_CONTROLLER_CONTEXT", "cluster3")
+    for selector in ["app=ai-module", "app=lstm-autoscaler", "app=threshold-autoscaler"]:
         safe_name = selector.split("=", 1)[1]
         commands[f"controller-{safe_name}.txt"] = [
-            "kubectl", "--context", "cluster1", "-n", "trainticket", "logs", "-l", selector, "--tail=-1"
+            "kubectl", "--context", controller_context, "-n", "trainticket", "logs", "-l", selector, "--tail=-1"
         ]
     for filename, command in commands.items():
         try:
@@ -570,7 +731,8 @@ class ShutdownOnce:
 
 def default_output_dir() -> Path:
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return REPO_ROOT / "results" / "capacity-qualification" / stamp
+    branch = "capacity-qualification-gateway" if GATEWAY_PROTOCOL is not None else "capacity-qualification"
+    return REPO_ROOT / "results" / branch / stamp
 
 
 def _record_campaign_failure(
@@ -590,26 +752,43 @@ def _record_campaign_failure(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Capacity qualification and seed-101 controller campaign")
+    parser = argparse.ArgumentParser(description="Capacity qualification and calibration-seed controller campaign")
     parser.add_argument("--output-dir", type=Path, default=None)
     parser.add_argument("--dry-run", action="store_true", help="write all contracts without touching Kubernetes or powering off")
     parser.add_argument("--smoke", action="store_true", help="run live 30-second stages with shutdown forcibly disabled")
     parser.add_argument("--pilot-duration", type=int, default=360)
-    parser.add_argument("--qualification-duration", type=int, default=1200)
+    parser.add_argument(
+        "--qualification-duration",
+        type=int,
+        default=None,
+        help="qualification duration in seconds; also overrides the smoke default",
+    )
     parser.add_argument("--cooldown-seconds", type=int, default=30)
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--trainticket-path", choices=TRAINTICKET_PATHS, default="advanced-ticket")
     parser.add_argument("--resource-profile", choices=RESOURCE_PROFILES, default="capacity-vm")
     parser.add_argument("--skip-pilots", action="store_true", help="skip capacity search and use --selected-capacity")
+    parser.add_argument(
+        "--resume-pilots",
+        action="store_true",
+        help="reuse existing technically valid pilot bundles when their manifest matches",
+    )
     parser.add_argument("--selected-capacity", type=int, default=None, help="user cap to use with --skip-pilots")
     parser.add_argument(
         "--controllers",
-        default=",".join(RUN_CONFIGS),
+        default=",".join(DEFAULT_CONTROLLERS),
         help="comma-separated subset/order of controllers to qualify",
     )
     args = parser.parse_args()
+    if args.seed not in CAPACITY_SEEDS:
+        parser.error(
+            f"--seed {args.seed} cannot select capacity; use registered capacity seed "
+            f"{','.join(str(seed) for seed in CAPACITY_SEEDS)}"
+        )
     if args.skip_pilots and args.selected_capacity is None:
         parser.error("--skip-pilots requires --selected-capacity")
+    if args.skip_pilots and not args.dry_run:
+        parser.error("--skip-pilots is only permitted for dry-run contract checks")
     controllers = tuple(controller.strip() for controller in args.controllers.split(",") if controller.strip())
     unknown_controllers = [controller for controller in controllers if controller not in RUN_CONFIGS]
     if not controllers:
@@ -624,15 +803,29 @@ def main() -> int:
         trainticket_path=args.trainticket_path,
         resource_profile=args.resource_profile,
         pilot_duration=30 if args.smoke else args.pilot_duration,
-        qualification_duration=30 if args.smoke else args.qualification_duration,
+        qualification_duration=(
+            args.qualification_duration
+            if args.qualification_duration is not None
+            else (30 if args.smoke else 1200)
+        ),
         cooldown_seconds=0 if args.smoke or args.dry_run else args.cooldown_seconds,
         seed=args.seed,
         candidate_metadata=headlight_candidate_metadata(),
         skip_pilots=args.skip_pilots,
         selected_capacity_override=args.selected_capacity,
+        resume_pilots=args.resume_pilots,
         controllers=controllers,
     )
     kubeconfig = Path(os.environ.get("HEADLIGHT_KUBECONFIG", str(default_kubeconfig()))).resolve()
+    if GATEWAY_PROTOCOL is not None:
+        contract_target = os.environ.get("HEADLIGHT_CAPACITY_CONTRACT")
+        if not contract_target or contract_path_from_env().resolve() == (
+            REPO_ROOT / "results/capacity-qualification/capacity-contract.json"
+        ).resolve():
+            parser.error(
+                "gateway qualification requires HEADLIGHT_CAPACITY_CONTRACT at a separate "
+                "path; the frozen research-v3 contract must not be overwritten"
+            )
     os.environ.update(
         {
             "HEADLIGHT_KUBECONFIG": str(kubeconfig),
@@ -663,6 +856,11 @@ def main() -> int:
     error: str | None = None
     try:
         if not options.dry_run:
+            evaluation_root = REPO_ROOT / "results/socc26-gateway" if GATEWAY_PROTOCOL is not None else None
+            if evaluation_results_exist(evaluation_root):
+                raise CampaignFailure(
+                    "refusing to recalculate capacity after measured evaluation results exist"
+                )
             campaign.completed_stage = "preflight"
             campaign.log(f"running testbed preflight kubeconfig={kubeconfig}")
             preflight = preflight_testbed(kubeconfig)

@@ -17,12 +17,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -51,12 +45,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -85,12 +73,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -119,12 +101,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -153,12 +129,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -187,12 +157,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -221,12 +185,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -255,12 +213,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -289,12 +241,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -323,12 +269,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -357,12 +297,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -391,12 +325,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -425,12 +353,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -459,12 +381,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -493,12 +409,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -527,12 +437,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -561,12 +465,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -595,12 +493,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -629,12 +521,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -663,12 +549,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -697,12 +577,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -731,12 +605,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -765,12 +633,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -799,12 +661,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -833,12 +689,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -867,12 +717,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -901,12 +745,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -935,12 +773,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -969,12 +801,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1003,12 +829,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1037,12 +857,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1071,12 +885,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1105,12 +913,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1139,12 +941,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1173,12 +969,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1207,12 +997,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1241,12 +1025,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1275,12 +1053,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1309,12 +1081,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1343,12 +1109,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1377,12 +1137,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1411,12 +1165,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1445,12 +1193,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1479,12 +1221,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1513,12 +1249,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1547,12 +1277,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1581,12 +1305,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1615,12 +1333,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1649,12 +1361,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1683,12 +1389,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1717,12 +1417,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1751,12 +1445,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1785,12 +1473,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1819,12 +1501,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1853,12 +1529,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1887,12 +1557,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1921,12 +1585,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1955,12 +1613,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -1989,12 +1641,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -2023,12 +1669,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -2057,12 +1697,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -2091,12 +1725,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:
@@ -2125,12 +1753,6 @@ spec:
         type: Utilization
         averageUtilization: 90
   behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 600
-      policies:
-      - type: Pods
-        value: 1
-        periodSeconds: 600
     scaleDown:
       stabilizationWindowSeconds: 600
       policies:

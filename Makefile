@@ -28,7 +28,7 @@ reproduction-dry-run:
 	$(PYTHON) experiments/softwarex_reproduction.py --config $(SOFTWAREX_CONFIG) --stage all --dry-run --run-id $(SOFTWAREX_RUN_ID)
 
 artifact-consistency:
-	$(PYTHON) experiments/validate_artifacts.py --results-root results/softwarex
+	$(PYTHON) experiments/validate_softwarex_evaluation.py
 
 crp-dry-run:
 	$(PYTHON) experiments/validate_crp_trace.py --dry-run --output results/softwarex-reproduction/$(SOFTWAREX_RUN_ID)/crp_validation_plan.csv
@@ -44,4 +44,4 @@ license-check:
 	@if command -v pip-licenses >/dev/null 2>&1; then pip-licenses --format=plain; else echo "pip-licenses not installed; install requirements-dev.txt for dependency license report"; fi
 
 softwarex-%:
-	$(PYTHON) experiments/softwarex_reproduction.py --config $(SOFTWAREX_CONFIG) --stage $* --dry-run --run-id $(SOFTWAREX_RUN_ID)
+	$(PYTHON) experiments/softwarex_reproduction.py --config $(SOFTWAREX_CONFIG) --stage $* --run-id softwarex-real

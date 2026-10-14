@@ -1,4 +1,0 @@
-timestamp,service,desired_replicas,available_replicas,source_cluster,destination_cluster,placement_decision,event_type,availability_invariant_status,max_unavailable,minimum_available
-2026-07-30T00:00:00Z,crp-example,10,10,member1,member2,"member1=5,member2=8,total=13",replica_propagation,true,0,10
-2026-07-30T00:01:00Z,crp-example,10,13,member1,member2,"member1=5,member2=8,total=13",scaling,true,0,10
-2026-07-30T00:02:00Z,crp-example,10,10,member1,member2,"member1=2,member2=8,total=10",offloading,true,0,10

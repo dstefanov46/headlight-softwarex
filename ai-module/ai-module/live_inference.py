@@ -42,6 +42,10 @@ def build_parser() -> argparse.ArgumentParser:
         default=os.environ.get("HEADLIGHT_ACTION_LOG", "/app/artifacts/actions.jsonl"),
     )
     parser.add_argument(
+        "--policy-config",
+        default=os.environ.get("HEADLIGHT_POLICY_CONFIG"),
+    )
+    parser.add_argument(
         "--shadow",
         action="store_true",
         default=os.environ.get("HEADLIGHT_SHADOW_MODE", "0") == "1",
@@ -65,6 +69,7 @@ def main() -> int:
         namespace=args.namespace,
         shadow=args.shadow,
         action_log=args.action_log,
+        policy_config=args.policy_config,
     )
     print(
         "HEADLIGHT_RUNTIME_READY "
@@ -72,6 +77,8 @@ def main() -> int:
             {
                 "controller": "headlight",
                 "bundle_id": runtime.bundle.bundle_id,
+                "policy_id": runtime.policy_config.payload["policy_id"],
+                "policy_configuration_hash": runtime.policy_config.configuration_hash,
                 "profile": profile.profile_name,
                 "nodes": len(profile.nodes),
                 "scalable_services": len(profile.scalable_nodes),

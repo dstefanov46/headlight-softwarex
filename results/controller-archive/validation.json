@@ -1,0 +1,231 @@
+{
+  "schema_version": "headlight.softwarex-evaluation-validation/v1",
+  "software_version": "2.0.0",
+  "validation_status": "validated",
+  "validated_run_count": 60,
+  "verified_artifact_count": 1097,
+  "controllers": [
+    "headlight-v2",
+    "hpa",
+    "keda",
+    "threshold"
+  ],
+  "workloads": [
+    "gradual-ramp",
+    "flash-crowd",
+    "diurnal"
+  ],
+  "seeds": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "aggregates": [
+    {
+      "controller": "headlight-v2",
+      "workload": "gradual-ramp",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 163.02848768938017,
+        "sample_sd": 10.766926986346144
+      },
+      "sla_violation_rate": {
+        "mean": 0.001352420188446013,
+        "sample_sd": 0.0001524860223902316
+      },
+      "pod_seconds": {
+        "mean": 47337.0,
+        "sample_sd": 481.6845440742312
+      }
+    },
+    {
+      "controller": "headlight-v2",
+      "workload": "flash-crowd",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 183.3447337793404,
+        "sample_sd": 9.096559108799122
+      },
+      "sla_violation_rate": {
+        "mean": 0.0014613838745133687,
+        "sample_sd": 0.0002948348297593709
+      },
+      "pod_seconds": {
+        "mean": 47214.0,
+        "sample_sd": 1233.3156530264262
+      }
+    },
+    {
+      "controller": "headlight-v2",
+      "workload": "diurnal",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 149.59023327990502,
+        "sample_sd": 4.4513746799490335
+      },
+      "sla_violation_rate": {
+        "mean": 0.001013754716959342,
+        "sample_sd": 0.0002413262722665967
+      },
+      "pod_seconds": {
+        "mean": 101013.0,
+        "sample_sd": 1579.5434466959116
+      }
+    },
+    {
+      "controller": "hpa",
+      "workload": "gradual-ramp",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 158.8107696999577,
+        "sample_sd": 9.50271365699118
+      },
+      "sla_violation_rate": {
+        "mean": 0.0015230170848074054,
+        "sample_sd": 0.000351275341200752
+      },
+      "pod_seconds": {
+        "mean": 48312.0,
+        "sample_sd": 864.9031737714922
+      }
+    },
+    {
+      "controller": "hpa",
+      "workload": "flash-crowd",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 181.80720642967566,
+        "sample_sd": 22.5148728794018
+      },
+      "sla_violation_rate": {
+        "mean": 0.002306323972674178,
+        "sample_sd": 0.0007049052517859571
+      },
+      "pod_seconds": {
+        "mean": 49209.0,
+        "sample_sd": 2041.6702721056602
+      }
+    },
+    {
+      "controller": "hpa",
+      "workload": "diurnal",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 154.29512771064756,
+        "sample_sd": 10.879929543346183
+      },
+      "sla_violation_rate": {
+        "mean": 0.0012494921918908193,
+        "sample_sd": 0.00031987722651645456
+      },
+      "pod_seconds": {
+        "mean": 101874.0,
+        "sample_sd": 1734.7744810205159
+      }
+    },
+    {
+      "controller": "keda",
+      "workload": "gradual-ramp",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 168.06970133067801,
+        "sample_sd": 9.25659328927587
+      },
+      "sla_violation_rate": {
+        "mean": 0.002363913422288119,
+        "sample_sd": 0.0003429496884726776
+      },
+      "pod_seconds": {
+        "mean": 51720.0,
+        "sample_sd": 1259.240842730254
+      }
+    },
+    {
+      "controller": "keda",
+      "workload": "flash-crowd",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 175.4745150294728,
+        "sample_sd": 14.833040606741022
+      },
+      "sla_violation_rate": {
+        "mean": 0.005037206288634927,
+        "sample_sd": 0.0007003160879097633
+      },
+      "pod_seconds": {
+        "mean": 50148.0,
+        "sample_sd": 407.9613952324411
+      }
+    },
+    {
+      "controller": "keda",
+      "workload": "diurnal",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 179.55606110938783,
+        "sample_sd": 4.117297506997016
+      },
+      "sla_violation_rate": {
+        "mean": 0.002846031619016088,
+        "sample_sd": 0.0002821027812894707
+      },
+      "pod_seconds": {
+        "mean": 105834.0,
+        "sample_sd": 2194.6337963314063
+      }
+    },
+    {
+      "controller": "threshold",
+      "workload": "gradual-ramp",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 183.01707574086316,
+        "sample_sd": 8.855870403638646
+      },
+      "sla_violation_rate": {
+        "mean": 0.0025181082265080617,
+        "sample_sd": 0.0005065006838099936
+      },
+      "pod_seconds": {
+        "mean": 56649.0,
+        "sample_sd": 2297.268486703285
+      }
+    },
+    {
+      "controller": "threshold",
+      "workload": "flash-crowd",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 190.52049045072633,
+        "sample_sd": 10.684184884726815
+      },
+      "sla_violation_rate": {
+        "mean": 0.0031504784528582036,
+        "sample_sd": 0.0005588534155891862
+      },
+      "pod_seconds": {
+        "mean": 55419.0,
+        "sample_sd": 1171.950297580917
+      }
+    },
+    {
+      "controller": "threshold",
+      "workload": "diurnal",
+      "n": 5,
+      "p95_latency_ms": {
+        "mean": 178.9584156012097,
+        "sample_sd": 15.492539646206573
+      },
+      "sla_violation_rate": {
+        "mean": 0.002334929198706559,
+        "sample_sd": 0.000565169318354361
+      },
+      "pod_seconds": {
+        "mean": 123645.0,
+        "sample_sd": 8719.60721592435
+      }
+    }
+  ]
+}

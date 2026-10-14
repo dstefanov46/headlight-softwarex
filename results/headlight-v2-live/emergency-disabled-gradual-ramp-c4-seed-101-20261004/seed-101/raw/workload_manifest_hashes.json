@@ -1,0 +1,7 @@
+{
+  "trainticket_path": "advanced-ticket",
+  "resource_profile": "capacity-vm",
+  "namespace": "trainticket",
+  "data_plane_no_policies_sha256": "0c752bcc700389e1f84b80795a7f2a3e8323a147f6dda0a037938ee09fbc6899",
+  "karmada_with_policies_sha256": "134a0ae9078b6833961ef9cd6d83ca0659789ccc2e66b7348c2e8eb2fbe27985"
+}

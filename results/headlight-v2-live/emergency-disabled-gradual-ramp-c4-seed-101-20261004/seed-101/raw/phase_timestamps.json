@@ -1,0 +1,30 @@
+{
+  "reset_and_deployment": {
+    "started_at_unix": 1791122733,
+    "finished_at_unix": 1791123119
+  },
+  "readiness": {
+    "started_at_unix": 1791123119,
+    "finished_at_unix": 1791123141
+  },
+  "warmup": {
+    "started_at_unix": 1791123144,
+    "finished_at_unix": 1791123624
+  },
+  "measurement": {
+    "started_at_unix": 1791123624,
+    "finished_at_unix": 1791124824
+  },
+  "controller_shutdown": {
+    "started_at_unix": 1791124833,
+    "finished_at_unix": 1791124833
+  },
+  "cooldown": {
+    "started_at_unix": 1791124833,
+    "finished_at_unix": 1791124893
+  },
+  "collection_and_validation": {
+    "started_at_unix": 1791124893,
+    "finished_at_unix": 1791124895
+  }
+}

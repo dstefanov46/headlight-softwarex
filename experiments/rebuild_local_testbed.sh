@@ -30,7 +30,7 @@ preflight() {
   local instances watches
   instances="$(cat /proc/sys/fs/inotify/max_user_instances)"
   watches="$(cat /proc/sys/fs/inotify/max_user_watches)"
-  if [[ "$instances" -lt 8192 ]] || [ "$watches" -lt 1048576 ]]; then
+  if [[ "$instances" -lt 8192 || "$watches" -lt 1048576 ]]; then
     if [[ "$(id -u)" -eq 0 ]]; then
       sysctl -w fs.inotify.max_user_instances=8192
       sysctl -w fs.inotify.max_user_watches=1048576
@@ -97,18 +97,6 @@ install_karmada() {
 refresh_internal_member_kubeconfig() {
   cp "$kubeconfig" "$internal_kubeconfig"
   chmod 600 "$internal_kubeconfig"
-  for cluster in "${members[@]}"; do
-    local container ip cluster_entry
-    container="${cluster}-control-plane"
-    ip="$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container")"
-    if [[ -z "$ip" ]]; then
-      echo "could not resolve Docker-network IP for $container" >&2
-      exit 1
-    fi
-    cluster_entry="$(kubectl --kubeconfig "$internal_kubeconfig" config view \
-      -o jsonpath="{.contexts[?(@.name==\"$cluster\")].context.cluster}")"
-    kubectl --kubeconfig "$internal_kubeconfig" config set-cluster "$cluster_entry" --server="https://$ip:6443" >/dev/null
-  done
 }
 
 join_members() {
@@ -119,6 +107,18 @@ join_members() {
       --karmada-context karmada-apiserver \
       --cluster-kubeconfig "$internal_kubeconfig" \
       --cluster-context "$member"
+    # Karmadactl must use the host-published API endpoint while joining, but
+    # Karmada controllers run inside the Docker network. Store the stable node
+    # DNS name in the registration; it is present in the member API server's
+    # certificate and survives Docker IP reassignment.
+    kubectl --context=karmada-apiserver patch "clusters.cluster.karmada.io/$member" \
+      --type merge \
+      -p "{\"spec\":{\"apiEndpoint\":\"https://${member}-control-plane:6443\"}}"
+    local cluster_entry
+    cluster_entry="$(kubectl --kubeconfig "$internal_kubeconfig" config view \
+      -o jsonpath="{.contexts[?(@.name==\"$member\")].context.cluster}")"
+    kubectl --kubeconfig "$internal_kubeconfig" config set-cluster "$cluster_entry" \
+      --server="https://${member}-control-plane:6443" >/dev/null
   done
 
   for member in "${members[@]}"; do
@@ -203,6 +203,7 @@ main() {
   create_kind_clusters
   install_karmada
   join_members
+  "$repo_root/experiments/repair_local_testbed_endpoints.sh"
   install_headlight_control
   install_istio
   "$repo_root/experiments/install_metrics_server.sh"

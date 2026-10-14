@@ -1,0 +1,19 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: HeadlightV2LiveValidationRun
+metadata:
+  name: headlight-v2__flash-crowd__seed-101
+spec:
+  seed: 101
+  workload_profile: experiments/configs/workloads/flash-crowd.yaml
+  workload_profile_sha256: 58356292bb19e2cd6a09bb32a14bde743d312474bff6d55e227539b3b476001c
+  comparator_trace_sha256: 015943997cc853524e85ae0aeb965bcdf92da58e4d1be2003a0ae6a485f73116
+  comparator_trace_verified_equal_for: [headlight, lstm, threshold]
+  bundle_id: c37050a44dd2fc876bf6523aaeabdd364af7608ffeee5e1586a6cb8bbaaaeb4a
+  bundle_archive_sha256: bf18f7a959a3f182cec1dd9892fca964c041442a210338109c60a642b926f635
+  policy_sha256: 44f1eec3ea4d515e2f18ae91db8e839a095c41f8ce41afa9d5ba933ee096c07f
+  shadow_smoke_required: true
+  warmup_seconds: 480
+  measurement_seconds: 1200
+  sampling_interval_seconds: 15
+  output_dir: results/headlight-v2-live/flash-crowd/seed-101
+  claim_scope: evaluation-live-validation-not-paper-matrix

@@ -62,7 +62,7 @@ Required fields:
 
 Each workload profile also includes shape-specific parameters such as `min_users`, `max_users`, `spike_start_seconds`, or `ramp_seconds`.
 
-The measured comparison workloads use deterministic shapes:
+The paper workloads use deterministic shapes:
 
 - `gradual-ramp`: ramp up, hold, ramp down.
 - `flash-crowd`: two short spikes.
@@ -70,7 +70,7 @@ The measured comparison workloads use deterministic shapes:
 
 ### `ExperimentRun`
 
-Defines one measured comparison experiment by composing the three profiles above.
+Defines one paper-facing experiment by composing the three profiles above.
 
 Required fields:
 
@@ -84,7 +84,7 @@ Required fields:
 - `spec.sla`
 - `spec.output_dir`
 
-Additional measured-run fields include:
+Additional paper-run fields include:
 
 - `spec.sampling_interval_seconds`
 - `spec.reset_policy`
@@ -107,7 +107,7 @@ spec:
   sla:
     p95_latency_ms: 1000
     minimum_success_rate: 0.99
-  output_dir: results/softwarex/headlight-diurnal-multi
+  output_dir: results/socc26/headlight-diurnal-multi
 ```
 
 ### `ModelVariant`

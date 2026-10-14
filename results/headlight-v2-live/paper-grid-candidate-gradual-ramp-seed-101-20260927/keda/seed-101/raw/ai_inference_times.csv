@@ -1,0 +1,2 @@
+timestamp,controller,model_variant,service_count,duration_ms,applicable
+,keda,native-keda,,,false

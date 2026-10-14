@@ -1,0 +1,10 @@
+{
+  "calibrated": true,
+  "evidence": {
+    "calibration_reliability_brier_score": 0.007045780877049408,
+    "calibration_sla_brier_score": 0.08606974666500385
+  },
+  "method": "identity",
+  "schema_version": "headlight.calibration/identity-v1",
+  "scope": "synthetic engineering checkpoint; live validation remains shadow-first"
+}

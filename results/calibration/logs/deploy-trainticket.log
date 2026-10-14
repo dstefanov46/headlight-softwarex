@@ -1,0 +1,159 @@
+namespace/trainticket unchanged
+deployment.apps/ts-auth-mongo configured
+deployment.apps/ts-route-mongo configured
+deployment.apps/ts-station-mongo configured
+deployment.apps/ts-train-mongo configured
+deployment.apps/ts-travel-mongo configured
+deployment.apps/ts-travel2-mongo configured
+deployment.apps/ts-price-mongo configured
+service/ts-auth-mongo unchanged
+service/ts-route-mongo unchanged
+service/ts-station-mongo unchanged
+service/ts-train-mongo unchanged
+service/ts-travel-mongo unchanged
+service/ts-travel2-mongo unchanged
+service/ts-price-mongo unchanged
+deployment.apps/ts-basic configured
+deployment.apps/ts-auth configured
+deployment.apps/ts-price configured
+deployment.apps/ts-route-plan configured
+deployment.apps/ts-route configured
+deployment.apps/ts-station configured
+deployment.apps/ts-ticketinfo configured
+deployment.apps/ts-train configured
+deployment.apps/ts-travel2 configured
+deployment.apps/ts-travel-plan configured
+deployment.apps/ts-travel configured
+service/ts-basic-service unchanged
+service/ts-price-service unchanged
+service/ts-route-plan-service unchanged
+service/ts-route-service unchanged
+service/ts-auth-service unchanged
+service/ts-station-service unchanged
+service/ts-ticketinfo-service unchanged
+service/ts-train-service unchanged
+service/ts-travel2-service unchanged
+service/ts-travel-plan-service unchanged
+service/ts-travel-service unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-auth-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-route-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-station-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-train-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-travel-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-travel2-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-price-mongo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-basic unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-auth unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-price configured
+controlledreplicapropagation.policy.nephele-project.eu/ts-route-plan unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-route unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-station unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-ticketinfo unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-train unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-travel2 unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-travel-plan unchanged
+controlledreplicapropagation.policy.nephele-project.eu/ts-travel unchanged
+propagationpolicy.policy.karmada.io/ts-basic-service unchanged
+propagationpolicy.policy.karmada.io/ts-price-service unchanged
+propagationpolicy.policy.karmada.io/ts-route-plan-service unchanged
+propagationpolicy.policy.karmada.io/ts-route-service unchanged
+propagationpolicy.policy.karmada.io/ts-auth-service unchanged
+propagationpolicy.policy.karmada.io/ts-station-service unchanged
+propagationpolicy.policy.karmada.io/ts-ticketinfo-service unchanged
+propagationpolicy.policy.karmada.io/ts-train-service unchanged
+propagationpolicy.policy.karmada.io/ts-travel2-service unchanged
+propagationpolicy.policy.karmada.io/ts-travel-plan-service unchanged
+propagationpolicy.policy.karmada.io/ts-travel-service unchanged
+propagationpolicy.policy.karmada.io/ts-auth-mongo unchanged
+propagationpolicy.policy.karmada.io/ts-route-mongo unchanged
+propagationpolicy.policy.karmada.io/ts-station-mongo unchanged
+propagationpolicy.policy.karmada.io/ts-train-mongo unchanged
+propagationpolicy.policy.karmada.io/ts-travel-mongo unchanged
+propagationpolicy.policy.karmada.io/ts-travel2-mongo unchanged
+propagationpolicy.policy.karmada.io/ts-price-mongo unchanged
+namespace/trainticket not labeled
+namespace/trainticket not labeled
+deployment "ts-auth-mongo" successfully rolled out
+deployment "ts-route-mongo" successfully rolled out
+deployment "ts-station-mongo" successfully rolled out
+deployment "ts-train-mongo" successfully rolled out
+deployment "ts-travel-mongo" successfully rolled out
+deployment "ts-travel2-mongo" successfully rolled out
+deployment "ts-price-mongo" successfully rolled out
+deployment "ts-basic" successfully rolled out
+Waiting for deployment "ts-auth" rollout to finish: 0 of 1 updated replicas are available...
+deployment "ts-auth" successfully rolled out
+Waiting for deployment "ts-price" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "ts-price" rollout to finish: 1 of 2 updated replicas are available...
+deployment "ts-price" successfully rolled out
+deployment "ts-route-plan" successfully rolled out
+deployment "ts-route" successfully rolled out
+deployment "ts-station" successfully rolled out
+deployment "ts-ticketinfo" successfully rolled out
+deployment "ts-train" successfully rolled out
+deployment "ts-travel2" successfully rolled out
+deployment "ts-travel-plan" successfully rolled out
+deployment "ts-travel" successfully rolled out
+Workload pods in cluster2:
+NAME                                READY       CONTAINERS
+headlight-paper-locust-xqpqc        false       locust
+ts-auth-77b7755f5d-5r9db            true,true   ts-auth,istio-proxy
+ts-auth-mongo-7497d9897-vk8k6       true        ts-auth-mongo
+ts-basic-698bb9c878-gqmlg           true,true   ts-basic,istio-proxy
+ts-price-dc7d66cf5-5lfvh            true,true   ts-price,istio-proxy
+ts-price-dc7d66cf5-c2w86            true,true   ts-price,istio-proxy
+ts-price-mongo-6945f7f8f5-kc2wj     true        ts-price-mongo
+ts-route-66c48647d7-b8cf8           true,true   ts-route,istio-proxy
+ts-route-mongo-7596748d87-kqj76     true        ts-route-mongo
+ts-route-plan-85d8557985-7gt6n      true,true   ts-route-plan,istio-proxy
+ts-station-75dfdf564b-bb9hp         true,true   ts-station,istio-proxy
+ts-station-mongo-55ff6df475-rrn5l   true        ts-station-mongo
+ts-ticketinfo-96f886498-5b9ln       true,true   ts-ticketinfo,istio-proxy
+ts-train-7cf546fd6d-j48dp           true,true   ts-train,istio-proxy
+ts-train-mongo-6d59c7d7bc-7hv94     true        ts-train-mongo
+ts-travel-866b99f4cb-fw9lh          true,true   ts-travel,istio-proxy
+ts-travel-mongo-7746b94cbf-6jml6    true        ts-travel-mongo
+ts-travel-plan-795686bf9b-wcjfq     true,true   ts-travel-plan,istio-proxy
+ts-travel2-574d8c646-cg9jm          true,true   ts-travel2,istio-proxy
+ts-travel2-mongo-768bfb9d4c-p5fvl   true        ts-travel2-mongo
+deployment "ts-auth-mongo" successfully rolled out
+deployment "ts-route-mongo" successfully rolled out
+deployment "ts-station-mongo" successfully rolled out
+deployment "ts-train-mongo" successfully rolled out
+deployment "ts-travel-mongo" successfully rolled out
+deployment "ts-travel2-mongo" successfully rolled out
+deployment "ts-price-mongo" successfully rolled out
+deployment "ts-basic" successfully rolled out
+deployment "ts-auth" successfully rolled out
+deployment "ts-price" successfully rolled out
+deployment "ts-route-plan" successfully rolled out
+deployment "ts-route" successfully rolled out
+deployment "ts-station" successfully rolled out
+deployment "ts-ticketinfo" successfully rolled out
+deployment "ts-train" successfully rolled out
+deployment "ts-travel2" successfully rolled out
+deployment "ts-travel-plan" successfully rolled out
+deployment "ts-travel" successfully rolled out
+Workload pods in cluster3:
+NAME                                    READY         CONTAINERS
+threshold-autoscaler-79c996cd6f-nnqxb   true,true     autoscaler,istio-proxy
+ts-auth-77b7755f5d-p29g9                true,true     ts-auth,istio-proxy
+ts-auth-mongo-7497d9897-lc6f5           true          ts-auth-mongo
+ts-basic-698bb9c878-dzxnw               true,true     ts-basic,istio-proxy
+ts-price-dc7d66cf5-kfkvv                true,true     ts-price,istio-proxy
+ts-price-dc7d66cf5-pm6f9                false,false   ts-price,istio-proxy
+ts-price-mongo-6945f7f8f5-rq2sd         true          ts-price-mongo
+ts-route-66c48647d7-8n7g6               true,true     ts-route,istio-proxy
+ts-route-mongo-7596748d87-sngc5         true          ts-route-mongo
+ts-route-plan-85d8557985-t8dtl          true,true     ts-route-plan,istio-proxy
+ts-station-75dfdf564b-cgs6r             true,true     ts-station,istio-proxy
+ts-station-mongo-55ff6df475-pjbcn       true          ts-station-mongo
+ts-ticketinfo-96f886498-hgq7b           true,true     ts-ticketinfo,istio-proxy
+ts-train-7cf546fd6d-hdbql               true,true     ts-train,istio-proxy
+ts-train-mongo-6d59c7d7bc-29t54         true          ts-train-mongo
+ts-travel-866b99f4cb-k8sxw              true,true     ts-travel,istio-proxy
+ts-travel-mongo-7746b94cbf-sxfx2        true          ts-travel-mongo
+ts-travel-plan-795686bf9b-9mmqv         true,true     ts-travel-plan,istio-proxy
+ts-travel2-574d8c646-zpnsf              true,true     ts-travel2,istio-proxy
+ts-travel2-mongo-768bfb9d4c-q6zkv       true          ts-travel2-mongo
+Rendered minimal TrainTicket manifest: /home/stefanovaleksandar130/headlight-jsa/results/calibration/raw/rendered-trainticket-advanced-ticket.yaml

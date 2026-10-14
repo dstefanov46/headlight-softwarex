@@ -1,0 +1,63 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: InfrastructureQualificationProtocol
+metadata:
+  name: research-v4-local-infrastructure-qualification
+spec:
+  version: research-v4-infrastructure-qualification-v1
+  seed_role: infrastructure-qualification
+  seeds:
+    - 201
+  artifact_namespace: results/research-v4-infrastructure-qualification
+  kubernetes_namespace: trainticket
+  load_generator_namespace: headlight-infra-qualification
+  profile: local-24gb-tested
+  topology:
+    control_plane: karmada-host
+    spare_member: cluster1
+    workload_members:
+      - cluster2
+      - cluster3
+    load_generator_member: cluster2
+  maximum_duration_seconds: 10800
+  memory_guard:
+    minimum_available_bytes: 3221225472
+    stop_load_first: true
+    stop_testbed_if_pressure_continues: true
+  restrictions:
+    training_input: false
+    final_evaluation: false
+    final_matrix: false
+    mutate_research_v3: false
+    controllers_under_test: false
+  load:
+    per_user_target_rps: 0.4
+    search_users:
+      - 1
+      - 2
+      - 4
+      - 6
+      - 8
+    fixed_stage_seconds: 180
+  replica_envelope:
+    initial_per_service:
+      cluster2: 1
+      cluster3: 1
+    candidate_per_service:
+      cluster2: 2
+      cluster3: 2
+    namespace_request_memory_quota_mib: 2078
+    initial_request_memory_mib: 1934
+    one_application_increment_mib: 144
+    controller_scope:
+      - headlight
+      - lstm
+      - threshold
+      - hpa
+      - keda
+      - static
+    common_constraint:
+      minimum_replicas_per_service_per_cluster: 1
+      maximum_replicas_per_service_per_cluster: 2
+      maximum_concurrent_extra_applications_per_cluster: 1
+      admission_backstop: local-24gb-tested-admission
+      fairness: oldest-decision-first-then-stable-service-name

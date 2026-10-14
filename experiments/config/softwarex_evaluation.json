@@ -1,0 +1,28 @@
+{
+  "schema_version": "headlight.softwarex-evaluation/v1",
+  "software_version": "2.0.0",
+  "controllers": [
+    "headlight-v2",
+    "hpa",
+    "keda",
+    "threshold"
+  ],
+  "workloads": [
+    "gradual-ramp",
+    "flash-crowd",
+    "diurnal"
+  ],
+  "seeds": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "expected_run_count": 60,
+  "index": "results/controller-archive/run-index.json",
+  "validator": "experiments/validate_softwarex_evaluation.py",
+  "sla_latency_ms": 1000,
+  "aggregation": "mean and sample standard deviation of five run-level summaries",
+  "comparability_assumption": "The five seeds are treated as comparable."
+}

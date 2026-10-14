@@ -1,0 +1,130 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ResolvedExperimentManifest
+metadata:
+  name: hpa__diurnal__multi-cluster-headlight
+spec:
+  controller:
+    controller: hpa
+    implementation_state: ready
+    setup_script: ai-module/kubernetes_hpa_setup.sh
+    deployment_manifest: ai-module/deployments/kubernetes-autoscaler-eval-deployment.yaml
+    hpa_manifest: ai-module/kubernetes-autoscaler/hpa.yaml
+    metrics_collector: ai-module/metrics/fetch_service_metrics.py
+    actuation_path: kubernetes-hpa
+    notes: Native Kubernetes baseline; kept separate from Actions Handler by design.
+    sampling_interval_seconds: 15
+    controller_variant: native-hpa
+    image_tag_env: HEADLIGHT_HPA_IMAGE
+  topology:
+    mode: multi-cluster-headlight
+    namespace: trainticket
+    active_clusters:
+    - cluster2
+    - cluster3
+    clusters_file: ai-module/configs/clusters.json
+    services_file: ai-module/configs/application_services.json
+    additional_services_file: ai-module/configs/additional_services.json
+    placement_source: actions-handler
+    notes: Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation.
+  workload:
+    pattern: diurnal
+    duration_seconds: 2400
+    warmup_seconds: 480
+    capacity_users: 10
+    capacity_users_env: HEADLIGHT_EVALUATION_CAPACITY
+    locust:
+      spawn_rate: 20
+      min_users: 0.2C
+      max_users: C
+      cycle_seconds: 1200
+      phase_offset_seconds: 0
+    notes: Two compressed daily cycles for repeatable paper runs.
+    sampling_interval_seconds: 15
+    shape_parameters:
+      spawn_rate: 20
+      min_users: 0.2C
+      max_users: C
+      cycle_seconds: 1200
+      phase_offset_seconds: 0
+  run:
+    controller_profile: experiments/configs/baselines/hpa.yaml
+    topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
+    workload_profile: experiments/configs/workloads/diurnal.yaml
+    seeds:
+    - 101
+    - 102
+    - 103
+    - 104
+    - 105
+    duration_seconds: 2400
+    warmup_seconds: 480
+    sampling_interval_seconds: 15
+    protocol:
+      reference:
+        version: research-v3
+        hash: 833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545
+        path: experiments/configs/protocols/research-v3.yaml
+      primary_controllers:
+      - headlight
+      - lstm
+      - threshold
+      primary_workloads:
+      - gradual-ramp
+      - flash-crowd
+      - diurnal
+      capacity_seeds:
+      - 11
+      calibration_seeds:
+      - 12
+      - 13
+      - 14
+      - 15
+      headlight_tuning_seeds:
+      - 41
+      - 43
+      evaluation_seeds:
+      - 101
+      - 102
+      - 103
+      - 104
+      - 105
+      replica_ceiling_per_service: 14
+      cluster_replica_split:
+        cluster2: 6
+        cluster3: 8
+      warmup_seconds: 480
+      measurement_seconds: 2400
+      cooldown_seconds_between_attempts: 60
+      locust_run_seconds: 2880
+      capacity_normalization:
+        base: 0.2C
+        peak: C
+        capacity_env: HEADLIGHT_EVALUATION_CAPACITY
+        fallback_capacity_users: 10
+      technical_invalidity_only: true
+      statistical_unit: seed-run
+      effective_version: research-v4-gateway-v1
+      gateway_protocol:
+        version: research-v4-gateway-v1
+        path: experiments/configs/gateway-protocols/research-v4-gateway.yaml
+        sha256: 93ffb1709755ff729128ea2e61d7b52807d3b6d49870a45f50b3a31a3a606608
+        base_protocol_sha256: 833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545
+      prior_research_v3_cells_directly_comparable: false
+    sla:
+      p95_latency_ms: 1000
+      minimum_success_rate: 0.99
+      max_violation_window_seconds: 60
+    output_dir: results/socc26/hpa-diurnal-multi-cluster-headlight
+    reset_policy:
+      between_seeds: true
+      delete_pods: true
+      clear_controller_state: true
+    capture:
+      raw_logs: true
+      prometheus_snapshots: true
+      kubernetes_events: true
+      crp_state_transitions: true
+      actions_handler_batches: true
+      ai_inference_times: true
+      model_checkpoints: true
+    notes: Two-cluster paper comparison run using common paired seeds.

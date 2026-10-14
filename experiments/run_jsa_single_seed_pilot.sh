@@ -11,7 +11,7 @@ seed="${HEADLIGHT_JSA_SEED:-101}"
 trainticket_path="${HEADLIGHT_JSA_TRAINTICKET_PATH:-login-route}"
 resource_profile="${HEADLIGHT_TRAINTICKET_RESOURCE_PROFILE:-local-tiny}"
 
-# This is a live pilot, not the final one-hour measured run. Override when ready:
+# This is a live pilot, not the final one-hour paper run. Override when ready:
 #   HEADLIGHT_JSA_PILOT_DURATION=60m HEADLIGHT_JSA_PILOT_USERS=25 ./experiments/run_jsa_single_seed_pilot.sh
 duration="${HEADLIGHT_JSA_PILOT_DURATION:-10m}"
 users="${HEADLIGHT_JSA_PILOT_USERS:-5}"
@@ -167,7 +167,7 @@ write_shape_csv(result / "raw" / "configured_load_profile.csv", points)
             "mode": "live-minimal-trainticket-login-route",
             "note": (
                 "This is a measured JSA pilot on the stable local testbed. "
-                "It validates live request, Kubernetes event, and Prometheus capture before full measured runs."
+                "It validates live request, Kubernetes event, and Prometheus capture before full paper runs."
             ),
             "run_name": manifest["metadata"]["name"],
             "seed": seed,

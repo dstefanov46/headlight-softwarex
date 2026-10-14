@@ -1,15 +1,13 @@
 # Headlight documentation
 
-This is the canonical documentation index for users, reviewers, and
-reproducers.
+This documentation covers the software, its measured evaluation and how to
+reproduce the recorded runs.
 
-- [Architecture](architecture.md): components, boundaries, and data flow.
-- [Reproduction](reproduction.md): deterministic dry run and measured-run procedure.
-- [Experiments](experiments.md): configs, baselines, workloads, seeds, and artifacts.
-- [SoftwareX readiness](softwarex.md): availability, limitations, and evidence policy.
-- [Release](release.md): versioning, Zenodo, citation, and release checks.
-- [Components](components/): Actions Handler, CRP, and AI Module references.
+- [Architecture](architecture.md): telemetry, inference, policy and actuation.
+- [Reproduction](reproduction.md): checks, dry-run and measured evaluation inputs.
+- [Experiments](experiments.md): four controllers, three workloads and five seeds.
+- [Evaluation scope](evaluation.md): validation and interpretation of the 60 runs.
+- [Release](release.md): build, artifact and citation checks.
+- [Components](components): Actions Handler, CRP and AI Module.
 
-The dry-run path validates configuration and orchestration contracts and
-demonstrates sample output format. Measured tables use result bundles accepted by
-`experiments/validate_artifacts.py`.
+Dry-run checks and measured evaluation artifacts have separate output records.

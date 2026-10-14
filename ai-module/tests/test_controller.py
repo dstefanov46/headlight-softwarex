@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import json
+import io
 import sys
 import tempfile
+import subprocess
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from unittest.mock import patch
 
 try:
     import numpy as np
@@ -28,19 +32,21 @@ from headlight.features import (
     bounded_forward_fill,
     chronological_split,
     feature_schema,
+    prometheus_queries,
 )
 from headlight.graph import build_static_adjacency, residual_edge_mask
 from headlight.models import build_model, decode_forecasts, multitask_loss
 from headlight.policy import (
     ForecastPlacementPolicy,
     PlacementActuator,
+    PolicyConfig,
     PolicyDecision,
     ServiceForecast,
     ServiceRuntimeState,
     largest_remainder_split,
 )
 from headlight.profile import load_service_profile
-from headlight.runtime import ControllerRuntime
+from headlight.runtime import ControllerRuntime, KubectlStateReader
 from headlight.training import seed_everything
 
 
@@ -64,6 +70,33 @@ class _Session:
 
 
 class ControllerTests(unittest.TestCase):
+    def test_partial_member_timeout_holds_instead_of_proposing_from_partial_state(self) -> None:
+        from dataclasses import replace
+        def partial(args, **kwargs):
+            if "cluster3" in args:
+                raise subprocess.TimeoutExpired(args, 15)
+            return subprocess.CompletedProcess(args, 0, stdout=json.dumps({"items": [{
+                "metadata": {"name": "ts-auth"}, "spec": {"replicas": 2}, "status": {"readyReplicas": 2},
+            }]}))
+        reader = KubectlStateReader("trainticket", command_runner=partial)
+        with redirect_stdout(io.StringIO()):
+            state = reader.read(self.advanced)["ts-auth"]
+        state = replace(state, reactive_fresh=True, current_cpu_utilization=0.95)
+        policy = ForecastPlacementPolicy(self.advanced, self._capacity())
+        decision = policy.decide("ts-auth", None, state, now=123)
+        self.assertEqual(decision.desired_placements, {"cluster2": 2, "cluster3": 0})
+
+    def test_state_reader_timeout_does_not_treat_missing_state_as_ready(self) -> None:
+        def unavailable(args, **kwargs):
+            raise subprocess.TimeoutExpired(args, 15)
+        reader = KubectlStateReader("trainticket", command_runner=unavailable)
+        output = io.StringIO()
+        with redirect_stdout(output):
+            states = reader.read(self.advanced)
+        self.assertTrue(all(not state.exists for state in states.values()))
+        self.assertTrue(all(sum(state.ready_replicas.values()) == 0 for state in states.values()))
+        self.assertIn("HEADLIGHT_STATE_READ_ERROR", output.getvalue())
+
     def setUp(self) -> None:
         self.advanced = load_service_profile(PROFILE_DIR / "advanced-ticket.json")
 
@@ -147,6 +180,88 @@ class ControllerTests(unittest.TestCase):
         self.assertFalse(filled.stale_nodes[auth])
         self.assertTrue(stale.stale_nodes[auth])
         self.assertTrue(np.isnan(stale.values[auth, BASE_FEATURES.index("request_rate")]))
+
+    def test_metric_diagnostics_distinguish_query_error_from_observed_value(self) -> None:
+        cpu_query = prometheus_queries(self.advanced.namespace)["cpu_utilization"]
+
+        def query(promql: str, timestamp: int):
+            if timestamp == 115 and promql == cpu_query:
+                raise TimeoutError("synthetic CPU query timeout")
+            if promql == cpu_query:
+                return [{"metric": {"pod": "ts-auth-abc-def"}, "value": [timestamp, "1.2"]}]
+            return []
+
+        collector = PrometheusMetricCollector(
+            "http://prometheus.invalid",
+            self.advanced,
+            query_function=query,
+            diagnostic_logging=True,
+        )
+        output = io.StringIO()
+        with redirect_stdout(output):
+            first = collector.collect(100)
+            second = collector.collect(115)
+        events = [json.loads(line) for line in output.getvalue().splitlines()]
+        cpu_events = [event for event in events if event["feature"] == "cpu_utilization"]
+        self.assertEqual(len(cpu_events), 2)
+        self.assertEqual(cpu_events[0]["status"], "ok")
+        self.assertEqual(cpu_events[0]["observed_values"]["ts-auth"], first.values[
+            self.advanced.node_order.index("ts-auth"), BASE_FEATURES.index("cpu_utilization")
+        ])
+        self.assertEqual(cpu_events[1]["status"], "error")
+        self.assertEqual(cpu_events[1]["error_type"], "TimeoutError")
+        self.assertEqual(cpu_events[1]["endpoints"][0]["status"], "error")
+        self.assertIn("ts-auth", cpu_events[1]["missing_nodes"])
+        self.assertTrue(second.missing[self.advanced.node_order.index("ts-auth"), BASE_FEATURES.index("cpu_utilization")])
+
+    def test_v2_prometheus_query_options_are_decision_semantic(self) -> None:
+        queries = prometheus_queries(
+            self.advanced.namespace,
+            window="60s",
+            cpu_window="90s",
+            observed_zero_error_rate=True,
+        )
+        self.assertIn("[90s]", queries["cpu_usage_cores"])
+        self.assertIn("[90s]", queries["cpu_utilization"])
+        self.assertIn("[60s]", queries["request_rate"])
+        self.assertIn("[60s]", queries["p95_latency_ms"])
+        self.assertIn("or on (destination_workload)", queries["error_rate"])
+        self.assertIn("0 * sum by (destination_workload)", queries["error_rate"])
+
+        legacy = prometheus_queries(self.advanced.namespace)
+        self.assertIn("[60s]", legacy["cpu_utilization"])
+        self.assertNotIn("or on (destination_workload)", legacy["error_rate"])
+
+    def test_cluster_local_observations_do_not_forward_fill_or_infer_zero(self) -> None:
+        class Response:
+            def __init__(self, result):
+                self.result = result
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return {"status": "success", "data": {"result": self.result}}
+
+        collector = PrometheusMetricCollector(
+            "http://cluster2.invalid,http://cluster3.invalid",
+            self.advanced,
+            cluster_names=("cluster2", "cluster3"),
+        )
+        def get(url, timeout):
+            if "cluster2.invalid" in url and "istio_requests_total" in url and "time=100" in url:
+                return Response([{"metric": {"destination_workload": "ts-auth"}, "value": [100, "12"]}])
+            return Response([])
+        collector.session.get = get
+        first = collector.collect(100)
+        second = collector.collect(115)
+        self.assertEqual(first.cluster_values["request_rate"]["ts-auth"], {"cluster2": 12.0})
+        self.assertEqual(second.cluster_values, {})
+        with self.assertRaises(ValueError):
+            PrometheusMetricCollector(
+                "http://cluster2.invalid,http://cluster3.invalid", self.advanced,
+                cluster_names=("cluster2",),
+            )
 
     def test_offline_forward_fill_matches_runtime_and_preserves_masks(self) -> None:
         values = np.full((4, 1, 1), np.nan, dtype=np.float32)
@@ -262,6 +377,21 @@ class ControllerTests(unittest.TestCase):
             },
         }
 
+    def _training_metadata(self) -> dict[str, object]:
+        return {
+            "seed": 41,
+            "dataset_sha256": "dataset",
+            "adjacency_sha256": "adjacency",
+            "profile_hash": self.advanced.profile_hash,
+            "sources": {
+                "dataset": "results/calibration/train-ticket-calibration.csv",
+                "adjacency": "results/calibration/static-adjacency.json",
+                "service_profile": "ai-module/configs/service_profiles/advanced-ticket.json",
+            },
+            "selection_procedure": "unit-test calibration split",
+            "created_before_evaluation": True,
+        }
+
     def test_policy_rounding_readiness_stale_and_scale_down(self) -> None:
         self.assertEqual(
             largest_remainder_split(8, self.advanced.cluster_limits),
@@ -269,9 +399,10 @@ class ControllerTests(unittest.TestCase):
         )
         self.assertEqual(
             largest_remainder_split(4, self.advanced.cluster_limits),
-            {"cluster2": 1, "cluster3": 3},
+            {"cluster2": 2, "cluster3": 2},
         )
         policy = ForecastPlacementPolicy(self.advanced, self._capacity())
+        self.assertEqual(policy.policy_config.payload["policy_id"], "research-v3-forecast-policy")
         forecast = ServiceForecast(8, 12, 1, 500, 0.1)
         ready = ServiceRuntimeState(
             {"cluster2": 1, "cluster3": 1},
@@ -285,7 +416,7 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(up.desired_total, 4)
         pending = ServiceRuntimeState(
             up.desired_placements,
-            {"cluster2": 1, "cluster3": 2},
+            {"cluster2": 2, "cluster3": 1},
             500,
             0.4,
             True,
@@ -304,8 +435,8 @@ class ControllerTests(unittest.TestCase):
 
         low = ServiceForecast(0, 0, 0, 100, 0.0)
         current = ServiceRuntimeState(
-            {"cluster2": 1, "cluster3": 3},
-            {"cluster2": 1, "cluster3": 3},
+            {"cluster2": 2, "cluster3": 2},
+            {"cluster2": 2, "cluster3": 2},
             100,
             0.2,
             True,
@@ -412,7 +543,7 @@ class ControllerTests(unittest.TestCase):
                 self._capacity(),
                 config,
                 {"schema_version": "headlight.learned-edges/v1", "edges": []},
-                {"seed": 41},
+                self._training_metadata(),
             )
             loaded = ModelBundle.load(
                 bundle_path,
@@ -502,7 +633,7 @@ class ControllerTests(unittest.TestCase):
                 low_capacity,
                 config,
                 {"schema_version": "headlight.learned-edges/v1", "edges": []},
-                {"seed": 41},
+                self._training_metadata(),
             )
             session = _Session([202])
             actuator = PlacementActuator(
@@ -521,8 +652,10 @@ class ControllerTests(unittest.TestCase):
                 "lstm",
                 root / "actions.jsonl",
             )
-            for sample_index in range(24):
-                result = runtime.run_once(1000 + sample_index * 15)
+            output = io.StringIO()
+            with redirect_stdout(output):
+                for sample_index in range(24):
+                    result = runtime.run_once(1000 + sample_index * 15)
             self.assertIsNotNone(result["inference_duration_ms"])
             self.assertEqual(len(session.calls), 1)
             self.assertEqual(runtime.buffers["ts-auth"][-1][BASE_FEATURES.index("request_rate")], 24)
@@ -532,6 +665,25 @@ class ControllerTests(unittest.TestCase):
             ]
             self.assertTrue(any(row["prediction"] for row in rows))
             self.assertTrue(any(row["desired_replicas"] != row["previous_replicas"] for row in rows))
+            streamed = [json.loads(line.split("HEADLIGHT_ACTION_JSON ", 1)[1])
+                        for line in output.getvalue().splitlines() if line.startswith("HEADLIGHT_ACTION_JSON ")]
+            self.assertEqual(streamed, rows)
+            failed_output = io.StringIO()
+            with redirect_stdout(failed_output), patch.object(actuator, "apply", side_effect=RuntimeError("actuation disconnected")):
+                with self.assertRaisesRegex(RuntimeError, "actuation disconnected"):
+                    runtime.run_once(1360)
+            proposals = [json.loads(line.split("HEADLIGHT_PROPOSAL_JSON ", 1)[1])
+                         for line in failed_output.getvalue().splitlines() if line.startswith("HEADLIGHT_PROPOSAL_JSON ")]
+            self.assertEqual(len(proposals), 18)
+            self.assertTrue(all(record["timestamp"] == 1360 for record in proposals))
+            self.assertTrue(all("desired_replicas" in record and "prediction" in record for record in proposals))
+
+    def test_headlight_and_lstm_load_same_frozen_policy_configuration(self) -> None:
+        headlight_policy = ForecastPlacementPolicy(self.advanced, self._capacity())
+        lstm_policy = ForecastPlacementPolicy(self.advanced, self._capacity())
+        self.assertEqual(headlight_policy.policy_config.configuration_hash, lstm_policy.policy_config.configuration_hash)
+        self.assertEqual(headlight_policy.policy_config.payload["status"], "frozen-pre-execution")
+        self.assertFalse(set(PolicyConfig.load().payload["forbidden_seed_set"]) & set(PolicyConfig.load().payload["provenance"]["calibration_trace"]["seeds"]))
 
 
 if __name__ == "__main__":

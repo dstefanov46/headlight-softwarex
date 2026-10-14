@@ -2,6 +2,7 @@
 set -e
 
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
+context="${HEADLIGHT_CONTROLLER_CONTEXT:-cluster3}"
 
 control_plane_ip() {
   name="$1"
@@ -175,6 +176,7 @@ echo "Deploying AI module..."
 trainticket_path="${HEADLIGHT_TRAINTICKET_PATH:-advanced-ticket}"
 service_profile="${HEADLIGHT_SERVICE_PROFILE_FILE:-$repo_root/ai-module/configs/service_profiles/${trainticket_path}.json}"
 model_bundle="${HEADLIGHT_MODEL_BUNDLE_DIR:-$repo_root/results/calibration/headlight-bundle}"
+policy_config="${HEADLIGHT_POLICY_CONFIG:-$repo_root/ai-module/configs/policies/research-v3-forecast-policy.json}"
 python_bin="${HEADLIGHT_PYTHON:-$repo_root/.venv/bin/python}"
 if [ ! -x "$python_bin" ]; then
   python_bin=python3
@@ -182,14 +184,15 @@ fi
 "$python_bin" "$repo_root/ai-module/ai-module/validate_model_bundle.py" \
   --bundle "$model_bundle" \
   --service-profile "$service_profile" \
-  --controller headlight
-kubectl create namespace trainticket --context=cluster1 || true
-kubectl label namespace trainticket --context=cluster1 istio-injection=enabled --overwrite
+  --controller headlight \
+  --policy-config "$policy_config"
+kubectl create namespace trainticket --context="$context" || true
+kubectl label namespace trainticket --context="$context" istio-injection=enabled --overwrite
 for role_file in "$repo_root"/ai-module/roles/*.yaml; do
-  sed "s/namespace: nephele/namespace: trainticket/g" "$role_file" | kubectl apply --context=cluster1 -f -
+  sed "s/namespace: nephele/namespace: trainticket/g" "$role_file" | kubectl apply --context="$context" -f -
 done
-kubectl --context=cluster1 create secret generic pod-kubeconfig-trainticket --from-file=config="$pod_kubeconfig" -n trainticket --dry-run=client -o yaml | kubectl --context=cluster1 apply -f -
-kubectl --context=cluster1 -n trainticket create secret generic headlight-model-bundle \
+kubectl --context="$context" create secret generic pod-kubeconfig-trainticket --from-file=config="$pod_kubeconfig" -n trainticket --dry-run=client -o yaml | kubectl --context="$context" apply -f -
+kubectl --context="$context" -n trainticket create secret generic headlight-model-bundle \
   --from-file=checkpoint.pt="$model_bundle/checkpoint.pt" \
   --from-file=scaler.json="$model_bundle/scaler.json" \
   --from-file=feature_schema.json="$model_bundle/feature_schema.json" \
@@ -199,23 +202,35 @@ kubectl --context=cluster1 -n trainticket create secret generic headlight-model-
   --from-file=model_config.json="$model_bundle/model_config.json" \
   --from-file=learned_edges.json="$model_bundle/learned_edges.json" \
   --from-file=metadata.json="$model_bundle/metadata.json" \
-  --dry-run=client -o yaml | kubectl --context=cluster1 apply -f -
-kubectl --context=cluster1 -n trainticket create configmap headlight-service-profile \
+  --dry-run=client -o yaml | kubectl --context="$context" apply -f -
+kubectl --context="$context" -n trainticket create configmap headlight-service-profile \
   --from-file=profile.json="$service_profile" \
-  --dry-run=client -o yaml | kubectl --context=cluster1 apply -f -
-kubectl apply -f "$repo_root/ai-module/deployments/ai-module-deployment.yaml" -n trainticket --context=cluster1
+  --dry-run=client -o yaml | kubectl --context="$context" apply -f -
+kubectl --context="$context" -n trainticket create configmap headlight-policy-config \
+  --from-file=policy.json="$policy_config" \
+  --dry-run=client -o yaml | kubectl --context="$context" apply -f -
+kubectl apply -f "$repo_root/ai-module/deployments/ai-module-deployment.yaml" -n trainticket --context="$context"
 if [ -n "${HEADLIGHT_AI_IMAGE:-}" ]; then
-  kubectl --context=cluster1 -n trainticket set image deployment/ai-module ai-module="$HEADLIGHT_AI_IMAGE"
+  kubectl --context="$context" -n trainticket set image deployment/ai-module ai-module="$HEADLIGHT_AI_IMAGE"
 fi
 if [ -n "$actions_handler_url" ]; then
-  kubectl --context=cluster1 -n trainticket set env deployment/ai-module HEADLIGHT_ACTION_HANDLER_URL="$actions_handler_url"
+  kubectl --context="$context" -n trainticket set env deployment/ai-module HEADLIGHT_ACTION_HANDLER_URL="$actions_handler_url"
 fi
 if [ -n "$prometheus_url" ]; then
-  kubectl --context=cluster1 -n trainticket set env deployment/ai-module HEADLIGHT_PROMETHEUS_URL="$prometheus_url"
+  kubectl --context="$context" -n trainticket set env deployment/ai-module HEADLIGHT_PROMETHEUS_URL="$prometheus_url"
 fi
-kubectl --context=cluster1 -n trainticket set env deployment/ai-module \
-  HEADLIGHT_SHADOW_MODE="${HEADLIGHT_SHADOW_MODE:-0}"
-kubectl --context=cluster1 -n trainticket rollout restart deployment/ai-module
-kubectl --context=cluster1 -n trainticket rollout status deployment/ai-module --timeout="${HEADLIGHT_CONTROLLER_WAIT_TIMEOUT:-600s}"
+kubectl --context="$context" -n trainticket set env deployment/ai-module \
+  HEADLIGHT_SHADOW_MODE="${HEADLIGHT_SHADOW_MODE:-0}" \
+  HEADLIGHT_POLICY_CONFIG="/config/policy/policy.json"
+kubectl --context="$context" -n trainticket set env deployment/ai-module \
+  HEADLIGHT_V1_DIAGNOSTIC_LOG="${HEADLIGHT_V1_DIAGNOSTIC_LOG:-}" \
+  HEADLIGHT_V1_DIAGNOSTIC_MAX_BYTES="${HEADLIGHT_V1_DIAGNOSTIC_MAX_BYTES:-134217728}" \
+  HEADLIGHT_V1_PROMETHEUS_CLUSTERS="${HEADLIGHT_V1_PROMETHEUS_CLUSTERS:-}" \
+  HEADLIGHT_RUN_ID="${HEADLIGHT_RUN_ID:-}" \
+  HEADLIGHT_SEED="${HEADLIGHT_SEED:-}" \
+  HEADLIGHT_CODE_REVISION="${HEADLIGHT_CODE_REVISION:-unknown}" \
+  HEADLIGHT_IMAGE_REVISION="${HEADLIGHT_IMAGE_REVISION:-unknown}"
+kubectl --context="$context" -n trainticket rollout restart deployment/ai-module
+kubectl --context="$context" -n trainticket rollout status deployment/ai-module --timeout="${HEADLIGHT_CONTROLLER_WAIT_TIMEOUT:-600s}"
 
 echo "Deployment script completed successfully."

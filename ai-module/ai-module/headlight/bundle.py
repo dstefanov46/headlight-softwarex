@@ -30,6 +30,7 @@ COMPONENT_FILES = {
     "model_config": "model_config.json",
     "learned_edges": "learned_edges.json",
 }
+EVALUATION_SEEDS = {101, 102, 103, 104, 105}
 
 
 def file_sha256(path: Path) -> str:
@@ -71,6 +72,55 @@ def _validate_bundle_integrity(bundle_root: Path, metadata: dict[str, Any]) -> d
     return hashes
 
 
+def _metadata_seeds(value: Any) -> set[int]:
+    seeds: set[int] = set()
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key in {"seed", "seeds", "capacity_seed", "calibration_seeds", "tuning_seeds"}:
+                if isinstance(item, list):
+                    for candidate in item:
+                        try:
+                            seeds.add(int(candidate))
+                        except (TypeError, ValueError):
+                            pass
+                else:
+                    try:
+                        seeds.add(int(item))
+                    except (TypeError, ValueError):
+                        pass
+            seeds.update(_metadata_seeds(item))
+    elif isinstance(value, list):
+        for item in value:
+            seeds.update(_metadata_seeds(item))
+    return seeds
+
+
+def _validate_frozen_metadata(metadata: dict[str, Any]) -> None:
+    if metadata.get("frozen") is not True:
+        raise ValueError("model bundle is not frozen")
+    if metadata.get("runtime_reload") is not False:
+        raise ValueError("model bundle allows runtime reload/online retraining")
+    training = metadata.get("training", {})
+    if not isinstance(training, dict):
+        raise ValueError("model bundle training metadata is missing")
+    required = {
+        "dataset_sha256",
+        "adjacency_sha256",
+        "profile_hash",
+        "sources",
+        "selection_procedure",
+        "created_before_evaluation",
+    }
+    missing = sorted(required - set(training))
+    if missing:
+        raise ValueError(f"model bundle training metadata is missing: {', '.join(missing)}")
+    if training.get("created_before_evaluation") is not True:
+        raise ValueError("model bundle was not declared frozen before evaluation")
+    leaked = sorted(EVALUATION_SEEDS & _metadata_seeds(training))
+    if leaked:
+        raise ValueError(f"model bundle metadata references evaluation seeds: {leaked}")
+
+
 @dataclass(frozen=True)
 class ModelBundle:
     root: Path
@@ -105,6 +155,7 @@ class ModelBundle:
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         if metadata.get("schema_version") != BUNDLE_SCHEMA_VERSION:
             raise ValueError("unsupported model bundle schema")
+        _validate_frozen_metadata(metadata)
         _validate_bundle_integrity(bundle_root, metadata)
         profile = ServiceProfile.from_dict(
             json.loads((bundle_root / COMPONENT_FILES["service_profile"]).read_text(encoding="utf-8"))
@@ -228,6 +279,20 @@ def create_bundle(
             component: file_sha256(temporary / filename)
             for component, filename in COMPONENT_FILES.items()
         }
+        normalized_training_metadata = dict(training_metadata)
+        normalized_training_metadata.setdefault(
+            "sources",
+            {
+                "dataset": normalized_training_metadata.get("dataset", ""),
+                "adjacency": normalized_training_metadata.get("adjacency", ""),
+                "service_profile": normalized_training_metadata.get("service_profile", ""),
+            },
+        )
+        normalized_training_metadata.setdefault("selection_procedure", "calibration-train-validation-holdout")
+        normalized_training_metadata.setdefault("created_before_evaluation", True)
+        leaked = sorted(EVALUATION_SEEDS & _metadata_seeds(normalized_training_metadata))
+        if leaked:
+            raise ValueError(f"refusing to create bundle from evaluation seeds: {leaked}")
         metadata_core = {
             "schema_version": BUNDLE_SCHEMA_VERSION,
             "created_at": datetime.now(timezone.utc).isoformat(),
@@ -235,7 +300,7 @@ def create_bundle(
             "runtime_reload": False,
             "profile_hash": profile.profile_hash,
             "node_order": list(profile.node_order),
-            "training": training_metadata,
+            "training": normalized_training_metadata,
         }
         metadata = {
             **metadata_core,
@@ -260,3 +325,12 @@ def load_checkpoint(bundle: ModelBundle, device: torch.device) -> dict[str, torc
     if not isinstance(state, dict) or not state:
         raise ValueError("model bundle checkpoint is not a non-empty state dict")
     return state
+
+
+# V2 uses a separate immutable schema so v1 bundle semantics remain unchanged.
+from .bundle_v2 import (  # noqa: E402
+    HEADLIGHT_V2_BUNDLE_SCHEMA_VERSION,
+    HeadlightV2Bundle,
+    create_v2_bundle,
+    load_v2_checkpoint,
+)

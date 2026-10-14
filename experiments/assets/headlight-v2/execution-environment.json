@@ -1,0 +1,11 @@
+{
+  "HEADLIGHT_V2_DISABLE_REACTIVE_EMERGENCY": "1",
+  "HEADLIGHT_V2_IMAGE": "headlight-ai:v2-diag-ablation-1c1d8ea3fe6d",
+  "HEADLIGHT_V2_POLICY_REVISION": "target-pending-readiness-guard-240s-v1",
+  "HEADLIGHT_V2_PROMETHEUS_CLUSTERS": "cluster2,cluster3",
+  "HEADLIGHT_CODE_REVISION": "2bba204+source.1c1d8ea3fe6d9e9e2c0c1ea8895219f91fb6df1995c6203ba81c4d30ed0d86ad",
+  "HEADLIGHT_EVALUATION_CAPACITY": "4",
+  "HEADLIGHT_TRAINTICKET_PATH": "advanced-ticket",
+  "HEADLIGHT_IMAGE_REVISION": "headlight-ai:v2-diag-ablation-1c1d8ea3fe6d",
+  "HEADLIGHT_V2_CPU_RATE_WINDOW": "90s"
+}

@@ -1,0 +1,116 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: ResolvedExperimentManifest
+metadata:
+  name: headlight-v2-emergency-disabled-flash-crowd-c4-seed-101-20261004
+spec:
+  controller:
+    controller: headlight-v2
+    controller_variant: full-action-conditioned
+    setup_script: experiments/scripts/deploy_headlight_v2_shadow.sh
+    actuation_path: actions-handler
+  topology:
+    mode: multi-cluster-headlight
+    namespace: trainticket
+    active_clusters:
+    - cluster2
+    - cluster3
+    clusters_file: ai-module/configs/clusters.json
+    services_file: ai-module/configs/application_services.json
+    additional_services_file: ai-module/configs/additional_services.json
+    placement_source: actions-handler
+    notes: Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation.
+  workload:
+    pattern: flash-crowd
+    duration_seconds: 1200
+    warmup_seconds: 480
+    capacity_users: 10
+    capacity_users_env: HEADLIGHT_EVALUATION_CAPACITY
+    locust:
+      spawn_rate: 40
+      base_users: 0.2C
+      spike_users: C
+      spike_start_seconds: &id001
+      - 300
+      - 900
+      spike_duration_seconds: 180
+    notes: Sharp surge followed by controlled decay; intended to stress proactive
+      scaling.
+    sampling_interval_seconds: 15
+    shape_parameters:
+      spawn_rate: 40
+      base_users: 0.2C
+      spike_users: C
+      spike_start_seconds: *id001
+      spike_duration_seconds: 180
+  run:
+    seeds:
+    - 101
+    duration_seconds: 1200
+    warmup_seconds: 480
+    sampling_interval_seconds: 15
+    output_dir: results/headlight-v2-live/qualification-flash-crowd-c4-seed-101-20261004/reserved
+    sla:
+      p95_latency_ms: 1000
+      minimum_success_rate: 0.99
+    reset_policy:
+      between_seeds: true
+      delete_pods: true
+      clear_controller_state: true
+    qualification_overrides:
+      kind: headlight-v2-gateway-evaluation
+      prior_comparator_traces_directly_comparable: false
+    frozen_inputs:
+      bundle_id: c37050a44dd2fc876bf6523aaeabdd364af7608ffeee5e1586a6cb8bbaaaeb4a
+      bundle_archive_sha256: bf18f7a959a3f182cec1dd9892fca964c041442a210338109c60a642b926f635
+      policy_sha256: 44f1eec3ea4d515e2f18ae91db8e839a095c41f8ce41afa9d5ba933ee096c07f
+    protocol:
+      reference:
+        version: research-v3
+        hash: 833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545
+        path: experiments/configs/protocols/research-v3.yaml
+      primary_controllers:
+      - headlight
+      - lstm
+      - threshold
+      primary_workloads:
+      - gradual-ramp
+      - flash-crowd
+      - diurnal
+      capacity_seeds:
+      - 11
+      calibration_seeds:
+      - 12
+      - 13
+      - 14
+      - 15
+      headlight_tuning_seeds:
+      - 41
+      - 43
+      evaluation_seeds:
+      - 101
+      - 102
+      - 103
+      - 104
+      - 105
+      replica_ceiling_per_service: 14
+      cluster_replica_split:
+        cluster2: 6
+        cluster3: 8
+      warmup_seconds: 480
+      measurement_seconds: 1200
+      cooldown_seconds_between_attempts: 60
+      locust_run_seconds: 1680
+      capacity_normalization:
+        base: 0.2C
+        peak: C
+        capacity_env: HEADLIGHT_EVALUATION_CAPACITY
+        fallback_capacity_users: 10
+      technical_invalidity_only: true
+      statistical_unit: seed-run
+      effective_version: research-v4-gateway-v1
+      gateway_protocol:
+        version: research-v4-gateway-v1
+        path: experiments/configs/gateway-protocols/research-v4-gateway.yaml
+        sha256: 93ffb1709755ff729128ea2e61d7b52807d3b6d49870a45f50b3a31a3a606608
+        base_protocol_sha256: 833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545
+      prior_research_v3_cells_directly_comparable: false

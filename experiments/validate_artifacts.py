@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate measured experiment bundles before generating measured artifacts."""
+"""Validate measured experiment bundles before generating paper artifacts."""
 
 from __future__ import annotations
 
@@ -17,8 +17,17 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from experiments.lib.config import REPO_ROOT
+from experiments.lib.attempt_registry import effective_records, read_registry
 from experiments.lib.quality import BundleQualityError, validate_bundle
-from experiments.validate_configs import validate_all
+from experiments.lib.protocol import (
+    calibration_seeds,
+    capacity_seeds,
+    evaluation_seeds,
+    primary_controllers,
+    primary_workloads,
+    protocol_reference,
+    tuning_seeds,
+)
 
 
 VALIDATION_SCHEMA = "headlight.artifact-validation/v1"
@@ -27,11 +36,29 @@ REQUIRED_SUMMARY_FIELDS = {
     "seed",
     "controller",
     "workload",
+    "total_requests",
+    "successful_requests",
+    "failed_requests",
+    "success_rate",
+    "successful_throughput_rps",
+    "offered_throughput_rps",
+    "p50_latency_ms",
+    "p95_latency_ms",
+    "p99_latency_ms",
     "sla_violation_rate",
+    "timeout_count",
+    "exception_count",
+    "http_status_distribution",
     "excess_response_time_seconds",
     "cpu_seconds",
     "mean_pod_count",
-    "p95_latency_ms",
+    "pod_seconds",
+    "action_churn",
+    "technical_validity",
+    "performance_outcome",
+    "invalidity_reason",
+    "retry_allowed",
+    "retry_rule",
 }
 ZERO_GUARD_FIELDS = (
     "sla_violation_rate",
@@ -40,6 +67,10 @@ ZERO_GUARD_FIELDS = (
     "mean_pod_count",
     "p95_latency_ms",
 )
+CAPACITY_SEED_SET = set(capacity_seeds())
+CALIBRATION_SEED_SET = set(calibration_seeds())
+TUNING_SEED_SET = set(tuning_seeds())
+EVALUATION_SEED_SET = set(evaluation_seeds())
 
 
 class ArtifactValidationError(RuntimeError):
@@ -86,22 +117,22 @@ def _expected_matrix(
     workloads: set[str] | None,
     seeds: set[int] | None,
 ) -> set[tuple[str, str, int]]:
-    if controllers is not None and workloads is not None and seeds is not None:
-        return {(controller, workload, seed) for controller in controllers for workload in workloads for seed in seeds}
-    manifests, _ = validate_all()
-    expected: set[tuple[str, str, int]] = set()
-    for manifest in manifests:
-        controller = str(manifest["spec"]["controller"]["controller"])
-        workload = str(manifest["spec"]["workload"]["pattern"])
-        if controllers is not None and controller not in controllers:
-            continue
-        if workloads is not None and workload not in workloads:
-            continue
-        configured_seeds = {int(seed) for seed in manifest["spec"]["run"]["seeds"]}
-        selected_seeds = seeds if seeds is not None else configured_seeds
-        for seed in sorted(configured_seeds & selected_seeds):
-            expected.add((controller, workload, seed))
-    return expected
+    controllers = set(primary_controllers()) if controllers is None else controllers
+    workloads = set(primary_workloads()) if workloads is None else workloads
+    seeds = set(evaluation_seeds()) if seeds is None else seeds
+    return {(controller, workload, seed) for controller in controllers for workload in workloads for seed in seeds}
+
+
+def _seed_partition_issues(manifest: dict[str, Any], seed: int, seed_dir: Path) -> list[dict[str, str]]:
+    overrides = manifest["spec"]["run"].get("qualification_overrides", {})
+    qualification_kind = overrides.get("kind")
+    if qualification_kind in {"capacity-pilot", "capacity-qualification"}:
+        if seed in EVALUATION_SEED_SET:
+            return [_issue("seed_partition", f"capacity/calibration run uses evaluation seed {seed}", seed_dir)]
+        return []
+    if seed in CAPACITY_SEED_SET or seed in CALIBRATION_SEED_SET or seed in TUNING_SEED_SET:
+        return [_issue("seed_partition", f"evaluation bundle uses non-evaluation seed {seed}", seed_dir)]
+    return []
 
 
 def _read_summary(path: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
@@ -162,6 +193,7 @@ def _validate_seed_summary(
     if key in seen:
         return None, [_issue("duplicate_run", f"duplicate measured run for controller={controller} workload={workload} seed={seed}; first={seen[key]}", seed_dir)]
     seen[key] = seed_dir
+    issues.extend(_seed_partition_issues(manifest, seed, seed_dir))
     try:
         validate_bundle(seed_dir, manifest, dry_run=False)
     except BundleQualityError as exc:
@@ -244,6 +276,87 @@ def _validate_manifest(
     return rows, issues
 
 
+def _registry_path(root: Path) -> Path:
+    return root / "attempt-registry.jsonl"
+
+
+def _validate_registry_record(
+    record: dict[str, Any],
+    root: Path,
+    controllers: set[str] | None,
+    workloads: set[str] | None,
+    seeds: set[int] | None,
+    seen: dict[tuple[str, str, int], Path],
+) -> tuple[dict[str, str] | None, list[dict[str, str]]]:
+    issues: list[dict[str, str]] = []
+    if record.get("technical_status") != "valid":
+        return None, issues
+    if str(record.get("protocol_hash", "")) != protocol_reference()["hash"]:
+        return None, [_issue("stale_configuration", f"attempt {record['attempt_id']} protocol hash is stale")]
+    controller = str(record["controller"])
+    workload = str(record["workload"])
+    seed = int(record["seed"])
+    if (controllers is not None and controller not in controllers) or (workloads is not None and workload not in workloads):
+        return None, issues
+    if seeds is not None and seed not in seeds:
+        return None, issues
+    evidence = record.get("evidence_paths") or []
+    if not evidence:
+        return None, [_issue("missing_evidence_path", f"attempt {record['attempt_id']} has no evidence path")]
+    seed_dir = Path(str(evidence[0]))
+    if not seed_dir.is_absolute():
+        seed_dir = root / seed_dir
+    manifest_path = seed_dir.parent / "manifest.yaml"
+    manifest, load_issues = _load_selected_manifest(manifest_path, controllers, workloads)
+    if manifest is None:
+        return None, load_issues
+    environment, env_issues = _bundle_environment(seed_dir.parent)
+    issues.extend(env_issues)
+    if environment and environment.get("dry_run", False):
+        return None, issues
+    commit = str(record.get("commit") or (environment or {}).get("git_commit") or "")
+    if not commit:
+        issues.append(_issue("missing_commit", "attempt registry record must include commit", seed_dir))
+    key = (controller, workload, seed)
+    if key in seen:
+        return None, [_issue("duplicate_run", f"duplicate technically valid attempt for controller={controller} workload={workload} seed={seed}; first={seen[key]}", seed_dir)]
+    seen[key] = seed_dir
+    issues.extend(_seed_partition_issues(manifest, seed, seed_dir))
+    try:
+        validate_bundle(seed_dir, manifest, dry_run=False)
+    except BundleQualityError as exc:
+        return None, [_issue(f"quality_{item.code}", item.message, seed_dir) for item in exc.issues]
+    except (OSError, KeyError, ValueError) as exc:
+        return None, [_issue("quality_gate_error", str(exc), seed_dir)]
+    summary_rows, summary_issues = _read_summary(seed_dir / "summaries" / "summary.csv")
+    issues.extend(summary_issues)
+    if len(summary_rows) != 1:
+        return None, issues
+    row = dict(summary_rows[0])
+    if str(row.get("controller", "")) != controller:
+        issues.append(_issue("summary_controller", f"summary controller {row.get('controller')} != {controller}", seed_dir / "summaries" / "summary.csv"))
+    if str(row.get("workload", "")) != workload:
+        issues.append(_issue("summary_workload", f"summary workload {row.get('workload')} != {workload}", seed_dir / "summaries" / "summary.csv"))
+    if int(row.get("seed", "-1")) != seed:
+        issues.append(_issue("summary_seed", f"summary seed {row.get('seed')} != {seed}", seed_dir / "summaries" / "summary.csv"))
+    if _summary_has_invalid_zeroes(row):
+        issues.append(_issue("invalid_zero_run", "measured summary is all-zero or non-finite", seed_dir / "summaries" / "summary.csv"))
+        return None, issues
+    config_hash = _json_sha256(manifest)
+    summary_path = seed_dir / "summaries" / "summary.csv"
+    row.update({
+        "source_run": str(manifest.get("metadata", {}).get("name", seed_dir.parent.name)),
+        "source_bundle": str(seed_dir.parent.relative_to(root) if seed_dir.parent.is_relative_to(root) else seed_dir.parent),
+        "source_summary": str(summary_path.relative_to(root) if summary_path.is_relative_to(root) else summary_path),
+        "source_summary_sha256": _sha256(summary_path),
+        "configuration_sha256": config_hash,
+        "commit_hash": commit,
+        "validation_status": "validated",
+        "attempt_id": str(record["attempt_id"]),
+    })
+    return row, issues
+
+
 def validated_summary_rows(
     results_root: Path,
     *,
@@ -256,13 +369,45 @@ def validated_summary_rows(
     issues: list[dict[str, str]] = []
     rows: list[dict[str, str]] = []
     seen: dict[tuple[str, str, int], Path] = {}
+    attempt_accounting: dict[str, Any] = {
+        "registry_used": False,
+        "total_attempts": 0,
+        "technically_valid_attempts": 0,
+        "technically_invalid_attempts": 0,
+        "invalid_attempts_by_category": {},
+    }
 
-    for manifest_path in sorted(root.glob("**/manifest.yaml")):
-        if ARTIFACT_MANIFEST in {part.name for part in manifest_path.parent.parents}:
-            continue
-        manifest_rows, manifest_issues = _validate_manifest(manifest_path, root, controllers, workloads, seeds, seen)
-        rows.extend(manifest_rows)
-        issues.extend(manifest_issues)
+    registry_path = _registry_path(root)
+    if registry_path.exists():
+        records = read_registry(registry_path)
+        active_records = effective_records(records)
+        attempt_accounting["registry_used"] = True
+        attempt_accounting["total_attempts"] = len(records)
+        attempt_accounting["technically_valid_attempts"] = sum(
+            1 for record in records if record.get("technical_status") == "valid"
+        )
+        attempt_accounting["technically_invalid_attempts"] = sum(
+            1 for record in records if record.get("technical_status") != "valid"
+        )
+        invalid_by_category: dict[str, int] = {}
+        for record in records:
+            if record.get("technical_status") == "valid":
+                continue
+            category = str(record.get("failure_category") or "unknown")
+            invalid_by_category[category] = invalid_by_category.get(category, 0) + 1
+        attempt_accounting["invalid_attempts_by_category"] = invalid_by_category
+        for record in active_records:
+            row, record_issues = _validate_registry_record(record, root, controllers, workloads, seeds, seen)
+            issues.extend(record_issues)
+            if row is not None:
+                rows.append(row)
+    else:
+        for manifest_path in sorted(root.glob("**/manifest.yaml")):
+            if ARTIFACT_MANIFEST in {part.name for part in manifest_path.parent.parents}:
+                continue
+            manifest_rows, manifest_issues = _validate_manifest(manifest_path, root, controllers, workloads, seeds, seen)
+            rows.extend(manifest_rows)
+            issues.extend(manifest_issues)
 
     expected = _expected_matrix(controllers, workloads, seeds)
     observed = {(row["controller"], row["workload"], int(row["seed"])) for row in rows}
@@ -294,6 +439,7 @@ def validated_summary_rows(
         "source_digest": source_digest,
         "validated_rows": len(rows),
         "matrix": sorted([list(item) for item in observed]),
+        "attempt_accounting": attempt_accounting,
     }
     return rows, validation
 
@@ -328,7 +474,7 @@ def write_validation_manifest(output_dir: Path, validation: dict[str, Any]) -> N
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--results-root", default="results/softwarex")
+    parser.add_argument("--results-root", default="results/socc26")
     parser.add_argument("--controllers")
     parser.add_argument("--workloads")
     parser.add_argument("--seeds")

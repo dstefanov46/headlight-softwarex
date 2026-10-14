@@ -1,0 +1,41 @@
+{
+  "schema_version": "headlight.ceiling-binding/v1",
+  "controller": "threshold",
+  "workload": "flash-crowd",
+  "aggregate_ceiling": 14,
+  "per_cluster_ceiling": {
+    "cluster2": 6,
+    "cluster3": 8
+  },
+  "source_clusters": [
+    "cluster2",
+    "cluster3"
+  ],
+  "observed_ceiling": 14,
+  "measurement_seconds": 1200,
+  "services_at_ceiling": [],
+  "service_ceiling_sample_fraction": {
+    "ts-auth": 0.0,
+    "ts-auth-mongo": 0.0,
+    "ts-basic": 0.0,
+    "ts-price": 0.0,
+    "ts-price-mongo": 0.0,
+    "ts-route": 0.0,
+    "ts-route-mongo": 0.0,
+    "ts-route-plan": 0.0,
+    "ts-station": 0.0,
+    "ts-station-mongo": 0.0,
+    "ts-ticketinfo": 0.0,
+    "ts-train": 0.0,
+    "ts-train-mongo": 0.0,
+    "ts-travel": 0.0,
+    "ts-travel-mongo": 0.0,
+    "ts-travel-plan": 0.0,
+    "ts-travel2": 0.0,
+    "ts-travel2-mongo": 0.0,
+    "threshold-autoscaler": 0.0
+  },
+  "time_at_ceiling_seconds": {},
+  "ceiling_hit_invalidates_run": false,
+  "ceiling_makes_run_uninformative": false
+}

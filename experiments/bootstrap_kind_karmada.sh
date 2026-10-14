@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Bootstrap helper for the local measurement testbed. It creates/validates the Kind
+# Bootstrap helper for the local paper testbed. It creates/validates the Kind
 # member clusters expected by the experiment runner and leaves Karmada
 # installation to the checked-in dist manifests.
 

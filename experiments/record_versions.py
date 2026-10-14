@@ -59,6 +59,7 @@ def load_pins(path: Path) -> dict[str, Any]:
 def collect(config: Path) -> dict[str, Any]:
     return {
         "schema_version": "headlight.version-record/v1",
+        "software_version": (REPO_ROOT / "VERSION").read_text(encoding="utf-8").strip(),
         "captured_at_unix": int(time.time()),
         "git_commit": git_commit(),
         "platform": {

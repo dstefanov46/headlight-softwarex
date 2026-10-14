@@ -1,0 +1,32 @@
+$ kubectl --context cluster2 -n trainticket delete scaledobject --all --ignore-not-found
+scaledobject.keda.sh "ts-auth-keda" deleted
+scaledobject.keda.sh "ts-basic-keda" deleted
+scaledobject.keda.sh "ts-price-keda" deleted
+scaledobject.keda.sh "ts-route-keda" deleted
+scaledobject.keda.sh "ts-route-plan-keda" deleted
+scaledobject.keda.sh "ts-station-keda" deleted
+scaledobject.keda.sh "ts-ticketinfo-keda" deleted
+scaledobject.keda.sh "ts-train-keda" deleted
+scaledobject.keda.sh "ts-travel-keda" deleted
+scaledobject.keda.sh "ts-travel-plan-keda" deleted
+scaledobject.keda.sh "ts-travel2-keda" deleted
+[exit 0]
+$ kubectl --context cluster2 -n trainticket delete hpa --all --ignore-not-found
+No resources found
+[exit 0]
+$ kubectl --context cluster3 -n trainticket delete scaledobject --all --ignore-not-found
+scaledobject.keda.sh "ts-auth-keda" deleted
+scaledobject.keda.sh "ts-basic-keda" deleted
+scaledobject.keda.sh "ts-price-keda" deleted
+scaledobject.keda.sh "ts-route-keda" deleted
+scaledobject.keda.sh "ts-route-plan-keda" deleted
+scaledobject.keda.sh "ts-station-keda" deleted
+scaledobject.keda.sh "ts-ticketinfo-keda" deleted
+scaledobject.keda.sh "ts-train-keda" deleted
+scaledobject.keda.sh "ts-travel-keda" deleted
+scaledobject.keda.sh "ts-travel-plan-keda" deleted
+scaledobject.keda.sh "ts-travel2-keda" deleted
+[exit 0]
+$ kubectl --context cluster3 -n trainticket delete hpa --all --ignore-not-found
+No resources found
+[exit 0]

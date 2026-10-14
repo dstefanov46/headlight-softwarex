@@ -1,0 +1,4 @@
+source_workload,destination_workload,request_rate
+ts-basic,ts-station,1023.2980461762915
+ts-travel,ts-route,2255.2188425226886
+ts-travel,ts-ticketinfo,1024.0049498872816

@@ -13,11 +13,13 @@ from locust import HttpUser, LoadTestShape, between, events, task
 
 NAMESPACE = os.environ.get("HEADLIGHT_TRAINTICKET_NAMESPACE", "trainticket")
 MODE = os.environ.get("HEADLIGHT_TRAINTICKET_MODE", "login-route")
+GATEWAY_URL = os.environ.get("HEADLIGHT_TRAINTICKET_GATEWAY_URL", "").rstrip("/")
 REQUEST_CSV_PATH = os.environ.get("HEADLIGHT_REQUEST_CSV", "headlight_requests.csv")
 REQUEST_CSV_DIR = os.path.dirname(REQUEST_CSV_PATH)
 if REQUEST_CSV_DIR:
     os.makedirs(REQUEST_CSV_DIR, exist_ok=True)
 LOAD_SHAPE_PATH = os.environ.get("HEADLIGHT_LOAD_SHAPE", "/app/load_profile.csv")
+LOAD_SHAPE_DURATION_SECONDS = int(os.environ.get("HEADLIGHT_LOAD_SHAPE_DURATION_SECONDS", "0"))
 VERIFY_CODE = "025080CF8BA94594B09E283F17815444"
 ACCOUNT_ID = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 DEFAULT_TRAVEL_DATE = os.environ.get("HEADLIGHT_TRAINTICKET_TRAVEL_DATE", "2021-07-15")
@@ -53,6 +55,8 @@ def record_request(request_type, name, response_time, response_length, response=
 
 
 def service_url(service: str, port: int, path: str) -> str:
+    if GATEWAY_URL:
+        return f"{GATEWAY_URL}{path}"
     return f"http://{service}.{NAMESPACE}.svc.cluster.local:{port}{path}"
 
 
@@ -153,6 +157,8 @@ class PaperLoadShape(LoadTestShape):
 
     def tick(self):
         elapsed = int(self.get_run_time())
+        if LOAD_SHAPE_DURATION_SECONDS and elapsed >= LOAD_SHAPE_DURATION_SECONDS:
+            return None
         selected = self.points[-1]
         for point in self.points:
             if elapsed < point[0]:

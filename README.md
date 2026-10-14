@@ -1,137 +1,42 @@
 # Headlight
 
-Headlight is an open-source experimental orchestration stack for predictive autoscaling and availability-aware replica placement across Kubernetes multi-cluster federations managed by Karmada.
+Headlight provides dependency-aware predictive autoscaling and availability-aware
+replica placement across Kubernetes clusters managed by Karmada.
 
-This repository contains the **Headlight v1.0.0 immutable software release prepared for the SoftwareX submission**:
+The evaluation contains **60 valid measured runs**: Headlight, HPA, KEDA and Threshold across
+gradual-ramp, flash-crowd and diurnal workloads, with seeds 101–105.
 
-> **Headlight: dependency-aware predictive orchestration for Kubernetes multi-cluster federations**
+The [evaluation index](results/controller-archive/README.md) identifies the exact
+selected runs. Verify their artifacts and reproduce the reported mean and sample
+standard deviation:
 
-## Release
-
-**Version:** v1.0.0  
-**License:** Apache License 2.0  
-**Release repository:** https://github.com/dstefanov46/headlight-softwarex
-
-This repository is an archival SoftwareX release snapshot rather than the development repository. The v1.0.0 source tree was derived from development commit:
-
-```text
-f390b7a9c5bc3ce6b867b1276e6600e3c8b7e2b4
+```bash
+python experiments/validate_softwarex_evaluation.py --output results/controller-archive/validation.json
 ```
 
-The development repository and its commit history are maintained separately and are not part of this archival release.
+The validator returns `validation_status=validated` after checking the complete
+60-cell matrix, selected summary status, artifact checksums and metric values.
 
-The `v1.0.0` Git tag identifies the exact software version corresponding to the SoftwareX submission.
+## Components
 
-## Overview
+- `ai-module/`: telemetry, frozen Headlight inference, synthetic training and Threshold.
+- `actions-handler/`: Go REST service that batches placement actions.
+- `controlled-replica-propagation/`: CRD and controller that guard replica removal.
+- `experiments/`: workloads, configuration, testbed scripts and artifact validation.
+- `results/`: the selected evaluation, frozen model and supporting provenance.
+- `docs/`: [architecture](docs/architecture.md), [reproduction](docs/reproduction.md)
+  and [evaluation](docs/experiments.md).
 
-Headlight combines a service-dependency-aware predictive model with a declarative execution layer for Kubernetes multi-cluster federations.
-
-The active forecasting model:
-
-- uses seven service-level telemetry features together with seven missing-value indicators;
-- operates over a traffic-derived service dependency graph;
-- applies temporal scoring and graph message passing;
-- forecasts request demand, CPU demand, p95 latency and SLA-violation risk;
-- converts forecasts into bounded replica and placement actions.
-
-Model training and tuning are performed offline. Live inference uses a hash-verified frozen model bundle.
-
-## Repository structure
-
-The principal implementation directories are:
-
-```text
-ai-module/
-actions-handler/
-controlled-replica-propagation/
-experiments/
-docs/
-```
-
-## Experiment support
-
-The repository includes five reference controllers in addition to Headlight:
-
-- Kubernetes HPA;
-- KEDA;
-- LSTM-based predictive autoscaling;
-- static allocation;
-- threshold-based control.
-
-Four parameterised workload profiles are provided:
-
-- gradual ramp;
-- flash crowd;
-- diurnal;
-- bursty.
-
-The SoftwareX paper-facing comparison uses gradual ramp, flash crowd and diurnal workloads with paired seeds `101`–`105`.
-
-The experiment framework also provides capacity qualification, offline model calibration, a fixed 48-candidate Headlight model grid, separate tuning seeds, frozen-model enforcement, quality gates, structured run validation, provenance recording and paper-artifact generation.
-
-## Reproduction
-
-Detailed instructions are provided in:
-
-- [`docs/reproduction.md`](docs/reproduction.md)
-- [`docs/experiments.md`](docs/experiments.md)
-- [`docs/architecture.md`](docs/architecture.md)
-
-The principal validation commands are:
+## Checks
 
 ```bash
 make validate-config
 make python-tests
 make yaml-validate
-make go-tests
-```
-
-A deterministic reproduction-contract check that does not execute the measured experiment campaign is available through:
-
-```bash
 make reproduction-dry-run
+make docs-check
 ```
 
-The dry run verifies the reproduction interface only and **must not be interpreted as comparative performance evidence**.
-
-Only measured result bundles accepted by the repository validation procedure with:
-
-```text
-validation_status=validated
-```
-
-are eligible for quantitative performance tables or plots.
-
-See [`docs/reproduction.md`](docs/reproduction.md) for the exact commands, configuration and output paths.
-
-## Controlled replica propagation
-
-Headlight uses the `ControlledReplicaPropagation` custom resource to express desired replica distributions across Karmada member clusters.
-
-With `maxUnavailable: 0`, cross-cluster replica relocation is performed make-before-break: destination replicas must become Ready before the corresponding source replicas are removed.
-
-## Software requirements
-
-A complete experiment environment requires Kubernetes, Karmada, Istio, Prometheus, Kubernetes Metrics Server, cAdvisor, Docker, Helm, `kubectl`, Python 3 with PyTorch, Go and Locust.
-
-## Citation
-
-This repository contains **Headlight v1.0.0**, the software release associated with the SoftwareX submission.
-
-Citation metadata are provided in [`CITATION.cff`](CITATION.cff).
-
-The persistent Zenodo DOI for this exact release should be used when citing the software. Once Zenodo has archived the GitHub release, the DOI is linked from the GitHub Release page.
-
-## License
-
-Headlight is released under the **Apache License 2.0**.
-
-See [`LICENSE`](LICENSE) for details.
-
-## Support
-
-For questions concerning the SoftwareX release:
-
-**Dimitar Stefanov**  
-Sunesis d.o.o., Ljubljana, Slovenia  
-dimitar.stefanov@sunesis.si
+A dry-run checks configuration and orchestration without producing measurements.
+See [evaluation scope](docs/evaluation.md) for assumptions and limits.
+The software is licensed under Apache-2.0. Citation metadata is in `CITATION.cff`.

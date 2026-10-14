@@ -1,0 +1,37 @@
+{
+  "edges": [
+    {
+      "destination": "ts-basic",
+      "effective_weight": 0.0,
+      "residual": -0.0019021638436242938,
+      "source": "ts-basic"
+    },
+    {
+      "destination": "ts-station",
+      "effective_weight": 1.0,
+      "residual": 0.0008840326336212456,
+      "source": "ts-basic"
+    },
+    {
+      "destination": "ts-route",
+      "effective_weight": 0.6694214344024658,
+      "residual": -0.02088073268532753,
+      "source": "ts-travel"
+    },
+    {
+      "destination": "ts-ticketinfo",
+      "effective_weight": 0.3305785357952118,
+      "residual": 0.017029142007231712,
+      "source": "ts-travel"
+    },
+    {
+      "destination": "ts-travel",
+      "effective_weight": 0.0,
+      "residual": -0.001027228543534875,
+      "source": "ts-travel"
+    }
+  ],
+  "residual_bound": 0.3,
+  "schema_version": "headlight.learned-edges/v1",
+  "variant": "full"
+}

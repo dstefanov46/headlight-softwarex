@@ -1,0 +1,17 @@
+{
+  "schema_version": "headlight.evaluation-trial/v1",
+  "seed": 103,
+  "workload": "diurnal",
+  "capacity_users": 4,
+  "capacity_qualified": false,
+  "matched_comparison_eligible": false,
+  "historical_gateway_image_verified": false,
+  "comparison_status": "evaluation_not_matched",
+  "load_trace_sha256": "ced8b35581298a0e88cdadc9939033d41372591ed75913aaea118fa99c057ce2",
+  "controller_image": "local/headlight-threshold:5b85e77c7602b2dcbf73-prepared",
+  "controller_image_digest": "sha256:85013441751466a843de78683714b4a3b0355674c0f442a0b69d4e8b511a97f8",
+  "open_gates": [
+    "gateway_capacity_qualification",
+    "historical_gateway_image_provenance"
+  ]
+}

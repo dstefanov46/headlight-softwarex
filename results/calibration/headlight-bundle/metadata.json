@@ -1,0 +1,98 @@
+{
+  "bundle_id": "8cfd3f854cd2742e42b2fe25c607cb6a0a9cb663d5fea7ddaa441679cd7d5940",
+  "component_hashes": {
+    "adjacency": "2ae9eb8291421d1ab2359682c674f89d3c73b2dc8bd5f71e90907eb105110917",
+    "capacity": "2083d30301bcafe6f56e49ce20a629aaed760c7cb65a506366e27c9fac5dd43f",
+    "checkpoint": "799e7d620fc0dd1053f0c0bf794639d0ef7a4a6ab7e4bb1eb4bad0ff12036a1d",
+    "feature_schema": "f042f28c7f0da7d6f0ba1a85b20d9ec99520043e9f2f3d4c37d37a883b3bffe6",
+    "learned_edges": "900bbffc55d90172847cba4313a131156098db855d3c9555f1529cd40ee82dc0",
+    "model_config": "36b079f8f28239c618c8c959aede0239d4d8f6cf1816a976ac16d52b22de803d",
+    "scaler": "6cbca5883a008aecfca91f0762d4d4a7c8c5af98b0bacb5d14baa8596419c4b8",
+    "service_profile": "b9e1ae08c96b2041fa496c76ab7ba14a68a2e9192a910edff61c5093f8382012"
+  },
+  "created_at": "2026-08-19T18:00:26.705371+00:00",
+  "frozen": true,
+  "node_order": [
+    "ts-auth",
+    "ts-auth-mongo",
+    "ts-basic",
+    "ts-price",
+    "ts-price-mongo",
+    "ts-route",
+    "ts-route-mongo",
+    "ts-route-plan",
+    "ts-station",
+    "ts-station-mongo",
+    "ts-ticketinfo",
+    "ts-train",
+    "ts-train-mongo",
+    "ts-travel",
+    "ts-travel-mongo",
+    "ts-travel-plan",
+    "ts-travel2",
+    "ts-travel2-mongo"
+  ],
+  "profile_hash": "ddd0974573c10108e3148a731230de4bccabc07a5666792bd525e39209e3678f",
+  "runtime_reload": false,
+  "schema_version": "headlight.model-bundle/v1",
+  "training": {
+    "adjacency_sha256": "f1d09ce497c9c4e36fae16de750ca57d08c46b46b3e15b0a2a0943b1a9a353d7",
+    "best_epoch": 100,
+    "best_validation_loss": 681.2728474934896,
+    "created_before_evaluation": true,
+    "dataset_sha256": "a2b3cdbed2c15bed9d37956a1108d3ec97d3de974924e426980c8cafb94240af",
+    "deterministic_algorithms": true,
+    "holdout": {
+      "components": {
+        "cpu": 0.004511018865741789,
+        "p95_latency": 2480.5575561523438,
+        "request": 0.36152131110429764,
+        "sla": 0.5278697311878204
+      },
+      "cpu_q90_mae": 0.0426875464618206,
+      "loss": 744.3477478027344,
+      "p95_latency_q90_mae": 2617.862548828125,
+      "request_q50_mae": 0.9598912596702576,
+      "request_q90_mae": 0.6314605474472046,
+      "sla_classification_accuracy": 0.986
+    },
+    "model_config": {
+      "forecast_horizon_seconds": 180,
+      "graph_blocks": 2,
+      "hidden_width": 32,
+      "horizon": 12,
+      "input_size": 14,
+      "lookback": 24,
+      "model_type": "headlight",
+      "num_nodes": 18,
+      "residual_bound": 0.3,
+      "sampling_interval_seconds": 15,
+      "variant": "full"
+    },
+    "profile_hash": "ddd0974573c10108e3148a731230de4bccabc07a5666792bd525e39209e3678f",
+    "samples": {
+      "holdout": 100,
+      "total": 666,
+      "train": 454,
+      "validation": 88
+    },
+    "seed": 20260705,
+    "selection_procedure": "deterministic calibration train/validation/holdout split with holdout gate",
+    "sources": {
+      "adjacency": "/home/stefanovaleksandar130/headlight-jsa/results/calibration/static-adjacency.json",
+      "dataset": "/home/stefanovaleksandar130/headlight-jsa/results/calibration/train-ticket-calibration.csv",
+      "service_profile": "/home/stefanovaleksandar130/headlight-jsa/ai-module/configs/service_profiles/advanced-ticket.json"
+    },
+    "split": {
+      "first_boundary": 1787158862,
+      "maximum_scaler_timestamp": 1787158487,
+      "purge_seconds": 180,
+      "ratios": [
+        0.7,
+        0.15,
+        0.15
+      ],
+      "second_boundary": 1787160362
+    }
+  }
+}

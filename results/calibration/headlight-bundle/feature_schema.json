@@ -1,0 +1,46 @@
+{
+  "base_features": [
+    "replicas",
+    "request_rate",
+    "cpu_usage_cores",
+    "cpu_utilization",
+    "mean_latency_ms",
+    "p95_latency_ms",
+    "error_rate"
+  ],
+  "forward_fill_seconds": 30,
+  "fresh_mask_value": 0,
+  "mask_features": [
+    "replicas_missing",
+    "request_rate_missing",
+    "cpu_usage_cores_missing",
+    "cpu_utilization_missing",
+    "mean_latency_ms_missing",
+    "p95_latency_ms_missing",
+    "error_rate_missing"
+  ],
+  "missing_mask_value": 1,
+  "model_features": [
+    "replicas",
+    "request_rate",
+    "cpu_usage_cores",
+    "cpu_utilization",
+    "mean_latency_ms",
+    "p95_latency_ms",
+    "error_rate",
+    "replicas_missing",
+    "request_rate_missing",
+    "cpu_usage_cores_missing",
+    "cpu_utilization_missing",
+    "mean_latency_ms_missing",
+    "p95_latency_ms_missing",
+    "error_rate_missing"
+  ],
+  "schema_version": "headlight.features/v1",
+  "targets": [
+    "request_rate",
+    "cpu_usage_cores",
+    "p95_latency_ms",
+    "sla_violation"
+  ]
+}

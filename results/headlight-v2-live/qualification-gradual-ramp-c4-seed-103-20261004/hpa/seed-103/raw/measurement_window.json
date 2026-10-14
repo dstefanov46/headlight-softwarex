@@ -1,0 +1,10 @@
+{
+  "locust_started_at_unix": 1791213853,
+  "started_at_unix": 1791214333,
+  "finished_at_unix": 1791215533,
+  "locust_finished_at_unix": 1791215539,
+  "warmup_seconds": 480,
+  "measurement_seconds": 1200,
+  "locust_run_seconds": 1680,
+  "cooldown_seconds": 60
+}

@@ -1,0 +1,49 @@
+$ bash /home/stefanovaleksandar130/headlight-jsa/ai-module/kubernetes_hpa_setup.sh
+Creating namespace and enabling Istio injection...
+Error from server (AlreadyExists): namespaces "trainticket" already exists
+namespace/trainticket not labeled
+Keeping the workload deployment prepared by the experiment runner
+Applying roles...
+Applying roles in cluster2...
+clusterrolebinding.rbac.authorization.k8s.io/metrics-access-binding unchanged
+clusterrole.rbac.authorization.k8s.io/metrics-access unchanged
+rolebinding.rbac.authorization.k8s.io/extended-access-binding unchanged
+role.rbac.authorization.k8s.io/extended-access unchanged
+Applying roles in cluster3...
+clusterrolebinding.rbac.authorization.k8s.io/metrics-access-binding unchanged
+clusterrole.rbac.authorization.k8s.io/metrics-access unchanged
+rolebinding.rbac.authorization.k8s.io/extended-access-binding unchanged
+role.rbac.authorization.k8s.io/extended-access unchanged
+Skipping legacy Locust Helm deployment because HEADLIGHT_SKIP_LEGACY_LOCUST=1
+Switching context to cluster2 for autoscaler setup...
+secret/pod-kubeconfig-trainticket configured
+Applying HPA config in cluster2...
+horizontalpodautoscaler.autoscaling/ts-basic-hpa created
+horizontalpodautoscaler.autoscaling/ts-auth-hpa created
+horizontalpodautoscaler.autoscaling/ts-price-hpa created
+horizontalpodautoscaler.autoscaling/ts-route-plan-hpa created
+horizontalpodautoscaler.autoscaling/ts-route-hpa created
+horizontalpodautoscaler.autoscaling/ts-station-hpa created
+horizontalpodautoscaler.autoscaling/ts-ticketinfo-hpa created
+horizontalpodautoscaler.autoscaling/ts-train-hpa created
+horizontalpodautoscaler.autoscaling/ts-travel2-hpa created
+horizontalpodautoscaler.autoscaling/ts-travel-plan-hpa created
+horizontalpodautoscaler.autoscaling/ts-travel-hpa created
+Skipping autoscaler evaluation deployment because HEADLIGHT_SKIP_HPA_EVAL_DEPLOYMENT=1
+Switching context to cluster3 for autoscaler setup...
+secret/pod-kubeconfig-trainticket configured
+Applying HPA config in cluster3...
+horizontalpodautoscaler.autoscaling/ts-basic-hpa created
+horizontalpodautoscaler.autoscaling/ts-auth-hpa created
+horizontalpodautoscaler.autoscaling/ts-price-hpa created
+horizontalpodautoscaler.autoscaling/ts-route-plan-hpa created
+horizontalpodautoscaler.autoscaling/ts-route-hpa created
+horizontalpodautoscaler.autoscaling/ts-station-hpa created
+horizontalpodautoscaler.autoscaling/ts-ticketinfo-hpa created
+horizontalpodautoscaler.autoscaling/ts-train-hpa created
+horizontalpodautoscaler.autoscaling/ts-travel2-hpa created
+horizontalpodautoscaler.autoscaling/ts-travel-plan-hpa created
+horizontalpodautoscaler.autoscaling/ts-travel-hpa created
+Skipping autoscaler evaluation deployment because HEADLIGHT_SKIP_HPA_EVAL_DEPLOYMENT=1
+All deployments completed successfully.
+[exit 0]

@@ -1,0 +1,40 @@
+{
+  "captured_at_unix": 1791739848,
+  "repo_root": "/home/stefanovaleksandar130/headlight-jsa",
+  "git_commit": "28c31edcc0465b9ceb5b357625dcc83012939b23",
+  "source_tree_sha256": null,
+  "harness_sources_sha256": {
+    "experiments/run_experiment.py": "f842254a0dfea916b34ca680e9eaed79287031254efcb1939faa1adc1703d0bd",
+    "experiments/lib/run_evidence.py": "c4843bff3103f791892b5cfb19bac957ab843ca02a49d629f89f1b79e6c3420e",
+    "experiments/scripts/gateway_weights.py": "3d42777a98df615d817b914ba3623df53eadb24dbcaebbe43071485ddaf6a657",
+    "ai-module/ai_module_setup.sh": "0f7f3529ebfd55c006d41223b038d40f6a44c6769f85b2e1160348a97313be06",
+    "ai-module/ai-module/headlight/runtime.py": "6ea7b3c2b9589392b8d9446340ae20e11abd224f4c2133d0eb8d2e0e1fed70d1",
+    "ai-module/ai-module/headlight/features.py": "d3caba5d4d07248a7b3e4b9ff29ee3e401c0aa2d337d83d820bdc39d6a2581eb",
+    "ai-module/ai-module/headlight/diagnostics_v1.py": "ef6c3ea89cf47263710bce9b4be98beeecaa046829117bda3f7e0317df12d36c"
+  },
+  "dry_run": false,
+  "required_contexts": [
+    "karmada-apiserver",
+    "karmada-host",
+    "cluster1",
+    "cluster2",
+    "cluster3"
+  ],
+  "available_contexts": [
+    "cluster1",
+    "cluster2",
+    "cluster3",
+    "karmada-apiserver",
+    "karmada-host",
+    "kind-cluster1",
+    "kind-cluster2",
+    "kind-cluster3",
+    "kind-karmada-host"
+  ],
+  "image_tags": {
+    "ai_module": "local/headlight-ai-module:dev",
+    "threshold": "local/headlight-threshold:5b85e77c7602b2dcbf73-prepared",
+    "actions_handler": "ghcr.io/vidbregar/actions-handler:0.2.0",
+    "locust": "dstefanov46/locust-test:0.66.0"
+  }
+}

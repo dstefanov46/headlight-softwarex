@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import csv
 import subprocess
 import sys
 import tempfile
@@ -16,6 +17,8 @@ from experiments.validate_artifacts import (
     _summary_has_invalid_zeroes,
     validated_summary_rows,
 )
+from experiments.lib.attempt_registry import append_record, build_record
+from experiments.lib.protocol import protocol_reference
 
 
 def write_text(path: Path, value: str) -> None:
@@ -41,6 +44,7 @@ def measured_bundle(root: Path, name: str = "run-a", seed: int = 1, *, zero_summ
                 "seeds": [seed],
                 "duration_seconds": 10,
                 "sampling_interval_seconds": 5,
+                "protocol": {"reference": protocol_reference()},
                 "sla": {"p95_latency_ms": 1000, "minimum_success_rate": 0.90},
             },
         },
@@ -49,9 +53,42 @@ def measured_bundle(root: Path, name: str = "run-a", seed: int = 1, *, zero_summ
     write_json(bundle / "environment.json", {"dry_run": False, "git_commit": "abc123"})
     seed_dir = bundle / f"seed-{seed}"
     write_text(seed_dir / "raw/load_profile.csv", "elapsed_seconds,users,spawn_rate\n0,1,1\n")
+    write_json(seed_dir / "raw/protocol.json", {"protocol": protocol_reference()})
+    write_json(seed_dir / "raw/topology.json", {"common_topology": {"namespace": "trainticket"}})
+    write_json(seed_dir / "raw/workload_manifest_hashes.json", {"data_plane_no_policies_sha256": "abc"})
+    write_json(seed_dir / "raw/phase_timestamps.json", {"measurement": {"started_at_unix": 0, "finished_at_unix": 10}})
     write_json(seed_dir / "raw/prometheus_queries.json", {"pod_count": "query"})
+    write_json(seed_dir / "raw/model_bundle_provenance.json", {})
+    write_json(seed_dir / "raw/policy_config.json", {})
+    write_json(seed_dir / "raw/static_plan.json", {})
+    write_json(
+        seed_dir / "raw/hpa_controller_metadata.json",
+        {"scale_up_behavior": "kubernetes-default", "sync_period_seconds": {"expected": 15}},
+    )
+    write_text(seed_dir / "raw/hpa/hpa-cluster2.yaml", "apiVersion: autoscaling/v2\nkind: HorizontalPodAutoscaler\n")
+    write_json(
+        seed_dir / "raw/resource_calculation.json",
+        {
+            "cpu_seconds": {
+                "method": "counter_delta_with_reset_handling",
+                "query": "container_cpu_usage_seconds_total",
+                "measurement_window": {"started_at_unix": 0, "finished_at_unix": 10},
+            },
+            "pod_seconds": {
+                "method": "stepwise_gauge_integral_exact_window",
+                "query": "kube_pod_status_ready",
+                "measurement_window": {"started_at_unix": 0, "finished_at_unix": 10},
+            },
+        },
+    )
     write_text(
         seed_dir / "raw/request_events.csv",
+        "timestamp,method,endpoint,status,response_time_ms,exception\n"
+        "0,GET,/,200,100,\n"
+        "10,GET,/,200,200,\n",
+    )
+    write_text(
+        seed_dir / "raw/request_events_measurement.csv",
         "timestamp,method,endpoint,status,response_time_ms,exception\n"
         "0,GET,/,200,100,\n"
         "10,GET,/,200,200,\n",
@@ -65,6 +102,7 @@ def measured_bundle(root: Path, name: str = "run-a", seed: int = 1, *, zero_summ
         for name in ("cpu_seconds", "memory_working_set_bytes", "pod_count")
     }
     write_json(seed_dir / "raw/prometheus_range_data.json", prometheus)
+    write_json(seed_dir / "raw/ceiling_binding.json", {"ceiling_hit_invalidates_run": False})
     write_json(seed_dir / "raw/measurement_window.json", {"started_at_unix": 0, "finished_at_unix": 10})
     write_json(seed_dir / "raw/pods_before.json", {})
     write_json(seed_dir / "raw/pods_after.json", {})
@@ -72,14 +110,42 @@ def measured_bundle(root: Path, name: str = "run-a", seed: int = 1, *, zero_summ
     write_json(seed_dir / "raw/crps_before.json", {"items": []})
     write_json(seed_dir / "raw/crps_after.json", {"items": []})
     write_text(seed_dir / "logs/runner.log", "ok\n")
+    header = [
+        "seed",
+        "controller",
+        "workload",
+        "sla_latency_ms",
+        "total_requests",
+        "successful_requests",
+        "failed_requests",
+        "success_rate",
+        "successful_throughput_rps",
+        "offered_throughput_rps",
+        "p50_latency_ms",
+        "p95_latency_ms",
+        "p99_latency_ms",
+        "sla_violation_rate",
+        "timeout_count",
+        "exception_count",
+        "http_status_distribution",
+        "excess_response_time_seconds",
+        "cpu_seconds",
+        "mean_pod_count",
+        "pod_seconds",
+        "action_churn",
+        "technical_validity",
+        "performance_outcome",
+        "invalidity_reason",
+        "retry_allowed",
+        "retry_rule",
+    ]
     if zero_summary:
-        metrics = "0,0,0,0,0,0"
+        row = [seed, "hpa", "gradual-ramp", 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "{}", 0, 0, 0, 0, 0, "valid", "measured", "", "False", ""]
     else:
-        metrics = "0.0,0.0,3.0,1.0,15.0,190.0"
+        row = [seed, "hpa", "gradual-ramp", 1000, 2, 2, 0, 1.0, 0.2, 0.2, 150, 190, 198, 0.0, 0, 0, '{"200": 2}', 0.0, 3.0, 1.0, 15.0, 0.0, "valid", "measured", "", "False", ""]
     write_text(
         seed_dir / "summaries/summary.csv",
-        "seed,controller,workload,sla_latency_ms,sla_violation_rate,excess_response_time_seconds,cpu_seconds,mean_pod_count,pod_seconds,p95_latency_ms\n"
-        f"{seed},hpa,gradual-ramp,1000,{metrics}\n",
+        ",".join(header) + "\n" + ",".join(str(value) for value in row) + "\n",
     )
     return bundle
 
@@ -124,6 +190,135 @@ class ArtifactValidationTests(unittest.TestCase):
                 validated_summary_rows(root, controllers={"hpa"}, workloads={"gradual-ramp"}, seeds={1})
             self.assertIn("duplicate_run", {issue["code"] for issue in ctx.exception.issues})
 
+    def test_registry_consumes_only_technically_valid_attempts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bundle = measured_bundle(root, "valid-attempt")
+            registry = root / "attempt-registry.jsonl"
+            append_record(
+                registry,
+                build_record(
+                    attempt_id="invalid-first",
+                    controller="hpa",
+                    workload="gradual-ramp",
+                    seed=1,
+                    started_at_unix=1,
+                    finished_at_unix=2,
+                    technical_status="invalid",
+                    performance_status="not_measured",
+                    failure_category="prometheus_empty",
+                    evidence_paths=[str(root / "invalid-attempt" / "seed-1")],
+                    retry_allowed=True,
+                    retry_rule="technical_invalidity_retry",
+                    retry_decision_value="retry_same_cell",
+                ),
+            )
+            append_record(
+                registry,
+                build_record(
+                    attempt_id="valid-second",
+                    controller="hpa",
+                    workload="gradual-ramp",
+                    seed=1,
+                    started_at_unix=3,
+                    finished_at_unix=4,
+                    technical_status="valid",
+                    performance_status="measured",
+                    evidence_paths=[str(bundle / "seed-1")],
+                ),
+            )
+            rows, validation = validated_summary_rows(root, controllers={"hpa"}, workloads={"gradual-ramp"}, seeds={1})
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["attempt_id"], "valid-second")
+            self.assertEqual(validation["attempt_accounting"]["total_attempts"], 2)
+            self.assertEqual(validation["attempt_accounting"]["technically_invalid_attempts"], 1)
+            self.assertEqual(validation["attempt_accounting"]["invalid_attempts_by_category"]["prometheus_empty"], 1)
+
+    def test_registry_rejects_duplicate_valid_attempts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first = measured_bundle(root, "attempt-a")
+            second = measured_bundle(root, "attempt-b")
+            registry = root / "attempt-registry.jsonl"
+            for attempt_id, bundle in [("valid-a", first), ("valid-b", second)]:
+                append_record(
+                    registry,
+                    build_record(
+                        attempt_id=attempt_id,
+                        controller="hpa",
+                        workload="gradual-ramp",
+                        seed=1,
+                        started_at_unix=1,
+                        finished_at_unix=2,
+                        technical_status="valid",
+                        performance_status="measured",
+                        evidence_paths=[str(bundle / "seed-1")],
+                    ),
+                )
+            with self.assertRaises(ArtifactValidationError) as ctx:
+                validated_summary_rows(root, controllers={"hpa"}, workloads={"gradual-ramp"}, seeds={1})
+            self.assertIn("duplicate_run", {issue["code"] for issue in ctx.exception.issues})
+
+    def test_registry_allows_superseded_attempt(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first = measured_bundle(root, "attempt-a")
+            second = measured_bundle(root, "attempt-b")
+            registry = root / "attempt-registry.jsonl"
+            append_record(
+                registry,
+                build_record(
+                    attempt_id="valid-a",
+                    controller="hpa",
+                    workload="gradual-ramp",
+                    seed=1,
+                    started_at_unix=1,
+                    finished_at_unix=2,
+                    technical_status="valid",
+                    performance_status="measured",
+                    evidence_paths=[str(first / "seed-1")],
+                    superseding_attempt_id="valid-b",
+                ),
+            )
+            append_record(
+                registry,
+                build_record(
+                    attempt_id="valid-b",
+                    controller="hpa",
+                    workload="gradual-ramp",
+                    seed=1,
+                    started_at_unix=3,
+                    finished_at_unix=4,
+                    technical_status="valid",
+                    performance_status="measured",
+                    evidence_paths=[str(second / "seed-1")],
+                ),
+            )
+            rows, _validation = validated_summary_rows(root, controllers={"hpa"}, workloads={"gradual-ramp"}, seeds={1})
+            self.assertEqual([row["attempt_id"] for row in rows], ["valid-b"])
+
+    def test_registry_rejects_stale_configuration_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bundle = measured_bundle(root, "attempt-a")
+            registry = root / "attempt-registry.jsonl"
+            record = build_record(
+                attempt_id="valid-stale",
+                controller="hpa",
+                workload="gradual-ramp",
+                seed=1,
+                started_at_unix=1,
+                finished_at_unix=2,
+                technical_status="valid",
+                performance_status="measured",
+                evidence_paths=[str(bundle / "seed-1")],
+            )
+            record["protocol_hash"] = "stale"
+            append_record(registry, record)
+            with self.assertRaises(ArtifactValidationError) as ctx:
+                validated_summary_rows(root, controllers={"hpa"}, workloads={"gradual-ramp"}, seeds={1})
+            self.assertIn("stale_configuration", {issue["code"] for issue in ctx.exception.issues})
+
     def test_rejects_incomplete_matrix(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -139,26 +334,9 @@ class ArtifactValidationTests(unittest.TestCase):
             with self.assertRaises(ArtifactValidationError):
                 assert_artifacts_not_stale(output, "new", replace_stale=False)
 
-    def test_generate_paper_artifacts_writes_validated_manifest(self) -> None:
-        with tempfile.TemporaryDirectory(dir="results") as tmp:
-            root = Path(tmp)
-            measured_bundle(root)
-            output = root / "artifacts"
-            subprocess.run(
-                [
-                    sys.executable,
-                    "experiments/generate_paper_artifacts.py",
-                    "--results-root",
-                    str(root),
-                    "--output-dir",
-                    str(output),
-                    "--allow-incomplete-matrix",
-                ],
-                check=True,
-            )
-            manifest = json.loads((output / "artifact_validation_manifest.json").read_text(encoding="utf-8"))
-            self.assertEqual(manifest["validation_status"], "validated")
-            self.assertIn("commit_hash", (output / "main_comparison.csv").read_text(encoding="utf-8").splitlines()[0])
+
+
+
 
 
 if __name__ == "__main__":

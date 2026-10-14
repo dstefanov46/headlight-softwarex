@@ -17,8 +17,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "ai-module" / "ai-module"))
 
-from experiments.scripts.render_minimal_trainticket import render
+from experiments.scripts.render_minimal_trainticket import RESOURCE_PROFILES, render
 from experiments.lib.paths import resolve_output_path
+from experiments.lib.protocol import replica_limits
 from headlight.profile import build_profile_payload
 
 
@@ -42,6 +43,7 @@ def profile_from_rendered(
     profile_name: str,
     namespace: str = "trainticket",
     resource_profile: str = "capacity-vm",
+    cluster_max_replicas: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     docs = render(profile_name, namespace, resource_profile)
     deployments = sorted(
@@ -69,10 +71,22 @@ def profile_from_rendered(
             }
         )
     rendered_bytes = yaml.safe_dump_all(docs, sort_keys=True).encode("utf-8")
+    maxima = cluster_max_replicas or {
+        cluster: int(max_replicas)
+        for cluster, max_replicas in replica_limits()["per_cluster_max_replicas"].items()
+    }
     return build_profile_payload(
         profile_name=profile_name,
         namespace=namespace,
         nodes=nodes,
+        cluster_limits={
+            cluster: {
+                "min_replicas": 1,
+                "initial_replicas": 1,
+                "max_replicas": int(max_replicas),
+            }
+            for cluster, max_replicas in maxima.items()
+        },
         source={
             "generator": "experiments/scripts/generate_service_profiles.py",
             "rendered_manifest_sha256": hashlib.sha256(rendered_bytes).hexdigest(),
@@ -86,7 +100,11 @@ def write_profiles(
     paths: tuple[str, ...] = PROFILE_PATHS,
     namespace: str = "trainticket",
     resource_profile: str | None = None,
+    cluster_max_replicas: dict[str, int] | None = None,
+    output_name: str | None = None,
 ) -> list[Path]:
+    if output_name and len(paths) != 1:
+        raise ValueError("output_name requires exactly one path")
     output_dir = resolve_output_path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     outputs: list[Path] = []
@@ -100,8 +118,9 @@ def write_profiles(
             profile_name,
             namespace,
             selected_resource_profile,
+            cluster_max_replicas,
         )
-        output = output_dir / f"{profile_name}.json"
+        output = output_dir / (output_name or f"{profile_name}.json")
         output.write_text(json.dumps(payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
         outputs.append(output)
     return outputs
@@ -111,11 +130,26 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     parser.add_argument("--namespace", default="trainticket")
-    parser.add_argument("--resource-profile", choices=["local-tiny", "capacity-vm", "source"])
+    parser.add_argument("--resource-profile", choices=sorted(RESOURCE_PROFILES))
     parser.add_argument("--path", action="append", choices=PROFILE_PATHS)
+    parser.add_argument("--cluster2-max", type=int)
+    parser.add_argument("--cluster3-max", type=int)
+    parser.add_argument("--output-name")
     args = parser.parse_args()
     paths = tuple(args.path) if args.path else PROFILE_PATHS
-    outputs = write_profiles(args.output_dir, paths, args.namespace, args.resource_profile)
+    if (args.cluster2_max is None) != (args.cluster3_max is None):
+        parser.error("--cluster2-max and --cluster3-max must be supplied together")
+    maxima = None
+    if args.cluster2_max is not None:
+        maxima = {"cluster2": args.cluster2_max, "cluster3": args.cluster3_max}
+    outputs = write_profiles(
+        args.output_dir,
+        paths,
+        args.namespace,
+        args.resource_profile,
+        maxima,
+        args.output_name,
+    )
     for output in outputs:
         print(output)
     return 0

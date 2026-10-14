@@ -69,6 +69,8 @@ spec:
       operator: In
       values:
       - ts-auth
+      - ts-basic
+      - ts-ticketinfo
       - ts-route
       - ts-travel-plan
       - ts-travel

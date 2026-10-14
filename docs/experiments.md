@@ -1,27 +1,35 @@
-# Experiments and artifacts
+# Evaluation
 
-Experiment files under `experiments/configs/` are repository-root-relative and
-compose one controller profile, topology, workload, and run definition. The
-schema and inheritance rules are documented in
-[`experiments/configs/schema.md`](../experiments/configs/schema.md).
+The evaluation consists of Headlight, native HPA, KEDA and Threshold
+under gradual-ramp, flash-crowd and diurnal load, repeated with seeds 101–105.
+There are 60 selected measured runs and five runs per controller/workload pair.
+Every selected summary records `technical_validity=valid`.
 
-Four workload profiles exist: diurnal, flash-crowd, gradual-ramp, and bursty.
-The measured comparison matrix uses the first three workload profiles with Headlight,
-HPA, KEDA, LSTM, static, and threshold controllers. `run_paper_matrix.sh`
-defaults to seeds 101, 102, 103, 104, and 105. Run files define the duration,
-warmup, SLA thresholds, output directory, and seeds. The seed list, workload
-shape, sampling interval, controller variant, and topology must be preserved in
-the resolved `manifest.yaml`.
-
-Every measured run should retain raw metrics, logs, events, CRP transitions,
-summaries, figures, `environment.json`, and model/training metadata where
-applicable. Validate the bundle before interpreting it:
+The [evaluation archive](../results/controller-archive/README.md) provides the
+selected run index, artifact hashes and summary aggregates. Run:
 
 ```bash
-python3 experiments/validate_artifacts.py --results-root results/softwarex
+python experiments/validate_softwarex_evaluation.py --output results/controller-archive/validation.json
 ```
 
-The reproduction `dry-run` validates configuration and output planning and
-demonstrates sample artifact shape. Latency, energy, fairness, availability, and
-comparative performance tables use measured bundles accepted by the artifact
-validator. `results/ARTIFACTS_POLICY.md` records this artifact workflow.
+The report returns `validation_status=validated` after verifying all 60 cells and
+all indexed artifacts. Aggregates use the arithmetic mean and sample standard
+deviation of the five run-level summaries. Latency is run-level p95, SLA breaches
+are successful requests exceeding 1000 ms, and resources are ready pod-seconds.
+
+Workload warmup is 480 s, measurement is 1200 s for gradual-ramp and flash-crowd
+and 2400 s for diurnal, sampling is 15 s, and cooldown is 60 s. A bursty profile
+is available for additional tests but is outside the reported matrix.
+
+HeadLight uses a frozen synthetic-trained model and policy. Model seed 601 was
+selected on calibration loss and policy development used seeds 711–713. Reported
+evaluation seeds 101–105 are separate from fitting, calibration and tuning.
+Reactive emergency overrides are disabled in the reported HeadLight runs.
+
+HeadLight and Threshold use the Actions Handler/CRP path. HPA and KEDA use their
+native controllers. Preserve request traces, telemetry, measurement windows,
+controller actions and model/environment provenance when reproducing a run.
+
+The comparison assumes the five seeds are comparable and describes results from
+one shared-host Kind federation. See [scope](evaluation.md).
+The reproduction dry-run checks configuration and planning only.

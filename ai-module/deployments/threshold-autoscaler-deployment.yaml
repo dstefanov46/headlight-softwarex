@@ -19,7 +19,38 @@ spec:
         imagePullPolicy: IfNotPresent
         command:
         - python3
-        - /app/threshold_autoscaler.py
+        - /app/baselines/threshold_controller.py
+        env:
+        - name: HEADLIGHT_SERVICE_PROFILE_FILE
+          value: /config/profile/profile.json
+        - name: HEADLIGHT_POLICY_CONFIG
+          value: /config/policy/policy.json
+        - name: HEADLIGHT_POD_KUBECONFIG
+          value: /var/run/headlight/kubeconfig/config
+        - name: HEADLIGHT_ACTION_LOG
+          value: /artifacts/actions.jsonl
+        - name: HEADLIGHT_INTERVAL_SECONDS
+          value: "15"
+        - name: HEADLIGHT_NAMESPACE
+          value: trainticket
+        - name: HEADLIGHT_ACTION_HANDLER_URL
+          value: http://actions-handler.actions-handler-system.svc.cluster.local:8080/placements
+        - name: HEADLIGHT_PROMETHEUS_URL
+          value: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        - name: KUBECONFIG
+          value: /var/run/headlight/kubeconfig/config
+        volumeMounts:
+        - name: pod-kubeconfig
+          mountPath: /var/run/headlight/kubeconfig
+          readOnly: true
+        - name: profile
+          mountPath: /config/profile
+          readOnly: true
+        - name: policy
+          mountPath: /config/policy
+          readOnly: true
+        - name: artifacts
+          mountPath: /artifacts
         resources:
           requests:
             cpu: 50m
@@ -29,4 +60,16 @@ spec:
             cpu: 500m
             memory: 512Mi
             ephemeral-storage: 1Gi
+      volumes:
+      - name: pod-kubeconfig
+        secret:
+          secretName: pod-kubeconfig-trainticket
+      - name: profile
+        configMap:
+          name: headlight-service-profile
+      - name: policy
+        configMap:
+          name: headlight-policy-config
+      - name: artifacts
+        emptyDir: {}
       automountServiceAccountToken: false

@@ -1,0 +1,18 @@
+{
+  "cpu_seconds": {
+    "method": "counter_delta_with_reset_handling",
+    "query": "sum by (pod, container) (container_cpu_usage_seconds_total{namespace=\"trainticket\",container!=\"\",pod!=\"\"})",
+    "measurement_window": {
+      "started_at_unix": 1791129189,
+      "finished_at_unix": 1791131589
+    }
+  },
+  "pod_seconds": {
+    "method": "stepwise_gauge_integral_exact_window",
+    "query": "count by (deployment) (label_replace(kube_pod_status_ready{namespace=\"trainticket\",condition=\"true\"} == 1, \"deployment\", \"$1\", \"pod\", \"(.+)-[a-z0-9]{5,10}-[a-z0-9]{5}\"))",
+    "measurement_window": {
+      "started_at_unix": 1791129189,
+      "finished_at_unix": 1791131589
+    }
+  }
+}

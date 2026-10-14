@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gate measured seeds 102-105 on the predefined paired seed-101 result."""
+"""Gate paper seeds 102-105 on the predefined paired seed-101 result."""
 
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ def main() -> int:
         "ranking": ranking,
         "promoted": ranking[0] == "headlight",
     }
-    output = resolve_output_path(args.output or REPO_ROOT / "results" / "softwarex" / f"seed-{args.seed}-promotion.json")
+    output = resolve_output_path(args.output or REPO_ROOT / "results" / "socc26" / f"seed-{args.seed}-promotion.json")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     if not result["promoted"]:

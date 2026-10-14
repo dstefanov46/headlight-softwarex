@@ -1,30 +1,19 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it using these metadata."
-title: "Headlight: dependency-aware predictive orchestration for Kubernetes multi-cluster federations"
+message: "If you use Headlight, please cite this repository."
+title: "Headlight: Predictive multi-cluster autoscaling and controlled replica propagation"
 type: software
+license: Apache-2.0
+repository-code: "https://github.com/dstefanov46/headlight-softwarex"
+abstract: "Experimental orchestration stack for predictive autoscaling and availability-aware replica placement with Karmada."
 authors:
   - family-names: "Stefanov"
     given-names: "Dimitar"
-    affiliation: "Sunesis d.o.o., Ljubljana, Slovenia"
-  - family-names: "Jurič"
-    given-names: "Matjaž Branko"
-    affiliation: "University of Ljubljana, Faculty of Computer and Information Science, Ljubljana, Slovenia"
-version: "1.0.0"
-date-released: "2026-08-10"
-repository-code: "https://github.com/dstefanov46/headlight-softwarex"
-url: "https://github.com/dstefanov46/headlight-softwarex"
-license: "Apache-2.0"
-abstract: >-
-  Headlight is an open-source experimental orchestration stack for predictive
-  autoscaling and availability-aware replica placement across Kubernetes
-  multi-cluster federations managed by Karmada. It combines a
-  service-dependency-aware probabilistic forecaster with a declarative
-  execution layer and includes reproducible experiment tooling, baseline
-  controllers, workload profiles, validation gates, and documentation.
+  - family-names: "Branko Jurič"
+    given-names: "Matjaž"
+version: "2.0.0"
 keywords:
-  - "Kubernetes"
-  - "Karmada"
-  - "multi-cluster orchestration"
-  - "predictive autoscaling"
-  - "graph neural networks"
-  - "edge-cloud continuum"
+  - Kubernetes
+  - Karmada
+  - autoscaling
+  - graph neural networks
+  - reproducibility

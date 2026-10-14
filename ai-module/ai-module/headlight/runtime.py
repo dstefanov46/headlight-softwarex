@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import subprocess
 import time
 from collections import deque
@@ -14,12 +15,14 @@ import numpy as np
 import torch
 
 from .bundle import ModelBundle, load_checkpoint
+from .diagnostics_v1 import V1DiagnosticRecorder
 from .features import BASE_FEATURES, MetricSample, PrometheusMetricCollector
 from .models import build_model, decode_forecasts
 from .policy import (
     BatchResult,
     ForecastPlacementPolicy,
     PlacementActuator,
+    PolicyConfig,
     PolicyDecision,
     ServiceForecast,
     ServiceRuntimeState,
@@ -42,29 +45,40 @@ class KubectlStateReader:
         placements = {node.name: dict.fromkeys(profile.cluster_limits, 0) for node in profile.nodes}
         ready = {node.name: dict.fromkeys(profile.cluster_limits, 0) for node in profile.nodes}
         exists = {node.name: False for node in profile.nodes}
+        state_complete = True
         for cluster in profile.cluster_limits:
-            result = self.command_runner(
-                [
-                    "kubectl",
-                    "--context",
-                    cluster,
-                    "-n",
-                    self.namespace,
-                    "get",
-                    "deployments",
-                    "-o",
-                    "json",
-                ],
-                text=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=False,
-            )
+            try:
+                result = self.command_runner(
+                    [
+                        "kubectl",
+                        "--context",
+                        cluster,
+                        "-n",
+                        self.namespace,
+                        "get",
+                        "deployments",
+                        "-o",
+                        "json",
+                    ],
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    check=False,
+                    timeout=float(os.environ.get("HEADLIGHT_STATE_READ_TIMEOUT_SECONDS", "15")),
+                )
+            except subprocess.TimeoutExpired:
+                state_complete = False
+                print("HEADLIGHT_STATE_READ_ERROR " + json.dumps({
+                    "timestamp": time.time(), "cluster": cluster, "error": "deployment query timed out",
+                }), flush=True)
+                continue
             if result.returncode != 0:
+                state_complete = False
                 continue
             try:
                 payload = json.loads(result.stdout)
             except json.JSONDecodeError:
+                state_complete = False
                 continue
             for deployment in payload.get("items", []):
                 name = str(deployment.get("metadata", {}).get("name", ""))
@@ -81,7 +95,9 @@ class KubectlStateReader:
                 current_cpu_utilization=None,
                 predictive_fresh=False,
                 reactive_fresh=False,
-                exists=exists[node.name],
+                # Missing member state is unknown, not a zero-replica placement.
+                # The existing absent-service guard suppresses actuation.
+                exists=exists[node.name] and state_complete,
             )
             for node in profile.nodes
         }
@@ -106,6 +122,7 @@ class ControllerRuntime:
         self.collector = collector
         self.state_reader = state_reader
         self.policy = policy
+        self.policy_config = policy.policy_config
         self.actuator = actuator
         self.controller_name = controller_name
         self.lookback = int(bundle.model_config["lookback"])
@@ -113,6 +130,13 @@ class ControllerRuntime:
         self.buffers = {
             node.name: deque(maxlen=self.lookback) for node in bundle.profile.nodes
         }
+        self.diagnostic_timestamps = deque(maxlen=self.lookback)
+        self.diagnostics = None
+        if os.environ.get("HEADLIGHT_V1_DIAGNOSTIC_LOG"):
+            self.diagnostics = V1DiagnosticRecorder(
+                os.environ["HEADLIGHT_V1_DIAGNOSTIC_LOG"],
+                max_bytes=int(os.environ.get("HEADLIGHT_V1_DIAGNOSTIC_MAX_BYTES", str(128 * 1024 * 1024))),
+            )
         self.action_log = Path(action_log) if action_log else None
         if self.action_log:
             self.action_log.parent.mkdir(parents=True, exist_ok=True)
@@ -128,6 +152,7 @@ class ControllerRuntime:
         namespace: str | None = None,
         shadow: bool = False,
         action_log: str | Path | None = None,
+        policy_config: str | Path | PolicyConfig | None = None,
         device: torch.device | None = None,
     ) -> "ControllerRuntime":
         selected_device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -145,9 +170,17 @@ class ControllerRuntime:
             runtime_profile,
             namespace=selected_namespace,
             forward_fill_seconds=30,
+            capture_observations=bool(os.environ.get("HEADLIGHT_V1_DIAGNOSTIC_LOG")),
+            cluster_names=tuple(os.environ["HEADLIGHT_V1_PROMETHEUS_CLUSTERS"].split(","))
+                if os.environ.get("HEADLIGHT_V1_DIAGNOSTIC_LOG") and os.environ.get("HEADLIGHT_V1_PROMETHEUS_CLUSTERS") else None,
         )
         state_reader = KubectlStateReader(selected_namespace)
-        policy = ForecastPlacementPolicy(runtime_profile, bundle.capacity)
+        loaded_policy_config = (
+            policy_config
+            if isinstance(policy_config, PolicyConfig)
+            else PolicyConfig.load(policy_config)
+        )
+        policy = ForecastPlacementPolicy(runtime_profile, bundle.capacity, loaded_policy_config)
         actuator = PlacementActuator(
             action_handler_url,
             selected_namespace,
@@ -249,8 +282,10 @@ class ControllerRuntime:
 
     def run_once(self, timestamp: int | None = None) -> dict[str, Any]:
         sample = self.collector.collect(timestamp)
+        self._diagnostic("observation", sample)
         raw_states = self.state_reader.read(self.bundle.profile)
         sample = self._append_sample(sample, raw_states)
+        self.diagnostic_timestamps.append(sample.timestamp)
         forecasts: dict[str, ServiceForecast] = {}
         inference_ms: float | None = None
         if self._can_infer():
@@ -296,15 +331,56 @@ class ControllerRuntime:
                     now=sample.timestamp,
                 )
             )
+        self._record_proposals(sample.timestamp, decisions, raw_states)
+        self._diagnostic("decisions", sample, raw_states, forecasts, decisions, inference_ms)
         batch = self.actuator.apply(decisions, current, self.bundle.profile)
         self._record_actions(sample.timestamp, decisions, batch, readiness_delays)
+        self._diagnostic("actuation", sample.timestamp, batch, readiness_delays)
         return {
             "timestamp": sample.timestamp,
-            "bundle_id": self.bundle.bundle_id,
-            "inference_duration_ms": inference_ms,
+                "bundle_id": self.bundle.bundle_id,
+                "policy_id": self.policy_config.payload["policy_id"],
+                "policy_configuration_hash": self.policy_config.configuration_hash,
+                "inference_duration_ms": inference_ms,
             "decisions": decisions,
             "batch": batch,
         }
+
+    def _diagnostic(self, method: str, *args: Any) -> None:
+        """Optional evidence failures cannot change a policy or actuation result."""
+        if self.diagnostics is None or self.diagnostics.disabled:
+            return
+        try:
+            getattr(self.diagnostics, method)(self, *args)
+        except Exception as exc:
+            self.diagnostics.error(exc)
+
+    def _record_proposals(
+        self, timestamp: int, decisions: list[PolicyDecision],
+        states: dict[str, ServiceRuntimeState],
+    ) -> None:
+        """Persist intent before making an actuation request which may fail."""
+        if not self.action_log:
+            return
+        path = self.action_log.with_name("proposals.jsonl")
+        with path.open("a", encoding="utf-8") as handle:
+            for decision in decisions:
+                record = {
+                    "timestamp": timestamp, "controller": self.controller_name,
+                    "bundle_id": self.bundle.bundle_id,
+                    "policy_id": self.policy_config.payload["policy_id"],
+                    "policy_configuration_hash": self.policy_config.configuration_hash,
+                    "service": decision.service, "prediction": decision.prediction,
+                    "policy_reason": decision.reason,
+                    "previous_replicas": decision.previous_placements,
+                    "desired_replicas": decision.desired_placements,
+                    "ready_replicas": states[decision.service].ready_replicas,
+                }
+                encoded = json.dumps(record, sort_keys=True)
+                handle.write(encoded + "\n")
+                print("HEADLIGHT_PROPOSAL_JSON " + encoded, flush=True)
+            handle.flush()
+            os.fsync(handle.fileno())
 
     def _record_actions(
         self,
@@ -332,6 +408,8 @@ class ControllerRuntime:
                     "timestamp": timestamp,
                     "controller": self.controller_name,
                     "bundle_id": self.bundle.bundle_id,
+                    "policy_id": self.policy_config.payload["policy_id"],
+                    "policy_configuration_hash": self.policy_config.configuration_hash,
                     "service": decision.service,
                     "prediction": decision.prediction,
                     "policy_reason": decision.reason,
@@ -345,7 +423,13 @@ class ControllerRuntime:
                     "batch_status_code": batch.status_code,
                     "idempotency_key": batch.idempotency_key,
                 }
-                handle.write(json.dumps(record, sort_keys=True) + "\n")
+                encoded = json.dumps(record, sort_keys=True)
+                handle.write(encoded + "\n")
+                # stdout is followed by the experiment host while the pod is alive.
+                # The file remains available for final collection and replay.
+                print("HEADLIGHT_ACTION_JSON " + encoded, flush=True)
+            handle.flush()
+            os.fsync(handle.fileno())
 
     def run_forever(self) -> None:
         next_tick = math.ceil(time.time() / self.interval) * self.interval

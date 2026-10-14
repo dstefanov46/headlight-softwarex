@@ -1,0 +1,3 @@
+configmap/headlight-calibration-locust created
+job.batch/headlight-calibration-locust created
+job.batch/headlight-calibration-locust condition met

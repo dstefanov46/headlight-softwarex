@@ -1,27 +1,16 @@
-# Results Directory Classification
+# Evaluation artifacts
 
-`results/` is intentionally ignored except for this classification metadata.
+The [controller archive](controller-archive/README.md) indexes the exact 60 valid
+measured runs. It covers Headlight, HPA, KEDA and Threshold, three workloads and
+seeds 101–105.
 
-Retained local result files in this checkout are not automatically validated by
-Git. Use `experiments/validate_artifacts.py` before generating measured tables
-from a complete measured matrix:
+```bash
+python experiments/validate_softwarex_evaluation.py --output results/controller-archive/validation.json
+```
 
-- `results/calibration/`: measured or partially measured calibration/debug
-  material, depending on the subdirectory. Use the bundle metadata and raw logs
-  to determine provenance before citing it.
-- `results/calibration/headlight-bundle/` and `results/calibration/lstm-bundle/`:
-  frozen model bundles if their `metadata.json` hash validation passes.
-- `results/softwarex/`: default configured location for validated measured
-  comparison bundles. Generated CSVs are valid only when accompanied by
-  `artifact_validation_manifest.json`.
-- Dry-run outputs under `results/softwarex-reproduction/dry-run/` are
-  illustrative contract checks and sample output format.
+Successful validation returns `validation_status=validated` and reproduces the
+controller/workload aggregates from the selected summaries.
 
-Large artifacts that should be deposited in Zenodo for release validation:
-
-- raw request traces;
-- Prometheus range exports;
-- Kubernetes event and CRP transition snapshots;
-- model bundles and training metrics;
-- generated measured artifact CSVs and plots;
-- version-capture JSON files.
+Frozen HeadLight bundles, calibration inputs, capacity records and source/image
+provenance support reproduction. Dry-run outputs describe execution plans and
+are separate from measured artifacts. See [evaluation scope](../docs/evaluation.md).

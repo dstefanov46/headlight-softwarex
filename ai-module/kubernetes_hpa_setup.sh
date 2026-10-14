@@ -6,6 +6,7 @@ contexts="${HEADLIGHT_HPA_CONTEXTS:-cluster2 cluster3}"
 primary_context="${contexts%% *}"
 trainticket_path="${HEADLIGHT_TRAINTICKET_PATH:-full}"
 resource_profile="${HEADLIGHT_TRAINTICKET_RESOURCE_PROFILE:-capacity-vm}"
+rendered_hpa_dir="${HEADLIGHT_RENDERED_HPA_DIR:-}"
 
 control_plane_ip() {
   name="$1"
@@ -118,17 +119,37 @@ for cluster in $contexts; do
 
   echo "Applying HPA config in $cluster..."
   if [ "${HEADLIGHT_MATCH_TOPOLOGY_CAPACITY:-0}" = "1" ]; then
-    case "$cluster" in
-      cluster2) cluster_max_replicas=3 ;;
-      cluster3) cluster_max_replicas=5 ;;
-      *) cluster_max_replicas=4 ;;
-    esac
-    python3 "$repo_root/experiments/scripts/render_hpa_autoscalers.py" \
-      --namespace trainticket \
-      --trainticket-path "$trainticket_path" \
-      --resource-profile "$resource_profile" \
-      --max-replicas "$cluster_max_replicas" | \
-      kubectl --context="$cluster" apply -f - -n trainticket
+    cluster_max_replicas=$(python3 - "$cluster" "$repo_root" <<'PY'
+import sys
+
+sys.path.insert(0, sys.argv[2])
+from experiments.lib.protocol import replica_limit_for_cluster, replica_limits
+
+cluster = sys.argv[1]
+try:
+    print(replica_limit_for_cluster(cluster))
+except KeyError:
+    print(int(replica_limits()["aggregate_max_replicas_per_service"]) // 2)
+PY
+)
+    if [ -n "$rendered_hpa_dir" ]; then
+      mkdir -p "$rendered_hpa_dir"
+      rendered_hpa="$rendered_hpa_dir/hpa-$cluster.yaml"
+      python3 "$repo_root/experiments/scripts/render_hpa_autoscalers.py" \
+        --namespace trainticket \
+        --trainticket-path "$trainticket_path" \
+        --resource-profile "$resource_profile" \
+        --max-replicas "$cluster_max_replicas" \
+        --output "$rendered_hpa"
+      kubectl --context="$cluster" apply -f "$rendered_hpa" -n trainticket
+    else
+      python3 "$repo_root/experiments/scripts/render_hpa_autoscalers.py" \
+        --namespace trainticket \
+        --trainticket-path "$trainticket_path" \
+        --resource-profile "$resource_profile" \
+        --max-replicas "$cluster_max_replicas" | \
+        kubectl --context="$cluster" apply -f - -n trainticket
+    fi
   else
     kubectl --context="$cluster" apply -f kubernetes-autoscaler/hpa.yaml -n trainticket
   fi

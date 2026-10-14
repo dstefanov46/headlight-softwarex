@@ -29,6 +29,17 @@ from .features import (
 from .graph import validate_adjacency
 from .models import build_model, decode_forecasts, learned_edge_artifact, multitask_loss
 from .profile import load_service_profile
+from .training_v2 import (
+    brier_score,
+    expected_calibration_error,
+    heldout_allocation_boundary_metrics,
+    pinball_metric,
+    q90_empirical_coverage,
+    v2_evaluation_metrics,
+    v2_multitask_loss,
+    validate_v2_training_seed_partitions,
+    weighted_interval_score_q50_q90,
+)
 
 
 def seed_everything(seed: int) -> None:
@@ -355,9 +366,18 @@ def train_offline(args: argparse.Namespace) -> dict[str, Any]:
         model_config=model_config,
         learned_edges=learned_edges,
         training_metadata={
-            key: value
-            for key, value in metrics.items()
-            if key not in {"epochs", "inference"}
+            **{
+                key: value
+                for key, value in metrics.items()
+                if key not in {"epochs", "inference"}
+            },
+            "sources": {
+                "dataset": str(dataset_path),
+                "adjacency": str(adjacency_path),
+                "service_profile": str(args.service_profile),
+            },
+            "selection_procedure": "deterministic calibration train/validation/holdout split with holdout gate",
+            "created_before_evaluation": True,
         },
         overwrite=args.overwrite,
     )
@@ -373,7 +393,7 @@ def train_offline(args: argparse.Namespace) -> dict[str, Any]:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--once", action="store_true", help="required: train one frozen bundle and exit")
-    parser.add_argument("--controller", choices=["headlight", "lstm"], default="headlight")
+    parser.add_argument("--controller", choices=["headlight"], default="headlight")
     parser.add_argument("--dataset", required=True, help="aligned calibration CSV")
     parser.add_argument("--service-profile", required=True)
     parser.add_argument("--adjacency", required=True)

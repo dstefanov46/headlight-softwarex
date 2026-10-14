@@ -1,0 +1,1162 @@
+{
+  "adjacency_sha256": "f1d09ce497c9c4e36fae16de750ca57d08c46b46b3e15b0a2a0943b1a9a353d7",
+  "best_epoch": 100,
+  "best_validation_loss": 681.2728474934896,
+  "bundle_id": "8cfd3f854cd2742e42b2fe25c607cb6a0a9cb663d5fea7ddaa441679cd7d5940",
+  "bundle_path": "/home/stefanovaleksandar130/headlight-jsa/results/calibration/headlight-bundle",
+  "dataset_sha256": "a2b3cdbed2c15bed9d37956a1108d3ec97d3de974924e426980c8cafb94240af",
+  "deterministic_algorithms": true,
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 685.8422526041667,
+      "validation_components": {
+        "cpu": 0.08106689900159836,
+        "p95_latency": 2424.047119140625,
+        "request": 0.8992739319801331,
+        "sla": 0.5969802935918173
+      },
+      "validation_loss": 727.6088460286459
+    },
+    {
+      "epoch": 2,
+      "train_loss": 719.5866333007813,
+      "validation_components": {
+        "cpu": 0.07765004535516103,
+        "p95_latency": 2423.8701985677085,
+        "request": 0.8597062031428019,
+        "sla": 0.5821149349212646
+      },
+      "validation_loss": 727.5395914713541
+    },
+    {
+      "epoch": 3,
+      "train_loss": 703.75966796875,
+      "validation_components": {
+        "cpu": 0.07348500192165375,
+        "p95_latency": 2423.6318359375,
+        "request": 0.8122942248980204,
+        "sla": 0.5643149216969808
+      },
+      "validation_loss": 727.4486897786459
+    },
+    {
+      "epoch": 4,
+      "train_loss": 713.4167846679687,
+      "validation_components": {
+        "cpu": 0.06761923929055531,
+        "p95_latency": 2423.311279296875,
+        "request": 0.7457366188367208,
+        "sla": 0.5417960087458292
+      },
+      "validation_loss": 727.3255004882812
+    },
+    {
+      "epoch": 5,
+      "train_loss": 711.2196818033855,
+      "validation_components": {
+        "cpu": 0.05993774036566416,
+        "p95_latency": 2422.9007161458335,
+        "request": 0.674602190653483,
+        "sla": 0.5150876641273499
+      },
+      "validation_loss": 727.1728515625
+    },
+    {
+      "epoch": 6,
+      "train_loss": 693.6727579752604,
+      "validation_components": {
+        "cpu": 0.05119306594133377,
+        "p95_latency": 2422.3938802083335,
+        "request": 0.6150606870651245,
+        "sla": 0.493589589993159
+      },
+      "validation_loss": 726.9956258138021
+    },
+    {
+      "epoch": 7,
+      "train_loss": 687.1555786132812,
+      "validation_components": {
+        "cpu": 0.04167929415901502,
+        "p95_latency": 2421.7842610677085,
+        "request": 0.5515894691149393,
+        "sla": 0.48443618416786194
+      },
+      "validation_loss": 726.7872111002604
+    },
+    {
+      "epoch": 8,
+      "train_loss": 704.1269490559896,
+      "validation_components": {
+        "cpu": 0.03200904652476311,
+        "p95_latency": 2421.07421875,
+        "request": 0.4732664128144582,
+        "sla": 0.48640307784080505
+      },
+      "validation_loss": 726.5445760091146
+    },
+    {
+      "epoch": 9,
+      "train_loss": 704.3284261067708,
+      "validation_components": {
+        "cpu": 0.023337673395872116,
+        "p95_latency": 2420.4108072916665,
+        "request": 0.40858601530392963,
+        "sla": 0.4908502399921417
+      },
+      "validation_loss": 726.3211873372396
+    },
+    {
+      "epoch": 10,
+      "train_loss": 697.9908487955729,
+      "validation_components": {
+        "cpu": 0.016540726646780968,
+        "p95_latency": 2419.86669921875,
+        "request": 0.3856039146582286,
+        "sla": 0.49252551794052124
+      },
+      "validation_loss": 726.1483764648438
+    },
+    {
+      "epoch": 11,
+      "train_loss": 712.3938517252604,
+      "validation_components": {
+        "cpu": 0.012308799351255098,
+        "p95_latency": 2419.3177897135415,
+        "request": 0.37414876619974774,
+        "sla": 0.4908607602119446
+      },
+      "validation_loss": 725.9784749348959
+    },
+    {
+      "epoch": 12,
+      "train_loss": 706.2338134765625,
+      "validation_components": {
+        "cpu": 0.010993459882835547,
+        "p95_latency": 2418.7582194010415,
+        "request": 0.36117446422576904,
+        "sla": 0.4889862835407257
+      },
+      "validation_loss": 725.8055623372396
+    },
+    {
+      "epoch": 13,
+      "train_loss": 704.9464803059896,
+      "validation_components": {
+        "cpu": 0.010316935988763968,
+        "p95_latency": 2418.199462890625,
+        "request": 0.3454303940137227,
+        "sla": 0.4890109399954478
+      },
+      "validation_loss": 725.6322428385416
+    },
+    {
+      "epoch": 14,
+      "train_loss": 707.1124186197917,
+      "validation_components": {
+        "cpu": 0.009861205394069353,
+        "p95_latency": 2417.6305338541665,
+        "request": 0.3274829188982646,
+        "sla": 0.4895615080992381
+      },
+      "validation_loss": 725.4552612304688
+    },
+    {
+      "epoch": 15,
+      "train_loss": 702.0499430338542,
+      "validation_components": {
+        "cpu": 0.009551904474695524,
+        "p95_latency": 2417.048095703125,
+        "request": 0.30578962961832684,
+        "sla": 0.4901096026102702
+      },
+      "validation_loss": 725.2728678385416
+    },
+    {
+      "epoch": 16,
+      "train_loss": 686.9427368164063,
+      "validation_components": {
+        "cpu": 0.009386473956207434,
+        "p95_latency": 2416.426513671875,
+        "request": 0.2956133782863617,
+        "sla": 0.4907424747943878
+      },
+      "validation_loss": 725.0828857421875
+    },
+    {
+      "epoch": 17,
+      "train_loss": 690.35224609375,
+      "validation_components": {
+        "cpu": 0.009314226297040781,
+        "p95_latency": 2415.761474609375,
+        "request": 0.2989855110645294,
+        "sla": 0.4912564953168233
+      },
+      "validation_loss": 724.8845825195312
+    },
+    {
+      "epoch": 18,
+      "train_loss": 705.1697062174479,
+      "validation_components": {
+        "cpu": 0.009294147913654646,
+        "p95_latency": 2415.048095703125,
+        "request": 0.3010401527086894,
+        "sla": 0.49174627661705017
+      },
+      "validation_loss": 724.6713053385416
+    },
+    {
+      "epoch": 19,
+      "train_loss": 713.191337076823,
+      "validation_components": {
+        "cpu": 0.00927309567729632,
+        "p95_latency": 2414.270263671875,
+        "request": 0.3009733060995738,
+        "sla": 0.492770791053772
+      },
+      "validation_loss": 724.4380493164062
+    },
+    {
+      "epoch": 20,
+      "train_loss": 699.3929402669271,
+      "validation_components": {
+        "cpu": 0.00925118134667476,
+        "p95_latency": 2413.4396158854165,
+        "request": 0.3000847399234772,
+        "sla": 0.49294789632161456
+      },
+      "validation_loss": 724.1885172526041
+    },
+    {
+      "epoch": 21,
+      "train_loss": 683.7203409830729,
+      "validation_components": {
+        "cpu": 0.00927555343757073,
+        "p95_latency": 2412.547119140625,
+        "request": 0.2998175223668416,
+        "sla": 0.49338234464327496
+      },
+      "validation_loss": 723.9207763671875
+    },
+    {
+      "epoch": 22,
+      "train_loss": 683.7377766927083,
+      "validation_components": {
+        "cpu": 0.009378503387173017,
+        "p95_latency": 2411.584228515625,
+        "request": 0.29903993010520935,
+        "sla": 0.49362749854723614
+      },
+      "validation_loss": 723.6316731770834
+    },
+    {
+      "epoch": 23,
+      "train_loss": 691.93203125,
+      "validation_components": {
+        "cpu": 0.009524804229537645,
+        "p95_latency": 2410.5618489583335,
+        "request": 0.29859767357508343,
+        "sla": 0.49410449465115863
+      },
+      "validation_loss": 723.3248901367188
+    },
+    {
+      "epoch": 24,
+      "train_loss": 680.1688334147135,
+      "validation_components": {
+        "cpu": 0.00983138040949901,
+        "p95_latency": 2409.676025390625,
+        "request": 0.30036501089731854,
+        "sla": 0.4945778449376424
+      },
+      "validation_loss": 723.0598754882812
+    },
+    {
+      "epoch": 25,
+      "train_loss": 698.915946451823,
+      "validation_components": {
+        "cpu": 0.010299555646876494,
+        "p95_latency": 2408.8548177083335,
+        "request": 0.2990916172663371,
+        "sla": 0.49472464124361676
+      },
+      "validation_loss": 722.8132120768229
+    },
+    {
+      "epoch": 26,
+      "train_loss": 692.5194702148438,
+      "validation_components": {
+        "cpu": 0.010989473822216192,
+        "p95_latency": 2407.9891764322915,
+        "request": 0.2990031838417053,
+        "sla": 0.4955630302429199
+      },
+      "validation_loss": 722.5537312825521
+    },
+    {
+      "epoch": 27,
+      "train_loss": 695.4004516601562,
+      "validation_components": {
+        "cpu": 0.011639075353741646,
+        "p95_latency": 2407.0785319010415,
+        "request": 0.2994234462579091,
+        "sla": 0.49552440643310547
+      },
+      "validation_loss": 722.2808634440104
+    },
+    {
+      "epoch": 28,
+      "train_loss": 683.0857340494791,
+      "validation_components": {
+        "cpu": 0.011440973418454329,
+        "p95_latency": 2406.1175944010415,
+        "request": 0.29971293608347577,
+        "sla": 0.4954342146714528
+      },
+      "validation_loss": 721.9926147460938
+    },
+    {
+      "epoch": 29,
+      "train_loss": 691.1438598632812,
+      "validation_components": {
+        "cpu": 0.011417528924842676,
+        "p95_latency": 2405.1053059895835,
+        "request": 0.29973849654197693,
+        "sla": 0.4959638714790344
+      },
+      "validation_loss": 721.6889851888021
+    },
+    {
+      "epoch": 30,
+      "train_loss": 677.5686686197917,
+      "validation_components": {
+        "cpu": 0.011189013719558716,
+        "p95_latency": 2404.0270182291665,
+        "request": 0.2994592289129893,
+        "sla": 0.49684934814771015
+      },
+      "validation_loss": 721.3654378255209
+    },
+    {
+      "epoch": 31,
+      "train_loss": 686.2154296875,
+      "validation_components": {
+        "cpu": 0.011249045841395855,
+        "p95_latency": 2402.908203125,
+        "request": 0.2998824715614319,
+        "sla": 0.4962561825911204
+      },
+      "validation_loss": 721.0299072265625
+    },
+    {
+      "epoch": 32,
+      "train_loss": 693.8103759765625,
+      "validation_components": {
+        "cpu": 0.011197617277503014,
+        "p95_latency": 2401.7473958333335,
+        "request": 0.3014093538125356,
+        "sla": 0.49649738272031146
+      },
+      "validation_loss": 720.6821899414062
+    },
+    {
+      "epoch": 33,
+      "train_loss": 697.879345703125,
+      "validation_components": {
+        "cpu": 0.01101664174348116,
+        "p95_latency": 2400.541748046875,
+        "request": 0.30029887954394024,
+        "sla": 0.4977736175060272
+      },
+      "validation_loss": 720.3201904296875
+    },
+    {
+      "epoch": 34,
+      "train_loss": 705.3460205078125,
+      "validation_components": {
+        "cpu": 0.010695877484977245,
+        "p95_latency": 2399.3123372395835,
+        "request": 0.3018433749675751,
+        "sla": 0.49700971444447833
+      },
+      "validation_loss": 719.9517415364584
+    },
+    {
+      "epoch": 35,
+      "train_loss": 687.3564127604167,
+      "validation_components": {
+        "cpu": 0.01072591512153546,
+        "p95_latency": 2398.038330078125,
+        "request": 0.30021190643310547,
+        "sla": 0.49728907148043316
+      },
+      "validation_loss": 719.5689900716146
+    },
+    {
+      "epoch": 36,
+      "train_loss": 684.1588297526042,
+      "validation_components": {
+        "cpu": 0.010539278698464235,
+        "p95_latency": 2396.75927734375,
+        "request": 0.30065323909123737,
+        "sla": 0.49686504403750104
+      },
+      "validation_loss": 719.1853841145834
+    },
+    {
+      "epoch": 37,
+      "train_loss": 678.1529256184896,
+      "validation_components": {
+        "cpu": 0.010574285561839739,
+        "p95_latency": 2395.45361328125,
+        "request": 0.3004712462425232,
+        "sla": 0.4998830060164134
+      },
+      "validation_loss": 718.7939046223959
+    },
+    {
+      "epoch": 38,
+      "train_loss": 678.6121419270834,
+      "validation_components": {
+        "cpu": 0.010484863072633743,
+        "p95_latency": 2394.130859375,
+        "request": 0.3004103700319926,
+        "sla": 0.49731703599294025
+      },
+      "validation_loss": 718.3967895507812
+    },
+    {
+      "epoch": 39,
+      "train_loss": 680.1167439778645,
+      "validation_components": {
+        "cpu": 0.010077620235582193,
+        "p95_latency": 2392.779052734375,
+        "request": 0.3004486759503682,
+        "sla": 0.49790387352307636
+      },
+      "validation_loss": 717.9912312825521
+    },
+    {
+      "epoch": 40,
+      "train_loss": 684.1651326497396,
+      "validation_components": {
+        "cpu": 0.009906540314356485,
+        "p95_latency": 2391.4086100260415,
+        "request": 0.30084361632664997,
+        "sla": 0.4975411295890808
+      },
+      "validation_loss": 717.5801188151041
+    },
+    {
+      "epoch": 41,
+      "train_loss": 687.4983317057291,
+      "validation_components": {
+        "cpu": 0.009942364258070787,
+        "p95_latency": 2390.0439453125,
+        "request": 0.3011731406052907,
+        "sla": 0.4980458120505015
+      },
+      "validation_loss": 717.1709187825521
+    },
+    {
+      "epoch": 42,
+      "train_loss": 673.9646219889323,
+      "validation_components": {
+        "cpu": 0.009771966996292273,
+        "p95_latency": 2388.6482747395835,
+        "request": 0.3002609113852183,
+        "sla": 0.4982214669386546
+      },
+      "validation_loss": 716.7518717447916
+    },
+    {
+      "epoch": 43,
+      "train_loss": 681.597412109375,
+      "validation_components": {
+        "cpu": 0.009380565645794073,
+        "p95_latency": 2387.2381998697915,
+        "request": 0.3072223365306854,
+        "sla": 0.49813754359881085
+      },
+      "validation_loss": 716.3311767578125
+    },
+    {
+      "epoch": 44,
+      "train_loss": 703.2639200846354,
+      "validation_components": {
+        "cpu": 0.00920228473842144,
+        "p95_latency": 2385.8072916666665,
+        "request": 0.3010237117608388,
+        "sla": 0.4986555476983388
+      },
+      "validation_loss": 715.8997599283854
+    },
+    {
+      "epoch": 45,
+      "train_loss": 665.965625,
+      "validation_components": {
+        "cpu": 0.009367901521424452,
+        "p95_latency": 2384.41064453125,
+        "request": 0.3056791126728058,
+        "sla": 0.4990169008572896
+      },
+      "validation_loss": 715.4824625651041
+    },
+    {
+      "epoch": 46,
+      "train_loss": 675.1273111979167,
+      "validation_components": {
+        "cpu": 0.00912464844683806,
+        "p95_latency": 2383.0076497395835,
+        "request": 0.3024544914563497,
+        "sla": 0.49985331296920776
+      },
+      "validation_loss": 715.0604248046875
+    },
+    {
+      "epoch": 47,
+      "train_loss": 678.5010009765625,
+      "validation_components": {
+        "cpu": 0.008525335229933262,
+        "p95_latency": 2381.5947265625,
+        "request": 0.3003751536210378,
+        "sla": 0.5010975897312164
+      },
+      "validation_loss": 714.6358032226562
+    },
+    {
+      "epoch": 48,
+      "train_loss": 706.7566284179687,
+      "validation_components": {
+        "cpu": 0.00828468861679236,
+        "p95_latency": 2380.1317545572915,
+        "request": 0.3010456363360087,
+        "sla": 0.501161128282547
+      },
+      "validation_loss": 714.1971028645834
+    },
+    {
+      "epoch": 49,
+      "train_loss": 691.9005411783854,
+      "validation_components": {
+        "cpu": 0.008022902378191551,
+        "p95_latency": 2378.5853678385415,
+        "request": 0.301185021797816,
+        "sla": 0.4979783296585083
+      },
+      "validation_loss": 713.7328491210938
+    },
+    {
+      "epoch": 50,
+      "train_loss": 699.8911987304688,
+      "validation_components": {
+        "cpu": 0.008106421368817488,
+        "p95_latency": 2377.0343424479165,
+        "request": 0.3007679184277852,
+        "sla": 0.49920395016670227
+      },
+      "validation_loss": 713.2675374348959
+    },
+    {
+      "epoch": 51,
+      "train_loss": 679.9997395833333,
+      "validation_components": {
+        "cpu": 0.008001496394475302,
+        "p95_latency": 2375.42138671875,
+        "request": 0.3028669059276581,
+        "sla": 0.49753110607465106
+      },
+      "validation_loss": 712.7842203776041
+    },
+    {
+      "epoch": 52,
+      "train_loss": 683.7778076171875,
+      "validation_components": {
+        "cpu": 0.0075786723755300045,
+        "p95_latency": 2373.783203125,
+        "request": 0.30283061663309735,
+        "sla": 0.49832401672999066
+      },
+      "validation_loss": 712.2926839192709
+    },
+    {
+      "epoch": 53,
+      "train_loss": 677.649239095052,
+      "validation_components": {
+        "cpu": 0.007340139088531335,
+        "p95_latency": 2372.0938313802085,
+        "request": 0.3010938862959544,
+        "sla": 0.49795151750246686
+      },
+      "validation_loss": 711.7851969401041
+    },
+    {
+      "epoch": 54,
+      "train_loss": 672.8110148111979,
+      "validation_components": {
+        "cpu": 0.007203597420205672,
+        "p95_latency": 2370.3892415364585,
+        "request": 0.301418532927831,
+        "sla": 0.49738311767578125
+      },
+      "validation_loss": 711.2738850911459
+    },
+    {
+      "epoch": 55,
+      "train_loss": 676.2494832356771,
+      "validation_components": {
+        "cpu": 0.007213862302402656,
+        "p95_latency": 2368.6566569010415,
+        "request": 0.3012993037700653,
+        "sla": 0.4988712767759959
+      },
+      "validation_loss": 710.7541300455729
+    },
+    {
+      "epoch": 56,
+      "train_loss": 693.1211751302084,
+      "validation_components": {
+        "cpu": 0.007272126463552316,
+        "p95_latency": 2366.9117024739585,
+        "request": 0.3011898100376129,
+        "sla": 0.4977558155854543
+      },
+      "validation_loss": 710.2305501302084
+    },
+    {
+      "epoch": 57,
+      "train_loss": 675.1174194335938,
+      "validation_components": {
+        "cpu": 0.007190763795127471,
+        "p95_latency": 2365.1087239583335,
+        "request": 0.30180514852205914,
+        "sla": 0.4963116943836212
+      },
+      "validation_loss": 709.689697265625
+    },
+    {
+      "epoch": 58,
+      "train_loss": 681.4968221028646,
+      "validation_components": {
+        "cpu": 0.007481396819154422,
+        "p95_latency": 2363.2491861979165,
+        "request": 0.3011822998523712,
+        "sla": 0.4964852035045624
+      },
+      "validation_loss": 709.1317138671875
+    },
+    {
+      "epoch": 59,
+      "train_loss": 683.5245402018229,
+      "validation_components": {
+        "cpu": 0.006829643622040749,
+        "p95_latency": 2361.35693359375,
+        "request": 0.30082125465075177,
+        "sla": 0.49626513322194415
+      },
+      "validation_loss": 708.5637410481771
+    },
+    {
+      "epoch": 60,
+      "train_loss": 665.091621907552,
+      "validation_components": {
+        "cpu": 0.006659369915723801,
+        "p95_latency": 2359.4005126953125,
+        "request": 0.3009730577468872,
+        "sla": 0.4954300622145335
+      },
+      "validation_loss": 707.9767252604166
+    },
+    {
+      "epoch": 61,
+      "train_loss": 670.8020100911458,
+      "validation_components": {
+        "cpu": 0.007548868656158447,
+        "p95_latency": 2357.4195556640625,
+        "request": 0.30206430951754254,
+        "sla": 0.49379050731658936
+      },
+      "validation_loss": 707.3828531901041
+    },
+    {
+      "epoch": 62,
+      "train_loss": 675.7446492513021,
+      "validation_components": {
+        "cpu": 0.007067622461666663,
+        "p95_latency": 2355.4386393229165,
+        "request": 0.3040861487388611,
+        "sla": 0.4942433436711629
+      },
+      "validation_loss": 706.7892456054688
+    },
+    {
+      "epoch": 63,
+      "train_loss": 673.1525349934896,
+      "validation_components": {
+        "cpu": 0.006914372866352399,
+        "p95_latency": 2353.385945638021,
+        "request": 0.3000154693921407,
+        "sla": 0.4951356053352356
+      },
+      "validation_loss": 706.1720784505209
+    },
+    {
+      "epoch": 64,
+      "train_loss": 660.2289326985677,
+      "validation_components": {
+        "cpu": 0.006379920213172833,
+        "p95_latency": 2351.2808430989585,
+        "request": 0.3014032344023387,
+        "sla": 0.4905096689860026
+      },
+      "validation_loss": 705.5404256184896
+    },
+    {
+      "epoch": 65,
+      "train_loss": 667.5949829101562,
+      "validation_components": {
+        "cpu": 0.005933911539614201,
+        "p95_latency": 2349.1654052734375,
+        "request": 0.30031954248746234,
+        "sla": 0.4917650918165843
+      },
+      "validation_loss": 704.9054565429688
+    },
+    {
+      "epoch": 66,
+      "train_loss": 669.6766845703125,
+      "validation_components": {
+        "cpu": 0.006207940789560477,
+        "p95_latency": 2347.004638671875,
+        "request": 0.3001236319541931,
+        "sla": 0.4915432631969452
+      },
+      "validation_loss": 704.2571818033854
+    },
+    {
+      "epoch": 67,
+      "train_loss": 654.0194295247396,
+      "validation_components": {
+        "cpu": 0.0066081928089261055,
+        "p95_latency": 2344.7838541666665,
+        "request": 0.30173491438229877,
+        "sla": 0.47443674008051556
+      },
+      "validation_loss": 703.5898844401041
+    },
+    {
+      "epoch": 68,
+      "train_loss": 670.3127421061198,
+      "validation_components": {
+        "cpu": 0.0073376406605045,
+        "p95_latency": 2342.374267578125,
+        "request": 0.3039144774278005,
+        "sla": 0.4644739627838135
+      },
+      "validation_loss": 702.8670043945312
+    },
+    {
+      "epoch": 69,
+      "train_loss": 663.9360473632812,
+      "validation_components": {
+        "cpu": 0.007945194685210785,
+        "p95_latency": 2339.1077473958335,
+        "request": 0.3119218150774638,
+        "sla": 0.44451192021369934
+      },
+      "validation_loss": 701.8879801432291
+    },
+    {
+      "epoch": 70,
+      "train_loss": 674.0911702473958,
+      "validation_components": {
+        "cpu": 0.008638132673998674,
+        "p95_latency": 2335.1033528645835,
+        "request": 0.3535872797171275,
+        "sla": 0.43394556641578674
+      },
+      "validation_loss": 700.7003377278646
+    },
+    {
+      "epoch": 71,
+      "train_loss": 647.9055887858073,
+      "validation_components": {
+        "cpu": 0.008875642282267412,
+        "p95_latency": 2332.4034830729165,
+        "request": 0.38952313860257465,
+        "sla": 0.4447304705778758
+      },
+      "validation_loss": 699.9040934244791
+    },
+    {
+      "epoch": 72,
+      "train_loss": 657.7391682942708,
+      "validation_components": {
+        "cpu": 0.008530158239106337,
+        "p95_latency": 2330.0999348958335,
+        "request": 0.41254328687985736,
+        "sla": 0.45031072696050006
+      },
+      "validation_loss": 699.2215576171875
+    },
+    {
+      "epoch": 73,
+      "train_loss": 658.1711954752604,
+      "validation_components": {
+        "cpu": 0.008035939807693163,
+        "p95_latency": 2327.565714518229,
+        "request": 0.42369882265726727,
+        "sla": 0.44381683071454364
+      },
+      "validation_loss": 698.4644571940104
+    },
+    {
+      "epoch": 74,
+      "train_loss": 648.5977600097656,
+      "validation_components": {
+        "cpu": 0.007630436215549707,
+        "p95_latency": 2325.0660400390625,
+        "request": 0.4351463516553243,
+        "sla": 0.45058366656303406
+      },
+      "validation_loss": 697.7190958658854
+    },
+    {
+      "epoch": 75,
+      "train_loss": 663.7619262695313,
+      "validation_components": {
+        "cpu": 0.007751775129387776,
+        "p95_latency": 2322.6224772135415,
+        "request": 0.4606923560301463,
+        "sla": 0.4654121398925781
+      },
+      "validation_loss": 696.9965006510416
+    },
+    {
+      "epoch": 76,
+      "train_loss": 667.8276936848958,
+      "validation_components": {
+        "cpu": 0.006360579902927081,
+        "p95_latency": 2320.2344563802085,
+        "request": 0.4511298139890035,
+        "sla": 0.49170835812886554
+      },
+      "validation_loss": 696.2789916992188
+    },
+    {
+      "epoch": 77,
+      "train_loss": 661.602870686849,
+      "validation_components": {
+        "cpu": 0.006520773284137249,
+        "p95_latency": 2317.5082194010415,
+        "request": 0.46782516439755756,
+        "sla": 0.4624025921026866
+      },
+      "validation_loss": 695.4640909830729
+    },
+    {
+      "epoch": 78,
+      "train_loss": 653.6857503255209,
+      "validation_components": {
+        "cpu": 0.006609805549184482,
+        "p95_latency": 2315.2105305989585,
+        "request": 0.4747723937034607,
+        "sla": 0.4711575011412303
+      },
+      "validation_loss": 694.7781168619791
+    },
+    {
+      "epoch": 79,
+      "train_loss": 654.1129842122396,
+      "validation_components": {
+        "cpu": 0.006012536585330963,
+        "p95_latency": 2312.70654296875,
+        "request": 0.47747889161109924,
+        "sla": 0.4654307762781779
+      },
+      "validation_loss": 694.0271402994791
+    },
+    {
+      "epoch": 80,
+      "train_loss": 664.8045613606771,
+      "validation_components": {
+        "cpu": 0.0056005169947942095,
+        "p95_latency": 2310.432576497396,
+        "request": 0.45585306485493976,
+        "sla": 0.4653352399667104
+      },
+      "validation_loss": 693.3372802734375
+    },
+    {
+      "epoch": 81,
+      "train_loss": 652.655839029948,
+      "validation_components": {
+        "cpu": 0.00596412302305301,
+        "p95_latency": 2307.989990234375,
+        "request": 0.4284049371878306,
+        "sla": 0.4884905715783437
+      },
+      "validation_loss": 692.5973307291666
+    },
+    {
+      "epoch": 82,
+      "train_loss": 651.4976399739584,
+      "validation_components": {
+        "cpu": 0.005573910350600879,
+        "p95_latency": 2305.5568033854165,
+        "request": 0.41031744082768756,
+        "sla": 0.46410704652468365
+      },
+      "validation_loss": 691.8584798177084
+    },
+    {
+      "epoch": 83,
+      "train_loss": 657.230887858073,
+      "validation_components": {
+        "cpu": 0.0051377311659355955,
+        "p95_latency": 2303.155517578125,
+        "request": 0.40218019485473633,
+        "sla": 0.46463800470034283
+      },
+      "validation_loss": 691.1351928710938
+    },
+    {
+      "epoch": 84,
+      "train_loss": 643.0920450846354,
+      "validation_components": {
+        "cpu": 0.004777584845821063,
+        "p95_latency": 2301.1472981770835,
+        "request": 0.38357746601104736,
+        "sla": 0.475289265314738
+      },
+      "validation_loss": 690.5271809895834
+    },
+    {
+      "epoch": 85,
+      "train_loss": 642.5432250976562,
+      "validation_components": {
+        "cpu": 0.004929153403888146,
+        "p95_latency": 2298.7303873697915,
+        "request": 0.3706670304139455,
+        "sla": 0.47760605812072754
+      },
+      "validation_loss": 689.7978922526041
+    },
+    {
+      "epoch": 86,
+      "train_loss": 645.2538899739583,
+      "validation_components": {
+        "cpu": 0.005109849696358045,
+        "p95_latency": 2296.7345377604165,
+        "request": 0.3522562583287557,
+        "sla": 0.46819766362508136
+      },
+      "validation_loss": 689.1917521158854
+    },
+    {
+      "epoch": 87,
+      "train_loss": 644.3490763346355,
+      "validation_components": {
+        "cpu": 0.00501519317428271,
+        "p95_latency": 2294.2745768229165,
+        "request": 0.34126582741737366,
+        "sla": 0.4685783584912618
+      },
+      "validation_loss": 688.449951171875
+    },
+    {
+      "epoch": 88,
+      "train_loss": 637.1761739095052,
+      "validation_components": {
+        "cpu": 0.00503833560893933,
+        "p95_latency": 2292.403076171875,
+        "request": 0.3271082639694214,
+        "sla": 0.5012793938318888
+      },
+      "validation_loss": 687.8868408203125
+    },
+    {
+      "epoch": 89,
+      "train_loss": 638.1455078125,
+      "validation_components": {
+        "cpu": 0.004649994584421317,
+        "p95_latency": 2290.3194986979165,
+        "request": 0.3098876476287842,
+        "sla": 0.4729078412055969
+      },
+      "validation_loss": 687.2527872721354
+    },
+    {
+      "epoch": 90,
+      "train_loss": 645.0939208984375,
+      "validation_components": {
+        "cpu": 0.004456480033695698,
+        "p95_latency": 2288.539306640625,
+        "request": 0.29040812452634174,
+        "sla": 0.4817228615283966
+      },
+      "validation_loss": 686.7127685546875
+    },
+    {
+      "epoch": 91,
+      "train_loss": 651.3417643229167,
+      "validation_components": {
+        "cpu": 0.004543215036392212,
+        "p95_latency": 2286.6385091145835,
+        "request": 0.2779334882895152,
+        "sla": 0.4717664122581482
+      },
+      "validation_loss": 686.13720703125
+    },
+    {
+      "epoch": 92,
+      "train_loss": 649.4368530273438,
+      "validation_components": {
+        "cpu": 0.004477150893459718,
+        "p95_latency": 2285.0294596354165,
+        "request": 0.2590978145599365,
+        "sla": 0.48647164305051166
+      },
+      "validation_loss": 685.6493123372396
+    },
+    {
+      "epoch": 93,
+      "train_loss": 644.1121785481771,
+      "validation_components": {
+        "cpu": 0.004854323497662942,
+        "p95_latency": 2283.504597981771,
+        "request": 0.2529903252919515,
+        "sla": 0.4740521510442098
+      },
+      "validation_loss": 685.1885782877604
+    },
+    {
+      "epoch": 94,
+      "train_loss": 645.7435160319011,
+      "validation_components": {
+        "cpu": 0.004704144938538472,
+        "p95_latency": 2281.387736002604,
+        "request": 0.25649454196294147,
+        "sla": 0.45714159806569415
+      },
+      "validation_loss": 684.5530192057291
+    },
+    {
+      "epoch": 95,
+      "train_loss": 633.0460327148437,
+      "validation_components": {
+        "cpu": 0.004776170632491509,
+        "p95_latency": 2279.665079752604,
+        "request": 0.24053074916203818,
+        "sla": 0.47288626432418823
+      },
+      "validation_loss": 684.0322469075521
+    },
+    {
+      "epoch": 96,
+      "train_loss": 642.723954264323,
+      "validation_components": {
+        "cpu": 0.004370824123422305,
+        "p95_latency": 2277.7067057291665,
+        "request": 0.24062389135360718,
+        "sla": 0.4538201888402303
+      },
+      "validation_loss": 683.4427490234375
+    },
+    {
+      "epoch": 97,
+      "train_loss": 635.631005859375,
+      "validation_components": {
+        "cpu": 0.0037122726595650115,
+        "p95_latency": 2275.9479166666665,
+        "request": 0.24082324902216592,
+        "sla": 0.46517008543014526
+      },
+      "validation_loss": 682.9161173502604
+    },
+    {
+      "epoch": 98,
+      "train_loss": 622.0714965820313,
+      "validation_components": {
+        "cpu": 0.004045610083267093,
+        "p95_latency": 2273.9263916015625,
+        "request": 0.25140022734800976,
+        "sla": 0.42855241894721985
+      },
+      "validation_loss": 682.309814453125
+    },
+    {
+      "epoch": 99,
+      "train_loss": 643.056953938802,
+      "validation_components": {
+        "cpu": 0.004671251401305199,
+        "p95_latency": 2272.1187337239585,
+        "request": 0.24410792191823324,
+        "sla": 0.4384254316488902
+      },
+      "validation_loss": 681.7660929361979
+    },
+    {
+      "epoch": 100,
+      "train_loss": 639.3970133463541,
+      "validation_components": {
+        "cpu": 0.004569713491946459,
+        "p95_latency": 2270.4578450520835,
+        "request": 0.2516789336999257,
+        "sla": 0.46254241466522217
+      },
+      "validation_loss": 681.2728474934896
+    }
+  ],
+  "holdout": {
+    "components": {
+      "cpu": 0.004511018865741789,
+      "p95_latency": 2480.5575561523438,
+      "request": 0.36152131110429764,
+      "sla": 0.5278697311878204
+    },
+    "cpu_q90_mae": 0.0426875464618206,
+    "loss": 744.3477478027344,
+    "p95_latency_q90_mae": 2617.862548828125,
+    "request_q50_mae": 0.9598912596702576,
+    "request_q90_mae": 0.6314605474472046,
+    "sla_classification_accuracy": 0.986
+  },
+  "inference": {
+    "median_ms": 0.6251700015127426,
+    "p95_ms": 0.8632745004433673,
+    "samples": 20
+  },
+  "model_config": {
+    "forecast_horizon_seconds": 180,
+    "graph_blocks": 2,
+    "hidden_width": 32,
+    "horizon": 12,
+    "input_size": 14,
+    "lookback": 24,
+    "model_type": "headlight",
+    "num_nodes": 18,
+    "residual_bound": 0.3,
+    "sampling_interval_seconds": 15,
+    "variant": "full"
+  },
+  "profile_hash": "ddd0974573c10108e3148a731230de4bccabc07a5666792bd525e39209e3678f",
+  "samples": {
+    "holdout": 100,
+    "total": 666,
+    "train": 454,
+    "validation": 88
+  },
+  "seed": 20260705,
+  "split": {
+    "first_boundary": 1787158862,
+    "maximum_scaler_timestamp": 1787158487,
+    "purge_seconds": 180,
+    "ratios": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "second_boundary": 1787160362
+  }
+}

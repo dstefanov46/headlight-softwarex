@@ -1,0 +1,53 @@
+global
+  log stdout format raw local0
+  stats socket ipv4@127.0.0.1:9999 level admin
+  stats timeout 5s
+
+defaults
+  log global
+  mode http
+  option httplog
+  timeout connect 5s
+  timeout client 60s
+  timeout server 60s
+
+frontend trainticket
+  bind :8080
+  http-request return status 200 if { path /_health }
+  acl auth_path path_beg /api/v1/users/ /api/v1/auth/
+  acl route_path path_beg /api/v1/routeservice/
+  acl travel_path path_beg /api/v1/travelservice/
+  use_backend auth if auth_path
+  use_backend route if route_path
+  use_backend travel if travel_path
+  default_backend no_route
+
+backend no_route
+  http-request return status 404
+
+backend auth
+  balance roundrobin
+  option httpchk
+  http-check send meth GET uri /healthz/ready ver HTTP/1.1 hdr Host localhost
+  http-check expect status 200
+  http-response set-header X-Headlight-Cluster %[srv_name]
+  server cluster2 __CLUSTER2_IP__:__CLUSTER2_HTTP_PORT__ check port __CLUSTER2_STATUS_PORT__ weight 0
+  server cluster3 __CLUSTER3_IP__:__CLUSTER3_HTTP_PORT__ check port __CLUSTER3_STATUS_PORT__ weight 0
+
+backend route
+  balance roundrobin
+  option httpchk
+  http-check send meth GET uri /healthz/ready ver HTTP/1.1 hdr Host localhost
+  http-check expect status 200
+  http-response set-header X-Headlight-Cluster %[srv_name]
+  server cluster2 __CLUSTER2_IP__:__CLUSTER2_HTTP_PORT__ check port __CLUSTER2_STATUS_PORT__ weight 0
+  server cluster3 __CLUSTER3_IP__:__CLUSTER3_HTTP_PORT__ check port __CLUSTER3_STATUS_PORT__ weight 0
+
+backend travel
+  balance roundrobin
+  option httpchk
+  http-check send meth GET uri /healthz/ready ver HTTP/1.1 hdr Host localhost
+  http-check expect status 200
+  http-response set-header X-Headlight-Cluster %[srv_name]
+  server cluster2 __CLUSTER2_IP__:__CLUSTER2_HTTP_PORT__ check port __CLUSTER2_STATUS_PORT__ weight 0
+  server cluster3 __CLUSTER3_IP__:__CLUSTER3_HTTP_PORT__ check port __CLUSTER3_STATUS_PORT__ weight 0

@@ -10,6 +10,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import yaml
+
+from experiments.lib.config import REPO_ROOT
+
 from experiments.lib.quality import (
     capacity_is_healthy,
     duration_is_covered,
@@ -21,6 +25,8 @@ from experiments.lib.quality import (
     select_safe_capacity,
 )
 from experiments.run_capacity_qualification import (
+    CAPACITY_PILOT_SETUP,
+    DEFAULT_CONTROLLERS,
     CampaignFailure,
     CampaignOptions,
     CapacityCampaign,
@@ -126,19 +132,40 @@ class CampaignTests(unittest.TestCase):
         )
         return campaign, calls
 
-    def test_all_pilots_and_four_qualifications_complete(self) -> None:
-        campaign, calls = self.run_campaign([summary(100), summary(150), summary(180), summary(190)])
+    def test_all_pilots_and_four_supported_qualifications_complete(self) -> None:
+        campaign, calls = self.run_campaign([summary(100), summary(150), summary(180), summary(190), summary(195)])
         campaign.run()
         self.assertEqual(campaign.selected_capacity, 10)
-        self.assertEqual(len(calls), 8)
-        self.assertCountEqual(campaign.controller_order, ["headlight", "lstm", "keda", "hpa"])
+        self.assertEqual(len(calls), 9)
+        self.assertCountEqual(campaign.controller_order, ["headlight", "hpa", "keda", "threshold"])
 
     def test_knee_uses_last_safe_level(self) -> None:
         campaign, calls = self.run_campaign([summary(100), summary(180), summary(201)])
         campaign.run()
-        self.assertEqual(campaign.selected_capacity, 6)
+        self.assertEqual(campaign.selected_capacity, 4)
         qualification_calls = [name for name, _seed in calls if name.startswith("qualification-")]
         self.assertEqual(len(qualification_calls), 4)
+
+    def test_resume_pilots_reuses_matching_valid_bundle(self) -> None:
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        output = Path(tmp.name) / "pilots" / "2-users"
+        manifest = pilot_manifest(2, 30, output)
+        campaign = CapacityCampaign(
+            CampaignOptions(output.parent.parent, smoke=True, pilot_duration=30, resume_pilots=True, cooldown_seconds=0),
+            execute=lambda *_args: self.fail("validated pilot should not execute again"),
+        )
+        campaign._prepare_manifest(manifest)
+        output.mkdir(parents=True)
+        (output / "manifest.yaml").write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+        (output / "pilot_summary.json").write_text(
+            json.dumps({"users": 2, "healthy": True, **summary(100)}) + "\n", encoding="utf-8"
+        )
+        (output / "seed-11").mkdir()
+        with patch("experiments.run_capacity_qualification.validate_bundle"):
+            record = campaign._run_pilot(2, None)
+        self.assertEqual(record["users"], 2)
+        self.assertEqual(campaign.selected_capacity, 2)
 
     def test_skip_pilots_uses_selected_capacity(self) -> None:
         tmp = tempfile.TemporaryDirectory()
@@ -156,6 +183,62 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(campaign.selected_capacity, 5)
         self.assertTrue(all(name.startswith("qualification-") for name in calls))
         self.assertEqual(len(calls), 4)
+
+    def test_30_second_smoke_constructs_primary_manifests_without_frozen_artifacts(self) -> None:
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        manifests: list[dict] = []
+
+        def execute(manifest: dict, _output: Path, seed: int, dry_run: bool) -> None:
+            self.assertEqual(seed, 11)
+            self.assertTrue(dry_run)
+            manifests.append(manifest)
+
+        campaign = CapacityCampaign(
+            CampaignOptions(
+                Path(tmp.name),
+                dry_run=True,
+                smoke=True,
+                pilot_duration=30,
+                qualification_duration=30,
+                cooldown_seconds=0,
+                controllers=DEFAULT_CONTROLLERS,
+            ),
+            execute=execute,
+            summarize_pilot=lambda _path: summary(100),
+        )
+        campaign.run()
+
+        pilots = [manifest for manifest in manifests if manifest["metadata"]["name"].startswith("capacity-pilot-")]
+        qualifications = [
+            manifest for manifest in manifests
+            if manifest["metadata"]["name"].startswith("qualification-")
+        ]
+        self.assertEqual(len(pilots), 5)
+        self.assertEqual({manifest["spec"]["controller"]["controller"] for manifest in qualifications}, set(DEFAULT_CONTROLLERS))
+        self.assertEqual(len(qualifications), 4)
+        self.assertTrue(all(manifest["spec"]["run"]["duration_seconds"] == 30 for manifest in manifests))
+        self.assertTrue(all(manifest["spec"]["run"]["smoke_validation"] for manifest in manifests))
+        self.assertTrue(all(manifest["spec"]["run"]["seeds"] == [11] for manifest in manifests))
+        self.assertTrue(all(manifest["spec"]["controller"]["setup_script"] == CAPACITY_PILOT_SETUP for manifest in pilots))
+        self.assertTrue(all(manifest["spec"]["controller"]["requires_static_plan"] is False for manifest in pilots))
+
+        seed_dir = Path(tmp.name) / "pilot-install"
+        (seed_dir / "raw").mkdir(parents=True)
+        commands: list[list[str]] = []
+
+        def fake_run_cmd(command: list[str], *_args, **_kwargs) -> None:
+            commands.append(command)
+
+        with patch("experiments.run_experiment.validate_static_plan", side_effect=AssertionError("static plan must not be read")), \
+            patch("experiments.run_experiment.run_cmd", side_effect=fake_run_cmd):
+            install_controller(pilots[0], seed_dir)
+
+        self.assertEqual(commands[0][0], "bash")
+        self.assertEqual(Path(commands[0][1]), REPO_ROOT / CAPACITY_PILOT_SETUP)
+        bootstrap = json.loads((seed_dir / "raw" / "static_plan.json").read_text(encoding="utf-8"))
+        self.assertEqual(bootstrap["schema_version"], "headlight.capacity-pilot-bootstrap/v1")
+        self.assertFalse(bootstrap["static_plan_required"])
 
     def test_controller_subset_limits_qualifications(self) -> None:
         tmp = tempfile.TemporaryDirectory()
@@ -176,7 +259,7 @@ class CampaignTests(unittest.TestCase):
             execute=execute,
         )
         campaign.run()
-        self.assertEqual(calls, ["qualification-hpa-seed-101"])
+        self.assertEqual(calls, ["qualification-hpa-seed-11"])
         self.assertEqual(campaign.controller_order, ["hpa"])
 
     def test_seed_and_headlight_candidate_metadata_are_persisted(self) -> None:
@@ -212,16 +295,21 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(len(calls), 1)
 
     def test_controller_failure_preserves_stage(self) -> None:
-        campaign, _calls = self.run_campaign([summary(100)] * 4, fail_controller="lstm")
+        campaign, _calls = self.run_campaign([summary(100)] * 5, fail_controller="threshold")
         with self.assertRaisesRegex(RuntimeError, "controller failed"):
             campaign.run()
-        self.assertEqual(campaign.completed_stage, "qualification-lstm-starting")
+        self.assertEqual(campaign.completed_stage, "qualification-threshold-starting")
 
     def test_qualification_contract_is_not_paper_evidence(self) -> None:
         manifest = qualification_manifest("hpa", 20, 900, Path("results/example"))
         overrides = manifest["spec"]["run"]["qualification_overrides"]
-        self.assertFalse(overrides["publishable_as_softwarex_five_seed_result"])
+        self.assertFalse(overrides["publishable_as_socc26_five_seed_result"])
         self.assertEqual(manifest["spec"]["topology"]["active_clusters"], ["cluster2", "cluster3"])
+        self.assertEqual(overrides["capacity_seeds"], [11])
+        self.assertEqual(overrides["calibration_seeds"], [12, 13, 14, 15])
+        self.assertEqual(overrides["evaluation_seeds_excluded"], [101, 102, 103, 104, 105])
+        self.assertEqual(overrides["replica_ceiling_per_service"], 14)
+        self.assertEqual(overrides["cluster_replica_split"], {"cluster2": 6, "cluster3": 8})
 
     def test_campaign_defaults_to_advanced_ticket_contract(self) -> None:
         manifest = pilot_manifest(20, 180, Path("results/example"))
@@ -231,6 +319,26 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(override["resource_profile"], "capacity-vm")
         self.assertEqual(manifest["spec"]["workload"]["locust"]["start_users"], 20)
         self.assertEqual(manifest["spec"]["workload"]["locust"]["end_users"], 20)
+
+    def test_local_24gb_profile_uses_measured_replica_ceiling(self) -> None:
+        manifest = qualification_manifest(
+            "headlight",
+            5,
+            300,
+            Path("results/example"),
+            resource_profile="local-24gb-tested",
+        )
+        overrides = manifest["spec"]["run"]["qualification_overrides"]
+        self.assertEqual(overrides["replica_ceiling_per_service"], 4)
+        self.assertEqual(overrides["cluster_replica_split"], {"cluster2": 2, "cluster3": 2})
+        self.assertEqual(
+            overrides["resource_bounds"]["cluster_max_replicas"],
+            {"cluster2": 2, "cluster3": 2},
+        )
+        self.assertEqual(
+            manifest["spec"]["controller"]["service_profile"],
+            "ai-module/configs/service_profiles/advanced-ticket-local-24gb-tested.json",
+        )
 
     def test_train_ticket_path_maps_to_locust_mode(self) -> None:
         self.assertEqual(LOCUST_MODE_BY_PATH["full"], "full-session")
@@ -266,6 +374,21 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(captured["HEADLIGHT_BOOTSTRAP_RAMP_SECONDS"], "225")
         self.assertEqual(captured["HEADLIGHT_BOOTSTRAP_HOLD_SECONDS"], "75")
         self.assertEqual(captured["HEADLIGHT_BOOTSTRAP_SPAWN_RATE"], "2")
+
+    def test_headlight_v2_controller_setup_gets_cell_identity(self) -> None:
+        manifest = qualification_manifest("headlight", 20, 300, Path("results/example"), "advanced-ticket")
+        manifest["metadata"]["name"] = "headlight-v2__gradual-ramp"
+        manifest["spec"]["controller"]["controller"] = "headlight-v2"
+        captured: dict[str, str] = {}
+
+        def fake_run_cmd(_command: list[str], _log_path: Path, env: dict[str, str], **_kwargs) -> None:
+            captured.update(env)
+
+        with tempfile.TemporaryDirectory() as tmp, patch("experiments.run_experiment.run_cmd", side_effect=fake_run_cmd):
+            install_controller(manifest, Path(tmp), seed=501)
+
+        self.assertEqual(captured["HEADLIGHT_RUN_ID"], "headlight-v2__gradual-ramp__seed-501")
+        self.assertEqual(captured["HEADLIGHT_SEED"], "501")
 
     def test_status_records_slice_profile_and_order(self) -> None:
         campaign = CapacityCampaign(
@@ -389,6 +512,7 @@ contexts:
                 patch.dict(os.environ, {"HEADLIGHT_SHUTDOWN_ON_EXIT": "1"}, clear=False), \
                 patch("experiments.run_capacity_qualification.preflight_testbed", side_effect=PreflightFailure("stale Kind API ports; run ./experiments/rebuild_local_testbed.sh")), \
                 patch("experiments.run_capacity_qualification.preflight_monitoring"), \
+                patch("experiments.run_capacity_qualification.evaluation_results_exist", return_value=False), \
                 patch.object(CapacityCampaign, "run") as campaign_run, \
                 patch("experiments.run_capacity_qualification.capture_failure_diagnostics"), \
                 patch("experiments.run_capacity_qualification.subprocess.run", return_value=subprocess.CompletedProcess(["sync"], 0, stdout="")):
@@ -397,6 +521,31 @@ contexts:
             status = json.loads(status_path.read_text(encoding="utf-8"))
             self.assertEqual(status["completed_stage"], "preflight")
             self.assertEqual(status["trainticket_path"], "advanced-ticket")
+
+    def test_capacity_cli_rejects_evaluation_seed(self) -> None:
+        with patch.object(sys, "argv", ["run_capacity_qualification.py", "--dry-run", "--seed", "101"]):
+            with self.assertRaises(SystemExit):
+                main()
+
+    def test_capacity_campaign_writes_immutable_contract(self) -> None:
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+
+        def execute(_manifest: dict, _output: Path, _seed: int, _dry: bool) -> None:
+            return None
+
+        campaign = CapacityCampaign(
+            CampaignOptions(Path(tmp.name), cooldown_seconds=0, dry_run=True),
+            execute=execute,
+            summarize_pilot=lambda _path: summary(100),
+        )
+        campaign.run()
+        contract_path = Path(tmp.name) / "capacity-contract.json"
+        payload = json.loads(contract_path.read_text(encoding="utf-8"))
+        self.assertEqual(payload["selected_capacity"], 10)
+        self.assertEqual(payload["capacity_seed"], 11)
+        self.assertEqual(payload["registered_capacity_seeds"], [11])
+        self.assertFalse(contract_path.stat().st_mode & 0o222)
 
 
 if __name__ == "__main__":

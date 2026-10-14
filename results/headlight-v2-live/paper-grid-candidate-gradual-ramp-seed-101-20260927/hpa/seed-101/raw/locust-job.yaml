@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: headlight-paper-locust
+  namespace: trainticket
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'false'
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: locust
+        image: dstefanov46/locust-test:0.66.0
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -lc
+        args:
+        - '/opt/venv/bin/locust --headless -f /app/trainticket_paper.py --spawn-rate
+          "15" --run-time "1680s" --exit-code-on-error 0 --csv /app/headlight-locust
+
+          rc="$?"
+
+          echo __HEADLIGHT_REQUEST_CSV_BEGIN__
+
+          cat /app/headlight_requests.csv 2>/dev/null || true
+
+          echo __HEADLIGHT_REQUEST_CSV_END__
+
+          echo __HEADLIGHT_LOCUST_STATS_BEGIN__
+
+          cat /app/headlight-locust_stats.csv 2>/dev/null || true
+
+          echo __HEADLIGHT_LOCUST_STATS_END__
+
+          exit "$rc"'
+        env:
+        - name: HEADLIGHT_REQUEST_CSV
+          value: /app/headlight_requests.csv
+        - name: HEADLIGHT_LOAD_SHAPE
+          value: /app/load_profile.csv
+        - name: HEADLIGHT_LOAD_SHAPE_DURATION_SECONDS
+          value: '1680'
+        - name: HEADLIGHT_TRAINTICKET_MODE
+          value: advanced-ticket
+        - name: HEADLIGHT_TRAINTICKET_NAMESPACE
+          value: trainticket
+        - name: HEADLIGHT_TRAINTICKET_GATEWAY_URL
+          value: http://trainticket-gateway.trainticket.svc.cluster.local:8080
+        volumeMounts:
+        - name: locustfile
+          mountPath: /app/trainticket_paper.py
+          subPath: trainticket_paper.py
+        - name: locustfile
+          mountPath: /app/load_profile.csv
+          subPath: load_profile.csv
+      volumes:
+      - name: locustfile
+        configMap:
+          name: headlight-paper-locust

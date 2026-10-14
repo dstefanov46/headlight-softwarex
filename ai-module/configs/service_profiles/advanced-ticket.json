@@ -8,12 +8,12 @@
     "cluster2": {
       "min_replicas": 1,
       "initial_replicas": 1,
-      "max_replicas": 3
+      "max_replicas": 6
     },
     "cluster3": {
       "min_replicas": 1,
       "initial_replicas": 1,
-      "max_replicas": 5
+      "max_replicas": 8
     }
   },
   "node_order": [
@@ -166,8 +166,8 @@
   ],
   "source": {
     "generator": "experiments/scripts/generate_service_profiles.py",
-    "rendered_manifest_sha256": "4e9247e59fe80ef983558c9ec0414568db3e4a60f6cea0278a3bab8d8ab73d9c",
+    "rendered_manifest_sha256": "134a0ae9078b6833961ef9cd6d83ca0659789ccc2e66b7348c2e8eb2fbe27985",
     "resource_profile": "capacity-vm"
   },
-  "profile_hash": "cc99c10e7e4a132c3a9db18c43096b7e08bca166d58a5b26b5307f692da67a47"
+  "profile_hash": "ddd0974573c10108e3148a731230de4bccabc07a5666792bd525e39209e3678f"
 }

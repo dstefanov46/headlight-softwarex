@@ -1,5 +1,6 @@
 schema_version: headlight.softwarex-reproduction/v1
-description: Deterministic SoftwareX validation workflow for execution on a dedicated measurement host.
+software_version: 2.0.0
+description: Configuration dry-run and environment checklist for the measured evaluation.
 mode_defaults:
   dry_run: true
   real_execution_requires_cluster: true
@@ -16,28 +17,25 @@ real_data:
   label: measured
   calibration_csv: results/calibration/train-ticket-calibration.csv
   adjacency_json: results/calibration/static-adjacency.json
-  headlight_bundle: results/calibration/headlight-bundle
-  lstm_bundle: results/calibration/lstm-bundle
+  headlight_bundle: results/headlight-v2-live/bundle-full-seed-601
 workflow:
   namespace: trainticket
   service_profile: ai-module/configs/service_profiles/advanced-ticket.json
   workload_profile: experiments/configs/workloads/gradual-ramp.yaml
   topology_profile: experiments/configs/topologies/multi-cluster-headlight.yaml
-  run_config: experiments/configs/runs/headlight-gradual-ramp-multi-cluster-headlight.yaml
+  run_config: results/headlight-v2-live/emergency-disabled-gradual-ramp-c4-seed-101-20261004/manifest.yaml
   output_root: results/softwarex-reproduction
   controllers:
-    - headlight
+    - headlight-v2
     - hpa
-    - static
-  optional_controllers:
     - keda
-    - lstm
+    - threshold
   unsupported_or_incomplete:
     migration: Requires live CRP event collection and validator input; dry-run does not assert success.
 pinned_environment:
   os_tested: Ubuntu 24.04 LTS
   minimum_cpu_cores: 16
-  minimum_memory_gib: 64
+  minimum_memory_gib: 48
   python: "3.11"
   go: "1.23.x for CRP, 1.24.x for actions-handler"
   kubernetes: "v1.32.0"
@@ -52,7 +50,7 @@ pinned_environment:
     version: "61.7.2"
   metrics_server: "v0.7.2"
   images:
-    headlight_ai: dstefanov46/nephele-ai-module:0.120.0
+    headlight_ai: headlight-ai:v2-diag-ablation-1c1d8ea3fe6d
     locust: dstefanov46/locust-test:0.66.0
     actions_handler: ghcr.io/vidbregar/actions-handler:0.2.0
     crp_controller: ghcr.io/vidbregar/controlled-replica-propagation:0.2.1
@@ -69,8 +67,8 @@ stages:
       - ./experiments/install_prometheus_monitoring.sh
       - ./experiments/install_metrics_server.sh
   deploy-headlight:
-    description: Deploy CRP, actions-handler, and Headlight in shadow mode with a frozen bundle.
-    command: HEADLIGHT_SHADOW_MODE=1 ./ai-module/ai_module_setup.sh
+    description: Verify the frozen Headlight model before deploying it on the prepared testbed.
+    command: python3 experiments/verify_headlight_v2_live_bundle.py
   collect-or-load-data:
     description: Use measured calibration CSV in real mode or labelled sample CSV in dry-run mode.
   train-or-load-model:
@@ -78,8 +76,8 @@ stages:
   run-workload:
     description: Execute one gradual-ramp workload profile with fixed seed 101.
   run-controllers:
-    description: Run Headlight, HPA, and static provisioning where supported.
+    description: Run Headlight, HPA, KEDA and Threshold.
   validate-results:
-    description: Run artifact and CRP validators before measured artifact generation.
+    description: Run artifact and CRP validators; fail on missing or invalid measured evidence.
   generate-compact-output:
     description: Generate a compact CSV and optional SVG from validated results.

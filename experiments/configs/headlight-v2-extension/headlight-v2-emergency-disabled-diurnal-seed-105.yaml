@@ -1,0 +1,30 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: HeadlightV2LiveValidationRun
+metadata:
+  name: headlight-v2-emergency-disabled-diurnal-c4-seed-105-followup
+spec:
+  seed: 105
+  workload_profile: experiments/configs/workloads/diurnal.yaml
+  workload_profile_sha256: 8d52ed85ce0cd700db5718b60e27809ae1e4ee627259579148a882e32c0bda89
+  expected_comparator_trace_sha256: ced8b35581298a0e88cdadc9939033d41372591ed75913aaea118fa99c057ce2
+  comparison_controllers:
+  - headlight-v2
+  - hpa
+  - keda
+  bundle_id: c37050a44dd2fc876bf6523aaeabdd364af7608ffeee5e1586a6cb8bbaaaeb4a
+  bundle_archive_sha256: bf18f7a959a3f182cec1dd9892fca964c041442a210338109c60a642b926f635
+  policy_sha256: 44f1eec3ea4d515e2f18ae91db8e839a095c41f8ce41afa9d5ba933ee096c07f
+  shadow_smoke_required: true
+  warmup_seconds: 480
+  measurement_seconds: 2400
+  sampling_interval_seconds: 15
+  output_dir: results/headlight-v2-extension/reserved/diurnal-seed-105
+  gateway_protocol: experiments/configs/gateway-protocols/research-v4-gateway.yaml
+  gateway_protocol_sha256: 716e9f4c0020d2bedf2736337cde21779cb6c170aad78e85707cfd4f2931e0be
+  capacity_users: 4
+  mode: reactive-emergency-disabled
+  diagnostics_required: true
+  diagnostic_dir: /artifacts/diagnostics
+  model_changed: false
+  parameters_tuned: false
+  claim_scope: seed104-105-headlight-v2-followup

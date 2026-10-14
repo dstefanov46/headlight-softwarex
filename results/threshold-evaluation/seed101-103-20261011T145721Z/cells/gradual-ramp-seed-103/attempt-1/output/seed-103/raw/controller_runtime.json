@@ -1,0 +1,25 @@
+{
+  "controller": "threshold",
+  "active_actuation": true,
+  "shadow_mode": "0",
+  "image": "local/headlight-threshold:5b85e77c7602b2dcbf73-prepared",
+  "pod_images": [
+    {
+      "pod": "threshold-autoscaler-5776c6b4d7-vkgvl",
+      "image_id": "docker.io/library/import-2026-10-11@sha256:85013441751466a843de78683714b4a3b0355674c0f442a0b69d4e8b511a97f8"
+    }
+  ],
+  "expected_image_digest": "sha256:85013441751466a843de78683714b4a3b0355674c0f442a0b69d4e8b511a97f8",
+  "deployment": {
+    "annotations": {
+      "deployment.kubernetes.io/revision": "2",
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"threshold-autoscaler\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"threshold-autoscaler\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"threshold-autoscaler\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"command\":[\"python3\",\"/app/baselines/threshold_controller.py\"],\"env\":[{\"name\":\"HEADLIGHT_SERVICE_PROFILE_FILE\",\"value\":\"/config/profile/profile.json\"},{\"name\":\"HEADLIGHT_POLICY_CONFIG\",\"value\":\"/config/policy/policy.json\"},{\"name\":\"HEADLIGHT_POD_KUBECONFIG\",\"value\":\"/var/run/headlight/kubeconfig/config\"},{\"name\":\"HEADLIGHT_ACTION_LOG\",\"value\":\"/artifacts/actions.jsonl\"},{\"name\":\"HEADLIGHT_INTERVAL_SECONDS\",\"value\":\"15\"},{\"name\":\"HEADLIGHT_NAMESPACE\",\"value\":\"trainticket\"},{\"name\":\"HEADLIGHT_ACTION_HANDLER_URL\",\"value\":\"http://actions-handler.actions-handler-system.svc.cluster.local:8080/placements\"},{\"name\":\"HEADLIGHT_PROMETHEUS_URL\",\"value\":\"http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090\"},{\"name\":\"KUBECONFIG\",\"value\":\"/var/run/headlight/kubeconfig/config\"}],\"image\":\"local/headlight-threshold:5b85e77c7602b2dcbf73-prepared\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"autoscaler\",\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/run/headlight/kubeconfig\",\"name\":\"pod-kubeconfig\",\"readOnly\":true},{\"mountPath\":\"/config/profile\",\"name\":\"profile\",\"readOnly\":true},{\"mountPath\":\"/config/policy\",\"name\":\"policy\",\"readOnly\":true},{\"mountPath\":\"/artifacts\",\"name\":\"artifacts\"}]}],\"volumes\":[{\"name\":\"pod-kubeconfig\",\"secret\":{\"secretName\":\"pod-kubeconfig-trainticket\"}},{\"configMap\":{\"name\":\"headlight-service-profile\"},\"name\":\"profile\"},{\"configMap\":{\"name\":\"headlight-policy-config\"},\"name\":\"policy\"},{\"emptyDir\":{},\"name\":\"artifacts\"}]}}}}\n"
+    },
+    "creationTimestamp": "2026-10-11T19:01:42Z",
+    "generation": 2,
+    "name": "threshold-autoscaler",
+    "namespace": "trainticket",
+    "resourceVersion": "297460",
+    "uid": "5c074d33-ba45-43f3-91db-e9cd11ff1148"
+  }
+}

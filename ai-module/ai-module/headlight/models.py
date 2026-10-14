@@ -10,7 +10,13 @@ import torch.nn.functional as functional
 from torch import nn
 
 from .features import MODEL_FEATURES
-from .graph import ResidualAdjacency, residual_edge_mask
+from .graph import ResidualAdjacency, residual_edge_mask, validate_adjacency
+from .models_v2 import (
+    HEADLIGHT_V2_MODEL_TYPES,
+    HeadlightV2Model,
+    build_headlight_v2_model,
+    v2_learned_edge_artifact,
+)
 
 
 FORECAST_OUTPUTS = (
@@ -194,14 +200,17 @@ def multitask_loss(raw: torch.Tensor, target: torch.Tensor) -> tuple[torch.Tenso
 def build_model(config: dict[str, Any], adjacency_payload: dict[str, Any], device: torch.device) -> nn.Module:
     num_nodes = int(config["num_nodes"])
     input_size = int(config.get("input_size", len(MODEL_FEATURES)))
-    matrix = np.asarray(adjacency_payload["matrix"], dtype=np.float32)
+    model_type = str(config["model_type"])
+    if model_type in HEADLIGHT_V2_MODEL_TYPES:
+        matrix = validate_adjacency(adjacency_payload, tuple(config["node_order"]))
+    else:
+        matrix = np.asarray(adjacency_payload["matrix"], dtype=np.float32)
     observed = np.asarray(
         adjacency_payload.get("observed_mask", matrix > 0),
         dtype=np.float32,
     )
     if matrix.shape != (num_nodes, num_nodes) or observed.shape != matrix.shape:
         raise ValueError("model adjacency dimensions do not match num_nodes")
-    model_type = str(config["model_type"])
     if model_type == "headlight":
         return HeadlightForecastModel(
             num_nodes=num_nodes,
@@ -219,10 +228,18 @@ def build_model(config: dict[str, Any], adjacency_payload: dict[str, Any], devic
             input_size=input_size,
             hidden_width=int(config["hidden_width"]),
         ).to(device)
+    if model_type in HEADLIGHT_V2_MODEL_TYPES:
+        return build_headlight_v2_model(
+            config,
+            static_adjacency=torch.tensor(matrix, dtype=torch.float32, device=device),
+            observed_mask=torch.tensor(observed, dtype=torch.float32, device=device),
+        ).to(device)
     raise ValueError(f"unsupported model_type {model_type!r}")
 
 
 def learned_edge_artifact(model: nn.Module, node_order: tuple[str, ...]) -> dict[str, Any]:
+    if isinstance(model, HeadlightV2Model):
+        return v2_learned_edge_artifact(model, node_order)
     if not isinstance(model, HeadlightForecastModel):
         return {"schema_version": "headlight.learned-edges/v1", "edges": []}
     residual = model.adjacency.residual().detach().cpu().numpy()

@@ -18,9 +18,17 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from experiments.scripts.render_minimal_trainticket import render as render_trainticket_slice
 from experiments.lib.paths import resolve_output_path, resolve_repo_path
+from experiments.lib.protocol import replica_limit_for_cluster, replica_limits
 
 
 HPA_MANIFEST = REPO_ROOT / "ai-module" / "kubernetes-autoscaler" / "hpa.yaml"
+
+
+def hpa_max_replicas_for_cluster(cluster: str) -> int:
+    try:
+        return replica_limit_for_cluster(cluster)
+    except KeyError:
+        return int(replica_limits()["aggregate_max_replicas_per_service"]) // 2
 
 
 def load_yaml(path: Path) -> list[dict[str, Any]]:
@@ -48,6 +56,11 @@ def render(args: argparse.Namespace) -> list[dict[str, Any]]:
         rendered = copy.deepcopy(doc)
         rendered.setdefault("metadata", {})["namespace"] = args.namespace
         rendered.setdefault("spec", {})["maxReplicas"] = args.max_replicas
+        behavior = rendered.get("spec", {}).get("behavior")
+        if isinstance(behavior, dict):
+            behavior.pop("scaleUp", None)
+            if not behavior:
+                rendered["spec"].pop("behavior", None)
         docs.append(rendered)
     missing = sorted(wanted - {doc.get("spec", {}).get("scaleTargetRef", {}).get("name") for doc in docs})
     if missing:
@@ -69,7 +82,11 @@ def main() -> int:
         choices=["local-tiny", "capacity-vm", "source"],
         default=os.environ.get("HEADLIGHT_TRAINTICKET_RESOURCE_PROFILE", "capacity-vm"),
     )
-    parser.add_argument("--max-replicas", type=int, default=4)
+    parser.add_argument(
+        "--max-replicas",
+        type=int,
+        default=hpa_max_replicas_for_cluster(os.environ.get("HEADLIGHT_HPA_CONTEXT", "cluster2")),
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     args.source = resolve_repo_path(args.source, must_exist=True)

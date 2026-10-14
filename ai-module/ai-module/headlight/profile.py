@@ -195,8 +195,8 @@ def build_profile_payload(
         "sampling_interval_seconds": sampling_interval_seconds,
         "cluster_limits": cluster_limits
         or {
-            "cluster2": {"min_replicas": 1, "initial_replicas": 1, "max_replicas": 3},
-            "cluster3": {"min_replicas": 1, "initial_replicas": 1, "max_replicas": 5},
+            "cluster2": {"min_replicas": 1, "initial_replicas": 1, "max_replicas": 4},
+            "cluster3": {"min_replicas": 1, "initial_replicas": 1, "max_replicas": 6},
         },
         "node_order": [node["name"] for node in node_list],
         "nodes": node_list,

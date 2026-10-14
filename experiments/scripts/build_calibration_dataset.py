@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build Headlight calibration datasets from exported Prometheus range data."""
+"""Build AdapGLA calibration histories from exported Prometheus range data."""
 
 from __future__ import annotations
 

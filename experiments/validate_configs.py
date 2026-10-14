@@ -14,12 +14,24 @@ from typing import Any
 
 import yaml
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
+from experiments.lib.protocol import (
+    PROTOCOL_PATH,
+    ProtocolError,
+    load_protocol,
+    primary_controllers,
+    primary_workloads,
+    protocol_reference,
+)
+
+
 CONFIG_ROOT = REPO_ROOT / "experiments" / "configs"
+RESOLVED_ROOT = REPO_ROOT / "experiments" / "resolved"
 API_VERSION = "headlight.experiments/v1alpha1"
 
-VALID_CONTROLLERS = {"headlight", "hpa", "keda", "threshold", "lstm", "static"}
+VALID_CONTROLLERS = {"headlight", "hpa", "keda", "threshold"}
 VALID_TOPOLOGIES = {"single-cluster", "multi-cluster-static", "multi-cluster-headlight"}
 VALID_WORKLOADS = {"diurnal", "flash-crowd", "gradual-ramp", "bursty"}
 VALID_IMPLEMENTATION_STATES = {"ready", "planned"}
@@ -29,6 +41,7 @@ VALID_KINDS = {
     "TopologyProfile",
     "WorkloadProfile",
     "ExperimentRun",
+    "ResearchProtocol",
 }
 
 
@@ -205,6 +218,16 @@ def validate_workload_profile(path: Path, data: dict[str, Any]) -> str:
     return name
 
 
+def validate_protocol_file(path: Path, data: dict[str, Any]) -> str:
+    try:
+        protocol = load_protocol(path)
+    except ProtocolError as exc:
+        raise ValidationError(str(exc)) from exc
+    if data["metadata"]["name"] != protocol["metadata"]["name"]:
+        raise ValidationError(f"{path}: metadata.name changed while loading protocol")
+    return str(protocol["metadata"]["name"])
+
+
 def merge_manifest(
     run_data: dict[str, Any],
     controller: dict[str, Any],
@@ -257,6 +280,37 @@ def _validate_run_outputs(path: Path, spec: dict[str, Any]) -> None:
         raise ValidationError(f"{path}: `spec.sampling_interval_seconds` must be 15")
     if "reset_policy" in spec and not isinstance(spec["reset_policy"], dict):
         raise ValidationError(f"{path}: `spec.reset_policy` must be a mapping")
+
+
+def _validate_run_protocol(path: Path, spec: dict[str, Any], manifest: dict[str, Any]) -> None:
+    reference = spec.get("protocol")
+    if not isinstance(reference, dict):
+        raise ValidationError(f"{path}: `spec.protocol` must reference the approved protocol")
+    expected = protocol_reference()
+    for field, expected_value in expected.items():
+        if reference.get(field) != expected_value:
+            raise ValidationError(
+                f"{path}: `spec.protocol.{field}` must be `{expected_value}`, got `{reference.get(field)}`"
+            )
+
+    protocol = load_protocol()
+    controller = str(manifest["spec"]["controller"]["controller"])
+    workload = str(manifest["spec"]["workload"]["pattern"])
+    if controller in primary_controllers(protocol) and workload not in primary_workloads(protocol):
+        raise ValidationError(f"{path}: primary controller `{controller}` uses non-primary workload `{workload}`")
+    topology = manifest["spec"]["topology"]
+    common = protocol["spec"]["common_topology"]
+    if topology["namespace"] != common["namespace"]:
+        raise ValidationError(f"{path}: topology namespace must be `{common['namespace']}`")
+    if list(topology["active_clusters"]) != list(common["active_clusters"]):
+        raise ValidationError(f"{path}: active clusters must match the approved common topology")
+
+    timing = protocol["spec"]["timing"]
+    if int(spec["warmup_seconds"]) != int(timing["warmup_seconds"]):
+        raise ValidationError(f"{path}: warmup_seconds must be {timing['warmup_seconds']}")
+    expected_duration = int(timing["measurement_seconds"].get(workload, spec["duration_seconds"]))
+    if int(spec["duration_seconds"]) != expected_duration:
+        raise ValidationError(f"{path}: duration_seconds must be {expected_duration} for {workload}")
 
 
 def _validate_run_values(path: Path, spec: dict[str, Any]) -> None:
@@ -320,6 +374,7 @@ def validate_run_file(
             "spec.warmup_seconds",
             "spec.sla",
             "spec.output_dir",
+            "spec.protocol",
         ],
     )
 
@@ -328,8 +383,9 @@ def validate_run_file(
     _validate_run_values(path, spec)
     controller, topology, workload = _load_run_profiles(path, spec, controllers, topologies, workloads)
     _validate_run_name(path, name, (controller, topology, workload))
-
-    return merge_manifest(data, controller, topology, workload)
+    manifest = merge_manifest(data, controller, topology, workload)
+    _validate_run_protocol(path, spec, manifest)
+    return manifest
 
 
 def list_files(subdir: str) -> list[Path]:
@@ -343,6 +399,14 @@ def validate_all() -> tuple[list[dict[str, Any]], list[str]]:
     controllers: dict[str, dict[str, Any]] = {}
     topologies: dict[str, dict[str, Any]] = {}
     workloads: dict[str, dict[str, Any]] = {}
+
+    for path in list_files("protocols"):
+        data = load_yaml(path)
+        validate_protocol_file(path, data)
+        messages.append(f"validated research protocol: {path.relative_to(REPO_ROOT)}")
+
+    if not PROTOCOL_PATH.exists():
+        raise ValidationError(f"missing approved research protocol: {PROTOCOL_PATH.relative_to(REPO_ROOT)}")
 
     for path in list_files("baselines"):
         data = load_yaml(path)
@@ -371,6 +435,48 @@ def validate_all() -> tuple[list[dict[str, Any]], list[str]]:
     return manifests, messages
 
 
+def validate_resolved_manifests(manifests: list[dict[str, Any]]) -> int:
+    """Validate checked-in resolved manifests against canonical run configs.
+
+    Resolved manifests are generated artifacts, but they are tracked and are
+    consumed by matrix enumeration. If the directory exists, require an exact
+    semantic match with the manifests produced by ``validate_all`` so malformed
+    or stale generated files cannot pass the normal config validation command.
+    """
+
+    if not RESOLVED_ROOT.exists():
+        return 0
+
+    expected = {str(manifest["metadata"]["name"]): manifest for manifest in manifests}
+    files = sorted(RESOLVED_ROOT.glob("*.yaml"))
+    actual_names: set[str] = set()
+    for path in files:
+        try:
+            data = load_yaml(path)
+        except (OSError, yaml.YAMLError) as exc:
+            raise ValidationError(f"{path}: invalid resolved YAML: {exc}") from exc
+        metadata = data.get("metadata")
+        name = metadata.get("name") if isinstance(metadata, dict) else None
+        if not isinstance(name, str) or not name:
+            raise ValidationError(f"{path}: resolved manifest must contain metadata.name")
+        actual_names.add(name)
+        if name not in expected:
+            raise ValidationError(f"{path}: resolved manifest does not correspond to a canonical run")
+        if data != expected[name]:
+            raise ValidationError(
+                f"{path}: resolved manifest differs from the canonical run; regenerate with --write-resolved"
+            )
+
+    missing = sorted(set(expected) - actual_names)
+    if missing:
+        raise ValidationError(
+            "missing resolved manifests: " + ", ".join(missing)
+        )
+    if len(actual_names) != len(files):
+        raise ValidationError("resolved manifest filenames contain duplicate metadata.name values")
+    return len(files)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate experiment contract files")
     parser.add_argument(
@@ -397,6 +503,14 @@ def main() -> int:
             with output.open("w", encoding="utf-8") as handle:
                 yaml.safe_dump(manifest, handle, sort_keys=False)
             print(f"wrote resolved manifest: {output.relative_to(REPO_ROOT)}")
+
+    try:
+        resolved_count = validate_resolved_manifests(manifests)
+    except ValidationError as exc:
+        print(f"validation failed: {exc}", file=sys.stderr)
+        return 1
+    if resolved_count:
+        print(f"validated resolved manifests: {resolved_count}")
 
     return 0
 

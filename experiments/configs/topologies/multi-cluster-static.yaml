@@ -13,6 +13,6 @@ spec:
   additional_services_file: ai-module/configs/additional_services.json
   placement_source: fixed-plan
   default_replica_weights:
-    cluster2: 3
-    cluster3: 5
+    cluster2: 6
+    cluster3: 8
   notes: Static federation baseline derived from current cluster capacity limits.

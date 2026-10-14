@@ -1,0 +1,26 @@
+$ kubectl --context cluster2 -n trainticket delete hpa --all --ignore-not-found
+horizontalpodautoscaler.autoscaling "ts-auth-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-basic-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-price-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-route-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-route-plan-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-station-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-ticketinfo-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-train-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-travel-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-travel-plan-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-travel2-hpa" deleted
+[exit 0]
+$ kubectl --context cluster3 -n trainticket delete hpa --all --ignore-not-found
+horizontalpodautoscaler.autoscaling "ts-auth-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-basic-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-price-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-route-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-route-plan-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-station-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-ticketinfo-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-train-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-travel-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-travel-plan-hpa" deleted
+horizontalpodautoscaler.autoscaling "ts-travel2-hpa" deleted
+[exit 0]

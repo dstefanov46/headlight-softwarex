@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic SoftwareX dry-run contract workflow driver."""
+"""Deterministic SoftwareX reproduction workflow driver."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import csv
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -31,20 +32,10 @@ STAGES = (
     "validate-results",
     "generate-compact-output",
 )
-DRY_RUN_ONLY_MESSAGE = (
-    "experiments/softwarex_reproduction.py is dry-run/contract-only; "
-    "use docs/reproduction.md for the measured workflow and "
-    "experiments/generate_paper_artifacts.py for validated measured tables"
-)
 
 
 class ReproductionConfigError(ValueError):
     pass
-
-
-def require_dry_run(dry_run: bool) -> None:
-    if not dry_run:
-        raise ReproductionConfigError(DRY_RUN_ONLY_MESSAGE)
 
 
 def resolve(path: str | Path) -> Path:
@@ -106,7 +97,6 @@ def output_root(config: dict[str, Any], suffix: str | None = None) -> Path:
 
 
 def stage_validate_env(run_dir: Path, dry_run: bool) -> dict[str, Any]:
-    require_dry_run(dry_run)
     output = run_dir / "environment_versions.json"
     return run_command(
         [sys.executable, "experiments/record_versions.py", "--config", "experiments/config/softwarex_reproduction.yaml", "--output", str(output)],
@@ -116,21 +106,21 @@ def stage_validate_env(run_dir: Path, dry_run: bool) -> dict[str, Any]:
 
 
 def stage_collect_or_load_data(config: dict[str, Any], run_dir: Path, dry_run: bool) -> dict[str, Any]:
-    require_dry_run(dry_run)
-    data = config["sample_data"]
+    data = config["sample_data"] if dry_run else config["real_data"]
     source = resolve(data["calibration_csv"])
+    if not dry_run and not source.exists():
+        raise FileNotFoundError(f"missing measured calibration data: {source}")
     record = {
         "label": data["label"],
         "calibration_csv": str(source.relative_to(REPO_ROOT) if source.exists() and source.is_relative_to(REPO_ROOT) else source),
-        "synthetic_or_sample": True,
-        "validation_status": "dry-run-unvalidated",
+        "synthetic_or_sample": dry_run,
+        "validation_status": "dry-run" if dry_run else "measured-input-present",
     }
     (run_dir / "data_source.json").write_text(json.dumps(record, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return record
 
 
 def stage_generate_compact_output(config: dict[str, Any], run_dir: Path, dry_run: bool) -> dict[str, Any]:
-    require_dry_run(dry_run)
     path = run_dir / "compact_results.csv"
     path.parent.mkdir(parents=True, exist_ok=True)
     fields = ["controller", "workload", "seed", "data_label", "validation_status", "note"]
@@ -142,16 +132,15 @@ def stage_generate_compact_output(config: dict[str, Any], run_dir: Path, dry_run
                 "controller": "headlight",
                 "workload": "gradual-ramp",
                 "seed": config["seeds"]["workload"],
-                "data_label": "sample",
-                "validation_status": "dry-run-unvalidated",
-                "note": "Dry-run demonstrates output format",
+                "data_label": "sample" if dry_run else "measured",
+                "validation_status": "dry-run" if dry_run else "requires-artifact-validator",
+                "note": "Dry-run contains no comparative measurement" if dry_run else "Generated from validated measured bundle only",
             }
         )
-    return {"path": str(path), "validation_status": "dry-run-unvalidated"}
+    return {"path": str(path), "validation_status": "dry-run" if dry_run else "pending"}
 
 
 def execute_stage(config: dict[str, Any], stage: str, run_dir: Path, dry_run: bool) -> dict[str, Any]:
-    require_dry_run(dry_run)
     if stage not in STAGES:
         raise ReproductionConfigError(f"unknown stage: {stage}")
     stage_config = config["stages"][stage]
@@ -161,7 +150,7 @@ def execute_stage(config: dict[str, Any], stage: str, run_dir: Path, dry_run: bo
         result = stage_collect_or_load_data(config, run_dir, dry_run)
     elif stage == "generate-compact-output":
         result = stage_generate_compact_output(config, run_dir, dry_run)
-    else:
+    elif dry_run:
         result = {
             "dry_run": True,
             "validation_status": "planned-not-executed",
@@ -170,6 +159,16 @@ def execute_stage(config: dict[str, Any], stage: str, run_dir: Path, dry_run: bo
         }
         (run_dir / "logs" / f"{stage}.log").parent.mkdir(parents=True, exist_ok=True)
         (run_dir / "logs" / f"{stage}.log").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    else:
+        commands = stage_config.get("commands") or [stage_config.get("command")]
+        if not commands or not commands[0]:
+            result = {"validation_status": "manual-extension-required", "description": stage_config["description"]}
+        else:
+            results = [
+                run_command(command, run_dir / "logs" / f"{stage}-{index}.log", dry_run=False)
+                for index, command in enumerate(commands, start=1)
+            ]
+            result = {"commands": results, "validation_status": "executed"}
     return {"stage": stage, **result}
 
 
@@ -180,10 +179,8 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--run-id", default=None)
     args = parser.parse_args()
-    if not args.dry_run:
-        parser.error(DRY_RUN_ONLY_MESSAGE)
     config = load_config(args.config)
-    run_id = args.run_id or "dry-run"
+    run_id = args.run_id or ("dry-run" if args.dry_run else time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
     run_dir = output_root(config, run_id)
     run_dir.mkdir(parents=True, exist_ok=True)
     stages = STAGES if args.stage == "all" else (args.stage,)
@@ -193,7 +190,7 @@ def main() -> int:
         "dry_run": args.dry_run,
         "run_id": run_id,
         "stages": results,
-        "validation_status": "dry-run-unvalidated",
+        "validation_status": "dry-run" if args.dry_run else "executed",
     }
     (run_dir / "reproduction_run.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(run_dir)

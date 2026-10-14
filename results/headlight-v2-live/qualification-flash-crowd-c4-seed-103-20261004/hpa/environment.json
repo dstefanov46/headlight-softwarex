@@ -1,0 +1,26 @@
+{
+  "captured_at_unix": 1791229193,
+  "repo_root": "/home/stefanovaleksandar130/headlight-jsa",
+  "git_commit": "4628cd4da9364a849858bd36a7692ab2e1663437",
+  "source_tree_sha256": null,
+  "dry_run": false,
+  "required_contexts": [
+    "karmada-apiserver",
+    "karmada-host",
+    "cluster1",
+    "cluster2",
+    "cluster3"
+  ],
+  "available_contexts": [
+    "cluster1",
+    "cluster2",
+    "cluster3",
+    "karmada-apiserver",
+    "karmada-host"
+  ],
+  "image_tags": {
+    "ai_module": "local/headlight-ai-module:dev",
+    "actions_handler": "ghcr.io/vidbregar/actions-handler:0.2.0",
+    "locust": "dstefanov46/locust-test:0.66.0"
+  }
+}

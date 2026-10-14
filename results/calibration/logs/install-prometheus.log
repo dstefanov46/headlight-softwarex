@@ -1,0 +1,31 @@
+Release "prometheus" has been upgraded. Happy Helming!
+NAME: prometheus
+LAST DEPLOYED: Wed Aug 19 14:42:50 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 7
+TEST SUITE: None
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=prometheus"
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+prometheus.monitoring.coreos.com/prometheus-kube-prometheus-prometheus condition met
+statefulset rolling update complete 1 pods at revision prometheus-prometheus-kube-prometheus-prometheus-d996fbc6f...
+podmonitor.monitoring.coreos.com/trainticket-istio-sidecars unchanged
+Release "prometheus" has been upgraded. Happy Helming!
+NAME: prometheus
+LAST DEPLOYED: Wed Aug 19 14:43:08 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 7
+TEST SUITE: None
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=prometheus"
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+prometheus.monitoring.coreos.com/prometheus-kube-prometheus-prometheus condition met
+statefulset rolling update complete 1 pods at revision prometheus-prometheus-kube-prometheus-prometheus-d996fbc6f...
+podmonitor.monitoring.coreos.com/trainticket-istio-sidecars unchanged
+Prometheus service name is prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090

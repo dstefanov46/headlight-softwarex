@@ -1,18 +1,16 @@
 # Local Kubernetes and Karmada state. These contain credentials and private keys.
 .kube/
 .karmada/
+.karmada-*/
+# Endpoint-repair backups include Kubernetes credentials.
+results/**/headlight-*.config.before
+results/**/campaign-env.sh
 .cache/
 .config/
 
-# Generated experiment outputs. Keep scripts/configs in git; regenerate results.
-results/*
-!results/.gitkeep
-!results/README.md
-!results/ARTIFACTS_POLICY.md
-results/**/raw/
-results/**/logs/
+# Generated experiment outputs are archived on the paper-results branch so the
+# measured campaign can be cloned and analyzed on another machine.
 results/**/*debug*/
-results/**/*.jsonl
 results/**/*.sqlite
 results/**/*.db
 results/**/*.prof
@@ -44,6 +42,9 @@ ai-module/ai-module/feature_history/
 ai-module/ai-module/logs/
 ai-module/ai-module/nephele/
 ai-module/baselines/artifacts/
+results/synthetic-headlight-v2/
+results/headlight-v2-live/bundle-*/
+results/headlight-v2-live/bundle-*.tar.gz
 
 # Logs and temporary files.
 *.log

@@ -18,5 +18,5 @@ curl -X POST http://actions-handler.actions-handler-system.svc.cluster.local:808
 
 Configuration uses `BATCH_PLACEMENTS_DIR`, `KARMADA_CONFIG_PATH`, and
 `BATCH_SUBMIT_CRON`. Deployment manifests are under `config/` and `dist/`;
-component tests run with `just test`. The dry-run checks exercise repository
-contracts; measured artifacts come from the deployment and validation workflow.
+component tests run with `just test`. The dry-run checks do not deploy this
+service or constitute measured evidence.

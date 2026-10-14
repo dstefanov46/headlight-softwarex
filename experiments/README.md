@@ -1,10 +1,16 @@
 # Experiments
 
-This directory contains experiment configs, runners, workload/testbed helpers,
-and artifact validators. The canonical contract is in
-[docs/experiments.md](../docs/experiments.md); the configuration schema is in
-[configs/schema.md](configs/schema.md), and reproduction procedures are in
-[docs/reproduction.md](../docs/reproduction.md).
+The evaluation includes Headlight, HPA, KEDA and Threshold across
+gradual-ramp, flash-crowd and diurnal workloads and seeds 101–105.
 
-Dry-run commands validate configuration and execution planning only. Measured
-evidence requires a complete validated artifact bundle.
+See [evaluation documentation](../docs/experiments.md) and the
+[60-run archive](../results/controller-archive/README.md).
+
+```bash
+python experiments/validate_softwarex_evaluation.py --output results/controller-archive/validation.json
+```
+
+This verifies the measured artifacts without Kubernetes. The configuration
+dry-run is described in [reproduction](../docs/reproduction.md).
+Synthetic generation and training entrypoints are `generate_headlight_v2_synthetic.py`
+and `train_headlight_v2_synthetic.py`. Testbed and deployment helpers are in `scripts/`.

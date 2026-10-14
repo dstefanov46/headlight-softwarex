@@ -86,7 +86,7 @@ func (r *ControlledReplicaPropagationReconciler) Reconcile(ctx context.Context, 
 	strategy := crp.Spec.Strategy
 
 	// If no strategy is specified,
-	// default to a replica relocation strategy that can make all replicas unavailable.
+	// default to a non-live migration strategy.
 	// todo: this should probably be part of mutating webhook.
 	if strategy == nil {
 		totalCrpReplicas := crp.GetTotalReplicas()
@@ -162,7 +162,7 @@ func (r *ControlledReplicaPropagationReconciler) reconcileMaxUnavailable(
 	// not being designed for rapid, incremental updates
 	// (weights not replicas, non-atomic updates to policies and deployments).
 	//
-	// Specifically, we observed replicas being prematurely removed before replica relocation
+	// Specifically, we observed replicas being prematurely removed before live-migration
 	// could complete, breaking availability guarantees.
 	//
 	// To address this, we implement a different approach:

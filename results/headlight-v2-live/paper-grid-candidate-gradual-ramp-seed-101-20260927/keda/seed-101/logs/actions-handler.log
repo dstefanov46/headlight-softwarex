@@ -1,0 +1,151 @@
+$ kubectl --context karmada-host -n actions-handler-system logs -l app.kubernetes.io/name=actions-handler --tail=-1
+2026/09/27 09:32:07 INFO Starting batch updates submitter...
+2026/09/27 09:32:07 INFO Starting server...
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /placements               --> main.main.postPlacements.func2 (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2026/09/27 - 09:53:39 | 404 |         571ns |      10.244.0.1 | GET      "/placements"
+[GIN] 2026/09/27 - 10:18:09 | 202 |    1.340657ms |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:18:24 | 202 |      176.87µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:18:40 | 202 |      163.76µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:18:54 | 202 |       194.5µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:19:00 INFO Received 2 placement updates
+2026/09/27 10:19:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 10:19:09 | 202 |     337.729µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:19:24 | 202 |      182.93µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:19:40 | 202 |     219.839µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:19:54 | 202 |     164.119µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:20:00 INFO Received 2 placement updates
+2026/09/27 10:20:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 10:20:09 | 202 |     164.689µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:20:25 | 202 |      188.74µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:20:39 | 202 |     171.349µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:20:54 | 202 |     170.059µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:21:00 INFO Received 2 placement updates
+2026/09/27 10:21:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 10:21:09 | 202 |     999.398µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:21:24 | 202 |      200.17µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:21:39 | 202 |      142.14µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:21:54 | 202 |      179.78µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:22:00 INFO Received 2 placement updates
+2026/09/27 10:22:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 10:22:09 | 202 |     438.189µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:22:25 | 202 |      153.52µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:22:39 | 202 |      168.55µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:22:54 | 202 |     241.059µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:23:00 INFO Received 3 placement updates
+2026/09/27 10:23:00 INFO Updated CRP ts-auth in namespace trainticket
+2026/09/27 10:23:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:24:09 | 202 |     206.819µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:24:24 | 202 |       191.2µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:24:39 | 202 |      208.38µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:24:54 | 202 |      187.04µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:25:00 INFO Received 1 placement updates
+2026/09/27 10:25:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:25:09 | 202 |      201.09µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:25:25 | 202 |      192.25µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:25:39 | 202 |     188.979µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:26:00 INFO Received 1 placement updates
+2026/09/27 10:26:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:26:09 | 202 |     191.582µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:26:24 | 202 |     204.442µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:26:39 | 202 |     153.991µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:26:54 | 202 |     162.302µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:27:00 INFO Received 1 placement updates
+2026/09/27 10:27:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:27:09 | 202 |     174.201µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:27:24 | 202 |     175.741µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:27:39 | 202 |     411.033µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:27:54 | 202 |     166.951µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:28:00 INFO Received 1 placement updates
+2026/09/27 10:28:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:28:09 | 202 |     172.621µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:28:24 | 202 |     181.231µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:28:39 | 202 |     179.771µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:28:54 | 202 |     173.251µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:29:00 INFO Received 2 placement updates
+2026/09/27 10:29:00 INFO Updated CRP ts-auth in namespace trainticket
+2026/09/27 10:29:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:29:10 | 202 |     208.651µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:29:24 | 202 |     222.121µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:29:39 | 202 |      161.26µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:29:54 | 202 |     554.482µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:30:00 INFO Received 3 placement updates
+2026/09/27 10:30:00 INFO Updated CRP ts-auth in namespace trainticket
+2026/09/27 10:30:00 INFO Updated CRP ts-route in namespace trainticket
+[GIN] 2026/09/27 - 10:30:10 | 202 |    2.992243ms |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:30:24 | 202 |     165.111µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:30:39 | 202 |     145.471µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:30:54 | 202 |     166.691µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:31:00 INFO Received 2 placement updates
+2026/09/27 10:31:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 10:31:24 | 202 |     206.951µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:31:39 | 202 |     164.861µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:31:54 | 202 |     152.661µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:32:00 INFO Received 2 placement updates
+2026/09/27 10:32:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:32:54 | 202 |     150.491µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:33:00 INFO Received 1 placement updates
+2026/09/27 10:33:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:33:10 | 202 |     227.791µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:33:24 | 202 |     174.391µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:33:39 | 202 |      195.12µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:33:54 | 202 |     158.701µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:34:00 INFO Received 1 placement updates
+2026/09/27 10:34:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:34:09 | 202 |      192.92µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:34:24 | 202 |      152.35µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:34:39 | 202 |      227.67µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:34:54 | 202 |     160.251µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:35:00 INFO Received 2 placement updates
+2026/09/27 10:35:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:35:09 | 202 |     164.291µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:35:24 | 202 |      137.55µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:35:39 | 202 |       161.8µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:35:54 | 202 |     298.651µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:36:00 INFO Received 2 placement updates
+2026/09/27 10:36:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:36:09 | 202 |     139.011µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:36:24 | 202 |      199.86µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:36:39 | 202 |     149.581µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:36:54 | 202 |      174.33µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:37:00 INFO Received 2 placement updates
+2026/09/27 10:37:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:37:39 | 202 |      168.34µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 10:37:54 | 202 |      147.54µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:38:00 INFO Received 1 placement updates
+2026/09/27 10:38:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 10:38:39 | 202 |     184.921µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 10:39:00 INFO Received 1 placement updates
+2026/09/27 10:39:00 INFO Updated CRP ts-travel in namespace trainticket
+[GIN] 2026/09/27 - 12:14:00 | 202 |      663.41µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 12:15:00 INFO Received 1 placement updates
+2026/09/27 12:15:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 12:15:45 | 202 |      197.21µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 12:16:00 INFO Received 1 placement updates
+2026/09/27 12:16:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 12:16:00 | 202 |    74.78865ms |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:16:15 | 202 |      419.39µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:16:30 | 202 |      182.58µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:16:45 | 202 |      153.42µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 12:17:00 INFO Received 1 placement updates
+2026/09/27 12:17:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 12:17:00 | 202 |      335.88µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:17:15 | 202 |     179.009µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:17:30 | 202 |     263.069µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:17:45 | 202 |      235.12µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 12:18:00 INFO Received 1 placement updates
+2026/09/27 12:18:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 12:18:00 | 202 |      204.58µs |      10.244.0.1 | POST     "/placements"
+[GIN] 2026/09/27 - 12:18:15 | 202 |      186.76µs |      10.244.0.1 | POST     "/placements"
+2026/09/27 12:19:00 INFO Received 1 placement updates
+2026/09/27 12:19:00 INFO Updated CRP ts-auth in namespace trainticket
+[GIN] 2026/09/27 - 12:48:53 | 404 |        1.08µs |      10.244.0.1 | GET      "/health"
+[exit 0]

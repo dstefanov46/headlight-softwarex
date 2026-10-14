@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-module-v2
+  labels:
+    app: ai-module-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-module-v2
+  template:
+    metadata:
+      labels:
+        app: ai-module-v2
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: ai-module-v2
+        image: headlight-ai:v2-live
+        imagePullPolicy: IfNotPresent
+        command: ["python", "live_inference_v2.py"]
+        args:
+        - --bundle
+        - /models/bundle
+        - --service-profile
+        - /profiles/profile.json
+        - --policy-config
+        - /config/policy/policy.json
+        - --action-log
+        - /artifacts/actions-v2.jsonl
+        env:
+        - name: HEADLIGHT_ACTION_HANDLER_URL
+          value: http://actions-handler.actions-handler-system.svc.cluster.local:8080/placements
+        - name: HEADLIGHT_PROMETHEUS_URL
+          value: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        - name: HEADLIGHT_V2_CPU_RATE_WINDOW
+          value: 90s
+        - name: HEADLIGHT_V2_BUNDLE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: headlight-v2-runtime-lock
+              key: bundle_id
+        - name: HEADLIGHT_V2_POLICY_SHA256
+          valueFrom:
+            configMapKeyRef:
+              name: headlight-v2-runtime-lock
+              key: policy_sha256
+        - name: HEADLIGHT_RUN_ID
+          value: headlight-v2-shadow-smoke-seed-101
+        - name: HEADLIGHT_SEED
+          value: "101"
+        - name: KUBECONFIG
+          value: /home/appuser/.kube/config
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/appuser/.kube/config
+          subPath: config
+          readOnly: true
+        - name: model-bundle
+          mountPath: /models/bundle
+          readOnly: true
+        - name: service-profile
+          mountPath: /profiles/profile.json
+          subPath: profile.json
+          readOnly: true
+        - name: policy-config
+          mountPath: /config/policy/policy.json
+          subPath: policy.json
+          readOnly: true
+        - name: artifacts
+          mountPath: /artifacts
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: "2"
+            memory: 2Gi
+            ephemeral-storage: 1Gi
+      volumes:
+      - name: kubeconfig
+        secret:
+          secretName: pod-kubeconfig-trainticket
+      - name: model-bundle
+        secret:
+          secretName: headlight-v2-model-bundle
+      - name: service-profile
+        configMap:
+          name: headlight-service-profile
+      - name: policy-config
+        configMap:
+          name: headlight-v2-policy-config
+      - name: artifacts
+        emptyDir: {}

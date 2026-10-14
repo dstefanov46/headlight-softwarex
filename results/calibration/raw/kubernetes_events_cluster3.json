@@ -1,0 +1,1117 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53033",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:00Z",
+            "message": "Successfully assigned trainticket/ts-station-75dfdf564b-jvmjn to cluster3-control-plane",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:00Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd4391bab5dd2c",
+                "namespace": "trainticket",
+                "resourceVersion": "53037",
+                "uid": "87d3bf91-84e7-4d9a-91b5-dccd005a77ed"
+            },
+            "reason": "Scheduled",
+            "reportingComponent": "default-scheduler",
+            "reportingInstance": "",
+            "source": {
+                "component": "default-scheduler"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.initContainers{istio-init}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:00Z",
+            "message": "Container image \"docker.io/istio/proxyv2:1.22.3\" already present on machine",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:00Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd4391d72910fb",
+                "namespace": "trainticket",
+                "resourceVersion": "53043",
+                "uid": "4084d974-94c9-4f28-9e24-3dc4828ec36f"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.initContainers{istio-init}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:00Z",
+            "message": "Created container: istio-init",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:00Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd4391d78c057c",
+                "namespace": "trainticket",
+                "resourceVersion": "53044",
+                "uid": "d991918c-890f-479a-bc78-0311b332ca5e"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:01Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.initContainers{istio-init}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:01Z",
+            "message": "Started container istio-init",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:01Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd4391ffdf2eb6",
+                "namespace": "trainticket",
+                "resourceVersion": "53045",
+                "uid": "c2d822a1-09c0-4fa4-8684-eed4ebe79636"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:02Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:02Z",
+            "message": "Pulling image \"codewisdom/ts-station-service:0.0.4\"",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:02Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd439254d0e596",
+                "namespace": "trainticket",
+                "resourceVersion": "53051",
+                "uid": "3b72914f-8af8-4530-a5bc-553340a238b3"
+            },
+            "reason": "Pulling",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:03Z",
+            "message": "Successfully pulled image \"codewisdom/ts-station-service:0.0.4\" in 334ms (334ms including waiting). Image size: 150720695 bytes.",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:03Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd439268bd065d",
+                "namespace": "trainticket",
+                "resourceVersion": "53053",
+                "uid": "01a6f818-c042-4812-b610-bb726b56141d"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:03Z",
+            "message": "Created container: ts-station",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:03Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd4392694cc21b",
+                "namespace": "trainticket",
+                "resourceVersion": "53054",
+                "uid": "c2bdcfb2-55ba-4437-a8ba-795afdb4de85"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:03Z",
+            "message": "Started container ts-station",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:03Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd43927e24ddd2",
+                "namespace": "trainticket",
+                "resourceVersion": "53055",
+                "uid": "6566b8bb-ec88-4bf7-9f6d-21b42c4669ad"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:03Z",
+            "message": "Container image \"docker.io/istio/proxyv2:1.22.3\" already present on machine",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:03Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd43927e2ed13e",
+                "namespace": "trainticket",
+                "resourceVersion": "53056",
+                "uid": "9d4164bc-a453-4a2c-8cf0-4f9986ad52d3"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:03Z",
+            "message": "Created container: istio-proxy",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:03Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd43927e9c2f04",
+                "namespace": "trainticket",
+                "resourceVersion": "53057",
+                "uid": "36efa367-b19d-4878-9c01-fe65a1807b21"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:04Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:04Z",
+            "message": "Started container istio-proxy",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:04Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd43929e036bc0",
+                "namespace": "trainticket",
+                "resourceVersion": "53059",
+                "uid": "2104c1b4-3897-441c-9db0-ed503e1deead"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 5,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:05Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:09Z",
+            "message": "Startup probe failed: Get \"http://10.244.0.187:15021/healthz/ready\": dial tcp 10.244.0.187:15021: connect: connection refused",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:05Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd4392f7f8cd10",
+                "namespace": "trainticket",
+                "resourceVersion": "53075",
+                "uid": "bae77b93-654d-45eb-9d57-28ba6ecda4ac"
+            },
+            "reason": "Unhealthy",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Warning"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 14,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:04:50Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-jvmjn",
+                "namespace": "trainticket",
+                "resourceVersion": "53035",
+                "uid": "db69c553-e8c7-44f2-922d-a2ec8a1aa178"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:06:56Z",
+            "message": "Readiness probe failed: HTTP probe failed with statuscode: 500",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:04:50Z",
+                "name": "ts-station-75dfdf564b-jvmjn.18cd43b959865ff4",
+                "namespace": "trainticket",
+                "resourceVersion": "53625",
+                "uid": "f4c7ddaa-8d36-4864-aca3-69ec2615b387"
+            },
+            "reason": "Unhealthy",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Warning"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51605",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:00Z",
+            "message": "Successfully assigned trainticket/ts-station-75dfdf564b-xsbf6 to cluster3-control-plane",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:00Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42ea14af71b7",
+                "namespace": "trainticket",
+                "resourceVersion": "51609",
+                "uid": "5237a398-3cf7-4e60-87c6-7066a7a00d24"
+            },
+            "reason": "Scheduled",
+            "reportingComponent": "default-scheduler",
+            "reportingInstance": "",
+            "source": {
+                "component": "default-scheduler"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.initContainers{istio-init}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:00Z",
+            "message": "Container image \"docker.io/istio/proxyv2:1.22.3\" already present on machine",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:00Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42ea339b79a1",
+                "namespace": "trainticket",
+                "resourceVersion": "51615",
+                "uid": "518f3af4-2f1c-4ad3-8066-c38be07f8aa7"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.initContainers{istio-init}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:00Z",
+            "message": "Created container: istio-init",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:00Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42ea33fba762",
+                "namespace": "trainticket",
+                "resourceVersion": "51616",
+                "uid": "ebd7559b-15e5-4ac9-9465-7256a320bf61"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:01Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.initContainers{istio-init}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:01Z",
+            "message": "Started container istio-init",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:01Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42ea573a9fa6",
+                "namespace": "trainticket",
+                "resourceVersion": "51617",
+                "uid": "e45a0680-7e91-4292-9ebf-e78467ddefed"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:02Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:02Z",
+            "message": "Pulling image \"codewisdom/ts-station-service:0.0.4\"",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:02Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eaa78067b9",
+                "namespace": "trainticket",
+                "resourceVersion": "51623",
+                "uid": "d7eadf62-85c5-43d2-a069-0604aba5ccc6"
+            },
+            "reason": "Pulling",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:03Z",
+            "message": "Successfully pulled image \"codewisdom/ts-station-service:0.0.4\" in 284ms (284ms including waiting). Image size: 150720695 bytes.",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:03Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eab86f38ac",
+                "namespace": "trainticket",
+                "resourceVersion": "51625",
+                "uid": "83bce5b3-a3fa-419e-820c-edf24f048261"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:03Z",
+            "message": "Created container: ts-station",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:03Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eab910ce57",
+                "namespace": "trainticket",
+                "resourceVersion": "51626",
+                "uid": "defd034d-d0cb-4728-87f0-ef625a0f9428"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:03Z",
+            "message": "Started container ts-station",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:03Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eacbe881b7",
+                "namespace": "trainticket",
+                "resourceVersion": "51627",
+                "uid": "a72c55ab-9bfe-42e7-8144-2005a8f5cafc"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:03Z",
+            "message": "Container image \"docker.io/istio/proxyv2:1.22.3\" already present on machine",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:03Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eacbf6ced9",
+                "namespace": "trainticket",
+                "resourceVersion": "51628",
+                "uid": "4d780de9-8023-487a-bd62-f183a4d88966"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:03Z",
+            "message": "Created container: istio-proxy",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:03Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eacc7aa5e8",
+                "namespace": "trainticket",
+                "resourceVersion": "51629",
+                "uid": "dc994088-3f86-49c4-83ce-fae11cbdce97"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:04Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:04Z",
+            "message": "Started container istio-proxy",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:04Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eaf4de7a59",
+                "namespace": "trainticket",
+                "resourceVersion": "51630",
+                "uid": "f3e7ff8a-ba87-4b98-9c0d-db6bcc37f8ba"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 2,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:05Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:06Z",
+            "message": "Startup probe failed: Get \"http://10.244.0.186:15021/healthz/ready\": dial tcp 10.244.0.186:15021: connect: connection refused",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:05Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd42eb522332ab",
+                "namespace": "trainticket",
+                "resourceVersion": "51637",
+                "uid": "be738042-c294-45d8-8d73-434d2fdf1a1b"
+            },
+            "reason": "Unhealthy",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Warning"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 17,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:52:51Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:55:23Z",
+            "message": "Readiness probe failed: HTTP probe failed with statuscode: 500",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:52:51Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd4311f1db9755",
+                "namespace": "trainticket",
+                "resourceVersion": "52258",
+                "uid": "f9a3249f-2f42-4400-be78-dae75107034b"
+            },
+            "reason": "Unhealthy",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Warning"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:00:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:00:00Z",
+            "message": "Stopping container ts-station",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:00:00Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd4375ceb4a323",
+                "namespace": "trainticket",
+                "resourceVersion": "52797",
+                "uid": "35b09afb-065d-4637-9cbd-a65ffaadeec7"
+            },
+            "reason": "Killing",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:00:00Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{istio-proxy}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:00:00Z",
+            "message": "Stopping container istio-proxy",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:00:00Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd4375ceb6a7f9",
+                "namespace": "trainticket",
+                "resourceVersion": "52798",
+                "uid": "3e3f9985-73dc-4f0b-a715-56b372b40bef"
+            },
+            "reason": "Killing",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:00:03Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{ts-station}",
+                "kind": "Pod",
+                "name": "ts-station-75dfdf564b-xsbf6",
+                "namespace": "trainticket",
+                "resourceVersion": "51607",
+                "uid": "b9d76942-afc1-4e38-8dbb-72332878700f"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:00:03Z",
+            "message": "Readiness probe failed: Get \"http://10.244.0.186:15020/app-health/ts-station/readyz\": dial tcp 10.244.0.186:15020: connect: connection refused",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:00:03Z",
+                "name": "ts-station-75dfdf564b-xsbf6.18cd437687147607",
+                "namespace": "trainticket",
+                "resourceVersion": "52803",
+                "uid": "76c6181c-dea4-479d-a4a1-04b007f0c205"
+            },
+            "reason": "Unhealthy",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "cluster3-control-plane",
+            "source": {
+                "component": "kubelet",
+                "host": "cluster3-control-plane"
+            },
+            "type": "Warning"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:50:00Z",
+            "involvedObject": {
+                "apiVersion": "apps/v1",
+                "kind": "ReplicaSet",
+                "name": "ts-station-75dfdf564b",
+                "namespace": "trainticket",
+                "resourceVersion": "51601",
+                "uid": "692476bc-b1a0-4e62-99a4-b48cf96e17b4"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T16:50:00Z",
+            "message": "Created pod: ts-station-75dfdf564b-xsbf6",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:50:00Z",
+                "name": "ts-station-75dfdf564b.18cd42ea146611ed",
+                "namespace": "trainticket",
+                "resourceVersion": "51606",
+                "uid": "087251b3-424c-4f64-9a8e-5d3ee8bc7a8a"
+            },
+            "reason": "SuccessfulCreate",
+            "reportingComponent": "replicaset-controller",
+            "reportingInstance": "",
+            "source": {
+                "component": "replicaset-controller"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:00:00Z",
+            "involvedObject": {
+                "apiVersion": "apps/v1",
+                "kind": "ReplicaSet",
+                "name": "ts-station-75dfdf564b",
+                "namespace": "trainticket",
+                "resourceVersion": "52789",
+                "uid": "692476bc-b1a0-4e62-99a4-b48cf96e17b4"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:00:00Z",
+            "message": "Deleted pod: ts-station-75dfdf564b-xsbf6",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:00:00Z",
+                "name": "ts-station-75dfdf564b.18cd4375ce6bba0f",
+                "namespace": "trainticket",
+                "resourceVersion": "52793",
+                "uid": "a6f4bea2-3892-439a-8692-b14efbfe99a2"
+            },
+            "reason": "SuccessfulDelete",
+            "reportingComponent": "replicaset-controller",
+            "reportingInstance": "",
+            "source": {
+                "component": "replicaset-controller"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T17:02:00Z",
+            "involvedObject": {
+                "apiVersion": "apps/v1",
+                "kind": "ReplicaSet",
+                "name": "ts-station-75dfdf564b",
+                "namespace": "trainticket",
+                "resourceVersion": "53029",
+                "uid": "692476bc-b1a0-4e62-99a4-b48cf96e17b4"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:00Z",
+            "message": "Created pod: ts-station-75dfdf564b-jvmjn",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T17:02:00Z",
+                "name": "ts-station-75dfdf564b.18cd4391ba2791fb",
+                "namespace": "trainticket",
+                "resourceVersion": "53034",
+                "uid": "ce97143e-088c-4331-aaf1-56c7d8721b56"
+            },
+            "reason": "SuccessfulCreate",
+            "reportingComponent": "replicaset-controller",
+            "reportingInstance": "",
+            "source": {
+                "component": "replicaset-controller"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 3,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:37:00Z",
+            "involvedObject": {
+                "apiVersion": "apps/v1",
+                "kind": "Deployment",
+                "name": "ts-station",
+                "namespace": "trainticket",
+                "resourceVersion": "50064",
+                "uid": "a590d70d-a24c-4039-a4d4-2fb4cd0be4ef"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:02:00Z",
+            "message": "Scaled up replica set ts-station-75dfdf564b from 7 to 8",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:37:00Z",
+                "name": "ts-station.18cd42347caddad1",
+                "namespace": "trainticket",
+                "resourceVersion": "53030",
+                "uid": "cbdbf0b9-133e-4fbf-b07e-a6996dd22549"
+            },
+            "reason": "ScalingReplicaSet",
+            "reportingComponent": "deployment-controller",
+            "reportingInstance": "",
+            "source": {
+                "component": "deployment-controller"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 2,
+            "eventTime": null,
+            "firstTimestamp": "2026-08-19T16:48:00Z",
+            "involvedObject": {
+                "apiVersion": "apps/v1",
+                "kind": "Deployment",
+                "name": "ts-station",
+                "namespace": "trainticket",
+                "resourceVersion": "51356",
+                "uid": "a590d70d-a24c-4039-a4d4-2fb4cd0be4ef"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-08-19T17:00:00Z",
+            "message": "Scaled down replica set ts-station-75dfdf564b from 8 to 7",
+            "metadata": {
+                "creationTimestamp": "2026-08-19T16:48:00Z",
+                "name": "ts-station.18cd42ce21bb56c0",
+                "namespace": "trainticket",
+                "resourceVersion": "52792",
+                "uid": "39a6eaa5-341a-46ba-b26f-37daf1ec17bd"
+            },
+            "reason": "ScalingReplicaSet",
+            "reportingComponent": "deployment-controller",
+            "reportingInstance": "",
+            "source": {
+                "component": "deployment-controller"
+            },
+            "type": "Normal"
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

@@ -1,0 +1,30 @@
+apiVersion: headlight.experiments/v1alpha1
+kind: HeadlightV2LiveValidationRun
+metadata:
+  name: headlight-v2-emergency-disabled-gradual-ramp-c4-seed-105-followup
+spec:
+  seed: 105
+  workload_profile: experiments/configs/workloads/gradual-ramp.yaml
+  workload_profile_sha256: e44f36fd3e3adac328462a4409146e94875e1113f4c3a05219fa7a6c57813053
+  expected_comparator_trace_sha256: b1a3d85fce1cd8a4ce44bef382794c8c12fcb2647f389ae789a284cc19cb00ca
+  comparison_controllers:
+  - headlight-v2
+  - hpa
+  - keda
+  bundle_id: c37050a44dd2fc876bf6523aaeabdd364af7608ffeee5e1586a6cb8bbaaaeb4a
+  bundle_archive_sha256: bf18f7a959a3f182cec1dd9892fca964c041442a210338109c60a642b926f635
+  policy_sha256: 44f1eec3ea4d515e2f18ae91db8e839a095c41f8ce41afa9d5ba933ee096c07f
+  shadow_smoke_required: true
+  warmup_seconds: 480
+  measurement_seconds: 1200
+  sampling_interval_seconds: 15
+  output_dir: results/headlight-v2-extension/reserved/gradual-ramp-seed-105
+  gateway_protocol: experiments/configs/gateway-protocols/research-v4-gateway.yaml
+  gateway_protocol_sha256: 716e9f4c0020d2bedf2736337cde21779cb6c170aad78e85707cfd4f2931e0be
+  capacity_users: 4
+  mode: reactive-emergency-disabled
+  diagnostics_required: true
+  diagnostic_dir: /artifacts/diagnostics
+  model_changed: false
+  parameters_tuned: false
+  claim_scope: seed104-105-headlight-v2-followup

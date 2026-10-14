@@ -8,12 +8,12 @@
     "cluster2": {
       "min_replicas": 1,
       "initial_replicas": 1,
-      "max_replicas": 3
+      "max_replicas": 6
     },
     "cluster3": {
       "min_replicas": 1,
       "initial_replicas": 1,
-      "max_replicas": 5
+      "max_replicas": 8
     }
   },
   "node_order": [
@@ -54,8 +54,8 @@
   ],
   "source": {
     "generator": "experiments/scripts/generate_service_profiles.py",
-    "rendered_manifest_sha256": "e977aadda2eaa3bfef9c564eb906ec9d84d57f13620f1eb30061323dbff5ec20",
+    "rendered_manifest_sha256": "25f594a52af1e284ffa8d4d7a1651d9bb85bf2c3cbcafe0c11a7b8140064e24b",
     "resource_profile": "local-tiny"
   },
-  "profile_hash": "1956d67bc96d05fe6d448095a6180c5de63ae57e5fe205366d08b2399c07d7fb"
+  "profile_hash": "08f69f77c094ef6e49d14af58628b67def576ff2ca9085954e29d440fd45bdbe"
 }

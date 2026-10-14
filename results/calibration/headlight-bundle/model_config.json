@@ -1,0 +1,13 @@
+{
+  "forecast_horizon_seconds": 180,
+  "graph_blocks": 2,
+  "hidden_width": 32,
+  "horizon": 12,
+  "input_size": 14,
+  "lookback": 24,
+  "model_type": "headlight",
+  "num_nodes": 18,
+  "residual_bound": 0.3,
+  "sampling_interval_seconds": 15,
+  "variant": "full"
+}

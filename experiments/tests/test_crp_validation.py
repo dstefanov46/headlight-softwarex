@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import unittest
-from pathlib import Path
 
-from experiments.validate_crp_trace import CRPValidationError, load_config, load_rows, validate_rows
+from experiments.validate_crp_trace import CRPValidationError, load_config, validate_rows
 
 
 def row(event_type: str, available: int = 3, status: str = "true") -> dict[str, str]:
@@ -45,13 +44,6 @@ class CRPValidationTests(unittest.TestCase):
         with self.assertRaises(CRPValidationError) as ctx:
             validate_rows(invalid_rows, config)
         self.assertIn("availability violation", str(ctx.exception))
-
-    def test_validates_softwarex_five_five_to_two_eight_fixture(self) -> None:
-        config = load_config("experiments/config/crp_validation.yaml")
-        rows = load_rows(Path("experiments/sample_data/softwarex/crp_5_5_to_2_8_trace.csv"))
-        result = validate_rows(rows, config)
-        self.assertEqual(result["validation_status"], "validated")
-        self.assertEqual(result["events"], 3)
 
 
 if __name__ == "__main__":

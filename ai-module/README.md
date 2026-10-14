@@ -5,6 +5,5 @@ controllers. See the canonical [AI Module documentation](../docs/components/ai-m
 and [architecture guide](../docs/architecture.md) for the public contract.
 
 Deployment scripts and manifests remain in this directory. The dry-run path
-checks configuration and bundle contracts and demonstrates sample output format.
-Measured model-quality and autoscaling tables use the measured artifact
-workflow.
+checks configuration and bundle contracts; it does not measure model quality or
+autoscaling performance. A dry-run is not measured evidence.

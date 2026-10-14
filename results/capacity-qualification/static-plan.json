@@ -1,0 +1,71 @@
+{
+  "assignments": {
+    "ts-auth": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-basic": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-price": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-route": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-route-plan": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-station": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-ticketinfo": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-train": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-travel": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-travel-plan": {
+      "cluster2": 2,
+      "cluster3": 2
+    },
+    "ts-travel2": {
+      "cluster2": 2,
+      "cluster3": 2
+    }
+  },
+  "calibration_trace": {
+    "name": "results/calibration/train-ticket-calibration.csv",
+    "seeds": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "sha256": "a2b3cdbed2c15bed9d37956a1108d3ec97d3de974924e426980c8cafb94240af"
+  },
+  "capacity_contract_hash": "2e6ef30e749261974ea99a1287dba6dbf9048cae0a85282d5699fdab603e8d20",
+  "created_at_unix": 1787166658,
+  "finalized_at_unix": 1787166658,
+  "immutable": true,
+  "plan_hash": "dc8f36c79d5523219d37bc5586b829f4145c2cb84f6889df63e21ab8af04fc27",
+  "protocol": {
+    "hash": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "path": "experiments/configs/protocols/research-v3.yaml",
+    "version": "research-v3"
+  },
+  "schema_version": "headlight.static-plan/v1",
+  "selected_capacity": 4,
+  "selection_procedure": "Use calibration-selected C and apply protocol static_split_replicas(C) to every scalable service."
+}

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from experiments.lib.protocol import replica_limits
+
 
 @dataclass(frozen=True)
 class ThresholdState:
@@ -38,9 +40,15 @@ def threshold_decision(
     return ThresholdState(state.replicas, 0, 0)
 
 
-def static_split_replicas(total_replicas: int, cluster2_weight: int = 3, cluster3_weight: int = 5) -> dict[str, int]:
+def static_split_replicas(
+    total_replicas: int,
+    cluster2_weight: int | None = None,
+    cluster3_weight: int | None = None,
+) -> dict[str, int]:
+    limits = replica_limits()["per_cluster_max_replicas"]
+    cluster2_weight = int(cluster2_weight if cluster2_weight is not None else limits["cluster2"])
+    cluster3_weight = int(cluster3_weight if cluster3_weight is not None else limits["cluster3"])
     total_weight = cluster2_weight + cluster3_weight
     cluster2 = round(total_replicas * cluster2_weight / total_weight)
     cluster3 = total_replicas - cluster2
     return {"cluster2": max(0, cluster2), "cluster3": max(0, cluster3)}
-

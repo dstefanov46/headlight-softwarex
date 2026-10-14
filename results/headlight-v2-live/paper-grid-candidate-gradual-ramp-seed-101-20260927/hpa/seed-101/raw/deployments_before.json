@@ -1,0 +1,4072 @@
+{
+  "cluster2": {
+    "apiVersion": "v1",
+    "items": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-auth\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-auth\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-auth\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-auth-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-auth\",\"ports\":[{\"containerPort\":12340}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12340},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-auth",
+          "namespace": "trainticket",
+          "resourceVersion": "33535",
+          "uid": "b2395804-217f-467a-91b7-5bf22a093484"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-auth"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-auth"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-auth-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-auth",
+                  "ports": [
+                    {
+                      "containerPort": 12340,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 12340
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:28Z",
+              "lastUpdateTime": "2026-09-27T12:52:28Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:39Z",
+              "lastUpdateTime": "2026-09-27T12:52:28Z",
+              "message": "ReplicaSet \"ts-auth-7f579464f5\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-auth-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-auth-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-auth-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-auth-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-auth-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33034",
+          "uid": "18c7e448-94fe-4c61-82c7-11316b4f549c"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-auth-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-auth-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-auth-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "ReplicaSet \"ts-auth-mongo-fdf988687\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-basic\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-basic\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-basic\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-basic-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-basic\",\"ports\":[{\"containerPort\":15680}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":15680},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-basic",
+          "namespace": "trainticket",
+          "resourceVersion": "33509",
+          "uid": "c98d2ea2-70fe-48f8-8864-63ec6f9144be"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-basic"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-basic"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-basic-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-basic",
+                  "ports": [
+                    {
+                      "containerPort": 15680,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 15680
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:25Z",
+              "lastUpdateTime": "2026-09-27T12:52:25Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:52:25Z",
+              "message": "ReplicaSet \"ts-basic-547d5d898c\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-price\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-price\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-price\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-price-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-price\",\"ports\":[{\"containerPort\":16579}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":16579},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-price",
+          "namespace": "trainticket",
+          "resourceVersion": "33491",
+          "uid": "eb81c51e-85df-449c-b68b-b14063408c68"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-price"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-price"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-price-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-price",
+                  "ports": [
+                    {
+                      "containerPort": 16579,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 16579
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:23Z",
+              "lastUpdateTime": "2026-09-27T12:52:23Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:39Z",
+              "lastUpdateTime": "2026-09-27T12:52:23Z",
+              "message": "ReplicaSet \"ts-price-6c47f9cff4\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-price-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-price-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-price-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-price-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-price-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33019",
+          "uid": "c9156f0c-c27b-475f-b752-ae86dd239306"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-price-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-price-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-price-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "ReplicaSet \"ts-price-mongo-84c7c4fcc\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-route\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-route-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-route\",\"ports\":[{\"containerPort\":11178}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":11178},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-route",
+          "namespace": "trainticket",
+          "resourceVersion": "33530",
+          "uid": "e1c98e73-103d-4c36-98d9-87edffb90e2c"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-route"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-route"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-route-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-route",
+                  "ports": [
+                    {
+                      "containerPort": 11178,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 11178
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:28Z",
+              "lastUpdateTime": "2026-09-27T12:52:28Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:39Z",
+              "lastUpdateTime": "2026-09-27T12:52:28Z",
+              "message": "ReplicaSet \"ts-route-67c8f8786\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-route-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-route-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-route-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33017",
+          "uid": "ea3c1232-02c0-449d-8211-d4e2d83f5753"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-route-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-route-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-route-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "ReplicaSet \"ts-route-mongo-7f458d6565\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route-plan\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-route-plan\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-route-plan-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-route-plan\",\"ports\":[{\"containerPort\":14578}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14578},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-route-plan",
+          "namespace": "trainticket",
+          "resourceVersion": "33542",
+          "uid": "c87bbf9f-0982-4a65-8105-1af08269897b"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-route-plan"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-route-plan"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-route-plan-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-route-plan",
+                  "ports": [
+                    {
+                      "containerPort": 14578,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 14578
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:29Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:39Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "ReplicaSet \"ts-route-plan-884d95bc6\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-station\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-station\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-station\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-station-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-station\",\"ports\":[{\"containerPort\":12345}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12345},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-station",
+          "namespace": "trainticket",
+          "resourceVersion": "33504",
+          "uid": "14cf087a-acdf-4a87-b359-73c61c4b2dc1"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-station"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-station"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-station-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-station",
+                  "ports": [
+                    {
+                      "containerPort": 12345,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 12345
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:25Z",
+              "lastUpdateTime": "2026-09-27T12:52:25Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:39Z",
+              "lastUpdateTime": "2026-09-27T12:52:25Z",
+              "message": "ReplicaSet \"ts-station-899c578cf\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-station-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-station-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-station-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-station-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-station-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33020",
+          "uid": "784e1f64-af04-4756-a8b4-489f8c8efd3d"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-station-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-station-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-station-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "ReplicaSet \"ts-station-mongo-9b987c6cc\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-ticketinfo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-ticketinfo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-ticketinfo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-ticketinfo-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-ticketinfo\",\"ports\":[{\"containerPort\":15681}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":15681},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-ticketinfo",
+          "namespace": "trainticket",
+          "resourceVersion": "33521",
+          "uid": "cbe55d92-b5b2-4dc7-9d8c-41825b5c530d"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-ticketinfo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-ticketinfo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-ticketinfo-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-ticketinfo",
+                  "ports": [
+                    {
+                      "containerPort": 15681,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 15681
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:27Z",
+              "lastUpdateTime": "2026-09-27T12:52:27Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:40Z",
+              "lastUpdateTime": "2026-09-27T12:52:27Z",
+              "message": "ReplicaSet \"ts-ticketinfo-655f46f6c5\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-train\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-train\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-train\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-train-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-train\",\"ports\":[{\"containerPort\":14567}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14567},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-train",
+          "namespace": "trainticket",
+          "resourceVersion": "33514",
+          "uid": "3cfb811f-8c46-4239-b6da-255241094641"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-train"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-train"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-train-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-train",
+                  "ports": [
+                    {
+                      "containerPort": 14567,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 14567
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:26Z",
+              "lastUpdateTime": "2026-09-27T12:52:26Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:40Z",
+              "lastUpdateTime": "2026-09-27T12:52:26Z",
+              "message": "ReplicaSet \"ts-train-6fd9dc5c5c\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-train-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-train-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-train-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-train-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-train-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33022",
+          "uid": "8f488888-4f2f-43b3-8304-a43b55b8842a"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-train-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-train-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-train-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "ReplicaSet \"ts-train-mongo-6596b7b8bf\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-travel\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel\",\"ports\":[{\"containerPort\":12346}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12346},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-travel",
+          "namespace": "trainticket",
+          "resourceVersion": "33552",
+          "uid": "55e086a5-b649-4999-b3f3-bd8a1513e58b"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-travel-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-travel",
+                  "ports": [
+                    {
+                      "containerPort": 12346,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 12346
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:30Z",
+              "lastUpdateTime": "2026-09-27T12:52:30Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:40Z",
+              "lastUpdateTime": "2026-09-27T12:52:30Z",
+              "message": "ReplicaSet \"ts-travel-8c844df49\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-travel-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-travel-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-travel-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33036",
+          "uid": "b3d4644b-75cf-45af-b906-91895d190fdd"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-travel-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:41Z",
+              "message": "ReplicaSet \"ts-travel-mongo-54fb6bd555\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel-plan\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-travel-plan\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel-plan-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel-plan\",\"ports\":[{\"containerPort\":14322}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14322},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-travel-plan",
+          "namespace": "trainticket",
+          "resourceVersion": "33548",
+          "uid": "3490db52-ca7b-4f99-ac43-aa206dd8f041"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel-plan"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel-plan"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-travel-plan-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-travel-plan",
+                  "ports": [
+                    {
+                      "containerPort": 14322,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 14322
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:30Z",
+              "lastUpdateTime": "2026-09-27T12:52:30Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:40Z",
+              "lastUpdateTime": "2026-09-27T12:52:30Z",
+              "message": "ReplicaSet \"ts-travel-plan-6b75466f77\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel2\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel2\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-travel2\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel2-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel2\",\"ports\":[{\"containerPort\":16346}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":16346},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:39Z",
+          "generation": 1,
+          "name": "ts-travel2",
+          "namespace": "trainticket",
+          "resourceVersion": "33497",
+          "uid": "a7c60fd1-56ba-4ee3-992e-9fa940d55e55"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel2"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel2"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-travel2-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-travel2",
+                  "ports": [
+                    {
+                      "containerPort": 16346,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 16346
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:24Z",
+              "lastUpdateTime": "2026-09-27T12:52:24Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:40Z",
+              "lastUpdateTime": "2026-09-27T12:52:24Z",
+              "message": "ReplicaSet \"ts-travel2-86bd7c7c67\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel2-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel2-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-travel2-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-travel2-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:38Z",
+          "generation": 1,
+          "name": "ts-travel2-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33014",
+          "uid": "e61d6d29-744a-4589-a24f-78922d622796"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel2-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel2-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-travel2-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:40Z",
+              "lastUpdateTime": "2026-09-27T12:49:40Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:38Z",
+              "lastUpdateTime": "2026-09-27T12:49:40Z",
+              "message": "ReplicaSet \"ts-travel2-mongo-5c84bcfb97\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      }
+    ],
+    "kind": "List",
+    "metadata": {
+      "resourceVersion": ""
+    }
+  },
+  "cluster3": {
+    "apiVersion": "v1",
+    "items": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-auth\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-auth\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-auth\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-auth-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-auth\",\"ports\":[{\"containerPort\":12340}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12340},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-auth",
+          "namespace": "trainticket",
+          "resourceVersion": "34356",
+          "uid": "0b539b12-248a-4f61-b781-65023fcc559d"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-auth"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-auth"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-auth-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-auth",
+                  "ports": [
+                    {
+                      "containerPort": 12340,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 12340
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:29Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:42Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "ReplicaSet \"ts-auth-7f579464f5\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-auth-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-auth-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-auth-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-auth-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-auth-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33844",
+          "uid": "280392da-34d8-4e06-b602-e56a4a9afa0c"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-auth-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-auth-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-auth-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-auth-mongo-fdf988687\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-basic\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-basic\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-basic\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-basic-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-basic\",\"ports\":[{\"containerPort\":15680}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":15680},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-basic",
+          "namespace": "trainticket",
+          "resourceVersion": "34385",
+          "uid": "39ec631f-603a-4dcc-b1a7-e4394960cf74"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-basic"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-basic"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-basic-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-basic",
+                  "ports": [
+                    {
+                      "containerPort": 15680,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 15680
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:33Z",
+              "lastUpdateTime": "2026-09-27T12:52:33Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:42Z",
+              "lastUpdateTime": "2026-09-27T12:52:33Z",
+              "message": "ReplicaSet \"ts-basic-547d5d898c\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-price\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-price\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-price\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-price-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-price\",\"ports\":[{\"containerPort\":16579}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":16579},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-price",
+          "namespace": "trainticket",
+          "resourceVersion": "34395",
+          "uid": "77580c67-8d8b-4ca6-8b39-424fe6b4cbbb"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-price"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-price"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-price-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-price",
+                  "ports": [
+                    {
+                      "containerPort": 16579,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 16579
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:34Z",
+              "lastUpdateTime": "2026-09-27T12:52:34Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:42Z",
+              "lastUpdateTime": "2026-09-27T12:52:34Z",
+              "message": "ReplicaSet \"ts-price-6c47f9cff4\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-price-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-price-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-price-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-price-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-price-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33842",
+          "uid": "3d99b837-1465-49de-b92f-f0ac85675823"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-price-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-price-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-price-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:42Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-price-mongo-84c7c4fcc\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-route\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-route-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-route\",\"ports\":[{\"containerPort\":11178}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":11178},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-route",
+          "namespace": "trainticket",
+          "resourceVersion": "34414",
+          "uid": "45e1cfba-a03a-4313-a07b-5a36ceb26c5f"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-route"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-route"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-route-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-route",
+                  "ports": [
+                    {
+                      "containerPort": 11178,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 11178
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:36Z",
+              "lastUpdateTime": "2026-09-27T12:52:36Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:43Z",
+              "lastUpdateTime": "2026-09-27T12:52:36Z",
+              "message": "ReplicaSet \"ts-route-67c8f8786\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-route-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-route-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-route-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33854",
+          "uid": "8fe20442-266c-4f0a-a2db-fa1dd51fb2dd"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-route-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-route-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-route-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-route-mongo-7f458d6565\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-route-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-route-plan\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-route-plan\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-route-plan-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-route-plan\",\"ports\":[{\"containerPort\":14578}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14578},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-route-plan",
+          "namespace": "trainticket",
+          "resourceVersion": "34366",
+          "uid": "2480e8ec-9490-41bd-8329-8448c462bdf0"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-route-plan"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-route-plan"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-route-plan-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-route-plan",
+                  "ports": [
+                    {
+                      "containerPort": 14578,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 14578
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:30Z",
+              "lastUpdateTime": "2026-09-27T12:52:30Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:43Z",
+              "lastUpdateTime": "2026-09-27T12:52:30Z",
+              "message": "ReplicaSet \"ts-route-plan-884d95bc6\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-station\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-station\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-station\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-station-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-station\",\"ports\":[{\"containerPort\":12345}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12345},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-station",
+          "namespace": "trainticket",
+          "resourceVersion": "34401",
+          "uid": "d187eae2-d65b-4cd7-bf03-a46f853c409c"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-station"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-station"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-station-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-station",
+                  "ports": [
+                    {
+                      "containerPort": 12345,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 12345
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:34Z",
+              "lastUpdateTime": "2026-09-27T12:52:34Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:43Z",
+              "lastUpdateTime": "2026-09-27T12:52:34Z",
+              "message": "ReplicaSet \"ts-station-899c578cf\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-station-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-station-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-station-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-station-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-station-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33813",
+          "uid": "34dd3a90-d8ac-45b1-939a-09989366559c"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-station-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-station-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-station-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-station-mongo-9b987c6cc\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-ticketinfo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-ticketinfo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-ticketinfo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-ticketinfo-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-ticketinfo\",\"ports\":[{\"containerPort\":15681}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":15681},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-ticketinfo",
+          "namespace": "trainticket",
+          "resourceVersion": "34361",
+          "uid": "c5d42f65-bb90-471e-bd18-2872f09bda7b"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-ticketinfo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-ticketinfo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-ticketinfo-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-ticketinfo",
+                  "ports": [
+                    {
+                      "containerPort": 15681,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 15681
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:29Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:43Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "ReplicaSet \"ts-ticketinfo-655f46f6c5\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-train\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-train\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-train\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-train-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-train\",\"ports\":[{\"containerPort\":14567}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14567},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-train",
+          "namespace": "trainticket",
+          "resourceVersion": "34373",
+          "uid": "6997fa57-c942-420c-9be7-e331fbaa4dea"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-train"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-train"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-train-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-train",
+                  "ports": [
+                    {
+                      "containerPort": 14567,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 14567
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:31Z",
+              "lastUpdateTime": "2026-09-27T12:52:31Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:43Z",
+              "lastUpdateTime": "2026-09-27T12:52:31Z",
+              "message": "ReplicaSet \"ts-train-6fd9dc5c5c\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-train-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-train-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-train-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-train-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-train-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33831",
+          "uid": "408199b6-9c41-475e-b9c0-fa953aefea92"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-train-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-train-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-train-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-train-mongo-6596b7b8bf\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-travel\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel\",\"ports\":[{\"containerPort\":12346}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":12346},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-travel",
+          "namespace": "trainticket",
+          "resourceVersion": "34405",
+          "uid": "93fe5793-93a1-44a1-8993-77aa780dfbf6"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-travel-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-travel",
+                  "ports": [
+                    {
+                      "containerPort": 12346,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 12346
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:34Z",
+              "lastUpdateTime": "2026-09-27T12:52:34Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:52:34Z",
+              "message": "ReplicaSet \"ts-travel-8c844df49\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-travel-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-travel-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-travel-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33838",
+          "uid": "cb9eaf1b-bba0-4701-8870-ec0b8148cea3"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-travel-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-travel-mongo-54fb6bd555\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel-plan\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel-plan\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-travel-plan\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel-plan-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel-plan\",\"ports\":[{\"containerPort\":14322}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":14322},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-travel-plan",
+          "namespace": "trainticket",
+          "resourceVersion": "34390",
+          "uid": "a51e6fc2-cf79-4181-be66-f4402d83a3ff"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel-plan"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel-plan"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-travel-plan-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-travel-plan",
+                  "ports": [
+                    {
+                      "containerPort": 14322,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 14322
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:33Z",
+              "lastUpdateTime": "2026-09-27T12:52:33Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:52:33Z",
+              "message": "ReplicaSet \"ts-travel-plan-6b75466f77\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel2\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel2\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"true\",\"sidecar.istio.io/proxyCPU\":\"20m\",\"sidecar.istio.io/proxyCPULimit\":\"200m\",\"sidecar.istio.io/proxyMemory\":\"64Mi\",\"sidecar.istio.io/proxyMemoryLimit\":\"192Mi\"},\"labels\":{\"app\":\"ts-travel2\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"codewisdom/ts-travel2-service:0.0.4\",\"imagePullPolicy\":\"Always\",\"name\":\"ts-travel2\",\"ports\":[{\"containerPort\":16346}],\"readinessProbe\":{\"initialDelaySeconds\":160,\"periodSeconds\":10,\"tcpSocket\":{\"port\":16346},\"timeoutSeconds\":5},\"resources\":{\"limits\":{\"cpu\":\"500m\",\"ephemeral-storage\":\"1Gi\",\"memory\":\"512Mi\"},\"requests\":{\"cpu\":\"50m\",\"ephemeral-storage\":\"128Mi\",\"memory\":\"128Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:42Z",
+          "generation": 1,
+          "name": "ts-travel2",
+          "namespace": "trainticket",
+          "resourceVersion": "34352",
+          "uid": "975a2f30-7236-4fd3-bdaa-1a3cdd698683"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel2"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "true",
+                "sidecar.istio.io/proxyCPU": "20m",
+                "sidecar.istio.io/proxyCPULimit": "200m",
+                "sidecar.istio.io/proxyMemory": "64Mi",
+                "sidecar.istio.io/proxyMemoryLimit": "192Mi"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel2"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "codewisdom/ts-travel2-service:0.0.4",
+                  "imagePullPolicy": "Always",
+                  "name": "ts-travel2",
+                  "ports": [
+                    {
+                      "containerPort": 16346,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "readinessProbe": {
+                    "failureThreshold": 3,
+                    "initialDelaySeconds": 160,
+                    "periodSeconds": 10,
+                    "successThreshold": 1,
+                    "tcpSocket": {
+                      "port": 16346
+                    },
+                    "timeoutSeconds": 5
+                  },
+                  "resources": {
+                    "limits": {
+                      "cpu": "500m",
+                      "ephemeral-storage": "1Gi",
+                      "memory": "512Mi"
+                    },
+                    "requests": {
+                      "cpu": "50m",
+                      "ephemeral-storage": "128Mi",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:52:29Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:43Z",
+              "lastUpdateTime": "2026-09-27T12:52:29Z",
+              "message": "ReplicaSet \"ts-travel2-86bd7c7c67\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+          "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"ts-travel2-mongo\",\"namespace\":\"trainticket\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"ts-travel2-mongo\"}},\"strategy\":{\"rollingUpdate\":{\"maxUnavailable\":0}},\"template\":{\"metadata\":{\"annotations\":{\"sidecar.istio.io/inject\":\"false\"},\"labels\":{\"app\":\"ts-travel2-mongo\"}},\"spec\":{\"automountServiceAccountToken\":false,\"containers\":[{\"image\":\"mongo:4.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"ts-travel2-mongo\",\"ports\":[{\"containerPort\":27017}],\"resources\":{\"limits\":{\"cpu\":\"200m\",\"ephemeral-storage\":\"2Gi\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"25m\",\"ephemeral-storage\":\"256Mi\",\"memory\":\"512Mi\"}}}]}}}}\n"
+          },
+          "creationTimestamp": "2026-09-27T12:49:41Z",
+          "generation": 1,
+          "name": "ts-travel2-mongo",
+          "namespace": "trainticket",
+          "resourceVersion": "33846",
+          "uid": "2b880817-eaf5-48a5-adb2-210a8dc8bec2"
+        },
+        "spec": {
+          "progressDeadlineSeconds": 600,
+          "replicas": 1,
+          "revisionHistoryLimit": 10,
+          "selector": {
+            "matchLabels": {
+              "app": "ts-travel2-mongo"
+            }
+          },
+          "strategy": {
+            "rollingUpdate": {
+              "maxSurge": "25%",
+              "maxUnavailable": 0
+            },
+            "type": "RollingUpdate"
+          },
+          "template": {
+            "metadata": {
+              "annotations": {
+                "sidecar.istio.io/inject": "false"
+              },
+              "creationTimestamp": null,
+              "labels": {
+                "app": "ts-travel2-mongo"
+              }
+            },
+            "spec": {
+              "automountServiceAccountToken": false,
+              "containers": [
+                {
+                  "image": "mongo:4.0",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "ts-travel2-mongo",
+                  "ports": [
+                    {
+                      "containerPort": 27017,
+                      "protocol": "TCP"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "200m",
+                      "ephemeral-storage": "2Gi",
+                      "memory": "1Gi"
+                    },
+                    "requests": {
+                      "cpu": "25m",
+                      "ephemeral-storage": "256Mi",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "terminationMessagePath": "/dev/termination-log",
+                  "terminationMessagePolicy": "File"
+                }
+              ],
+              "dnsPolicy": "ClusterFirst",
+              "restartPolicy": "Always",
+              "schedulerName": "default-scheduler",
+              "securityContext": {},
+              "terminationGracePeriodSeconds": 30
+            }
+          }
+        },
+        "status": {
+          "availableReplicas": 1,
+          "conditions": [
+            {
+              "lastTransitionTime": "2026-09-27T12:49:44Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "Deployment has minimum availability.",
+              "reason": "MinimumReplicasAvailable",
+              "status": "True",
+              "type": "Available"
+            },
+            {
+              "lastTransitionTime": "2026-09-27T12:49:41Z",
+              "lastUpdateTime": "2026-09-27T12:49:44Z",
+              "message": "ReplicaSet \"ts-travel2-mongo-5c84bcfb97\" has successfully progressed.",
+              "reason": "NewReplicaSetAvailable",
+              "status": "True",
+              "type": "Progressing"
+            }
+          ],
+          "observedGeneration": 1,
+          "readyReplicas": 1,
+          "replicas": 1,
+          "updatedReplicas": 1
+        }
+      }
+    ],
+    "kind": "List",
+    "metadata": {
+      "resourceVersion": ""
+    }
+  }
+}

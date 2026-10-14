@@ -1,0 +1,16 @@
+{
+  "locust_started_at_unix": 1791747667,
+  "started_at_unix": 1791748147,
+  "finished_at_unix": 1791749347,
+  "locust_finished_at_unix": 1791749359,
+  "warmup_seconds": 480,
+  "measurement_seconds": 1200,
+  "locust_run_seconds": 1680,
+  "cooldown_seconds": 60,
+  "diagnostic_observation_tail_seconds": 0,
+  "observation_tail_mode": "disabled",
+  "scored_prediction_window_end_unix": 1791749347,
+  "observation_tail_start_unix": null,
+  "observation_tail_end_unix": null,
+  "load_phases": []
+}

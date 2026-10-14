@@ -1,0 +1,98 @@
+{
+  "cpu_utilization_limit": 0.8,
+  "estimator": "healthy-window-conservative",
+  "schema_version": "headlight.capacity/v1",
+  "services": {
+    "ts-auth": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-auth-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-basic": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-price": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-price-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-route": {
+      "cpu_cores_per_pod": 0.005179519671946764,
+      "healthy_samples": 390,
+      "request_rate_per_pod": 1.6666666269302368
+    },
+    "ts-route-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-route-plan": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-station": {
+      "cpu_cores_per_pod": 0.004029012192040682,
+      "healthy_samples": 144,
+      "request_rate_per_pod": 0.095238097012043
+    },
+    "ts-station-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-ticketinfo": {
+      "cpu_cores_per_pod": 0.003864930151030421,
+      "healthy_samples": 302,
+      "request_rate_per_pod": 0.13382383286952973
+    },
+    "ts-train": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-train-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-travel": {
+      "cpu_cores_per_pod": 0.004281607223674655,
+      "healthy_samples": 192,
+      "request_rate_per_pod": 0.04444444552063942
+    },
+    "ts-travel-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-travel-plan": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-travel2": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    },
+    "ts-travel2-mongo": {
+      "cpu_cores_per_pod": 1.0,
+      "healthy_samples": 0,
+      "request_rate_per_pod": 1.0
+    }
+  },
+  "sla_latency_ms": 1000.0
+}

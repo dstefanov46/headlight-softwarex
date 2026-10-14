@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trainticket-gateway
+  namespace: trainticket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trainticket-gateway
+  template:
+    metadata:
+      labels:
+        app: trainticket-gateway
+      annotations:
+        headlight.nephele-project.eu/config-sha256: "__CONFIG_SHA256__"
+    spec:
+      containers:
+        - name: haproxy
+          image: __GATEWAY_IMAGE__
+          imagePullPolicy: IfNotPresent
+          args:
+            - haproxy
+            - -f
+            - /usr/local/etc/haproxy/haproxy.cfg
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: admin
+              containerPort: 9999
+          readinessProbe:
+            httpGet:
+              path: /_health
+              port: 8080
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          volumeMounts:
+            - name: config
+              mountPath: /usr/local/etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: trainticket-gateway-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainticket-gateway
+  namespace: trainticket
+spec:
+  type: ClusterIP
+  selector:
+    app: trainticket-gateway
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

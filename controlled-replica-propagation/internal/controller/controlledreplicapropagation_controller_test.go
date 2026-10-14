@@ -905,7 +905,7 @@ var _ = Describe("ControlledReplicaPropagation Controller", func() {
 			Expect(k8sClient.Delete(ctx, dep)).To(Succeed())
 		}
 
-		It("should preserve availability during replica relocation with max unavailable 0 strategy", func() {
+		It("should live-migrate with max unavailable 0 strategy", func() {
 			maxUnavailable := int32(0)
 			namespaceName := setupInitState(string(uuid.NewUUID()), &maxUnavailable)
 
@@ -931,7 +931,7 @@ var _ = Describe("ControlledReplicaPropagation Controller", func() {
 			// suspend, update, unsuspend
 			mustReconcileTimes(3, namespaceName)
 
-			// ensure scale up happened for make-before-break replica relocation
+			// ensure scale up happened for live-migration
 			dep := &appsv1.Deployment{}
 			Expect(k8sClient.Get(ctx, namespaceName, dep)).To(Succeed())
 			Expect(*dep.Spec.Replicas).To(Equal(int32(17)))
@@ -1030,7 +1030,7 @@ var _ = Describe("ControlledReplicaPropagation Controller", func() {
 			cleanupState(namespaceName)
 		})
 
-		It("should preserve availability during replica relocation with max unavailable 2 strategy", func() {
+		It("should live-migrate with max unavailable 5 strategy", func() {
 			maxUnavailable := int32(2)
 			namespaceName := setupInitState(string(uuid.NewUUID()), &maxUnavailable)
 
@@ -1052,7 +1052,7 @@ var _ = Describe("ControlledReplicaPropagation Controller", func() {
 			// suspend, update, unsuspend
 			mustReconcileTimes(3, namespaceName)
 
-			// ensure scale up happened for make-before-break replica relocation
+			// ensure scale up happened for live-migration
 			dep := &appsv1.Deployment{}
 			Expect(k8sClient.Get(ctx, namespaceName, dep)).To(Succeed())
 			Expect(*dep.Spec.Replicas).To(Equal(int32(20)))
@@ -1146,7 +1146,7 @@ var _ = Describe("ControlledReplicaPropagation Controller", func() {
 			cleanupState(namespaceName)
 		})
 
-		It("should relocate replicas immediately without strategy", func() {
+		It("should not live-migrate without strategy", func() {
 			namespaceName := setupInitState(string(uuid.NewUUID()), nil)
 
 			// want to move 5 replicas from cluster2 to cluster3
@@ -1167,7 +1167,7 @@ var _ = Describe("ControlledReplicaPropagation Controller", func() {
 			// suspend, update, unsuspend
 			mustReconcileTimes(3, namespaceName)
 
-			// ensure the desired state is immediately achieved without make-before-break relocation
+			// ensure the desired state is immediately achieved, no live-migration
 			dep := &appsv1.Deployment{}
 			Expect(k8sClient.Get(ctx, namespaceName, dep)).To(Succeed())
 			Expect(*dep.Spec.Replicas).To(Equal(int32(15)))

@@ -1,0 +1,173 @@
+{
+  "cluster_limits": {
+    "cluster2": {
+      "initial_replicas": 1,
+      "max_replicas": 6,
+      "min_replicas": 1
+    },
+    "cluster3": {
+      "initial_replicas": 1,
+      "max_replicas": 8,
+      "min_replicas": 1
+    }
+  },
+  "namespace": "trainticket",
+  "node_order": [
+    "ts-auth",
+    "ts-auth-mongo",
+    "ts-basic",
+    "ts-price",
+    "ts-price-mongo",
+    "ts-route",
+    "ts-route-mongo",
+    "ts-route-plan",
+    "ts-station",
+    "ts-station-mongo",
+    "ts-ticketinfo",
+    "ts-train",
+    "ts-train-mongo",
+    "ts-travel",
+    "ts-travel-mongo",
+    "ts-travel-plan",
+    "ts-travel2",
+    "ts-travel2-mongo"
+  ],
+  "nodes": [
+    {
+      "name": "ts-auth",
+      "scalable": true,
+      "service_name": "ts-auth-service",
+      "service_type": "application",
+      "workload": "ts-auth"
+    },
+    {
+      "name": "ts-auth-mongo",
+      "scalable": false,
+      "service_name": "ts-auth-mongo",
+      "service_type": "database",
+      "workload": "ts-auth-mongo"
+    },
+    {
+      "name": "ts-basic",
+      "scalable": true,
+      "service_name": "ts-basic-service",
+      "service_type": "application",
+      "workload": "ts-basic"
+    },
+    {
+      "name": "ts-price",
+      "scalable": true,
+      "service_name": "ts-price-service",
+      "service_type": "application",
+      "workload": "ts-price"
+    },
+    {
+      "name": "ts-price-mongo",
+      "scalable": false,
+      "service_name": "ts-price-mongo",
+      "service_type": "database",
+      "workload": "ts-price-mongo"
+    },
+    {
+      "name": "ts-route",
+      "scalable": true,
+      "service_name": "ts-route-service",
+      "service_type": "application",
+      "workload": "ts-route"
+    },
+    {
+      "name": "ts-route-mongo",
+      "scalable": false,
+      "service_name": "ts-route-mongo",
+      "service_type": "database",
+      "workload": "ts-route-mongo"
+    },
+    {
+      "name": "ts-route-plan",
+      "scalable": true,
+      "service_name": "ts-route-plan-service",
+      "service_type": "application",
+      "workload": "ts-route-plan"
+    },
+    {
+      "name": "ts-station",
+      "scalable": true,
+      "service_name": "ts-station-service",
+      "service_type": "application",
+      "workload": "ts-station"
+    },
+    {
+      "name": "ts-station-mongo",
+      "scalable": false,
+      "service_name": "ts-station-mongo",
+      "service_type": "database",
+      "workload": "ts-station-mongo"
+    },
+    {
+      "name": "ts-ticketinfo",
+      "scalable": true,
+      "service_name": "ts-ticketinfo-service",
+      "service_type": "application",
+      "workload": "ts-ticketinfo"
+    },
+    {
+      "name": "ts-train",
+      "scalable": true,
+      "service_name": "ts-train-service",
+      "service_type": "application",
+      "workload": "ts-train"
+    },
+    {
+      "name": "ts-train-mongo",
+      "scalable": false,
+      "service_name": "ts-train-mongo",
+      "service_type": "database",
+      "workload": "ts-train-mongo"
+    },
+    {
+      "name": "ts-travel",
+      "scalable": true,
+      "service_name": "ts-travel-service",
+      "service_type": "application",
+      "workload": "ts-travel"
+    },
+    {
+      "name": "ts-travel-mongo",
+      "scalable": false,
+      "service_name": "ts-travel-mongo",
+      "service_type": "database",
+      "workload": "ts-travel-mongo"
+    },
+    {
+      "name": "ts-travel-plan",
+      "scalable": true,
+      "service_name": "ts-travel-plan-service",
+      "service_type": "application",
+      "workload": "ts-travel-plan"
+    },
+    {
+      "name": "ts-travel2",
+      "scalable": true,
+      "service_name": "ts-travel2-service",
+      "service_type": "application",
+      "workload": "ts-travel2"
+    },
+    {
+      "name": "ts-travel2-mongo",
+      "scalable": false,
+      "service_name": "ts-travel2-mongo",
+      "service_type": "database",
+      "workload": "ts-travel2-mongo"
+    }
+  ],
+  "profile_hash": "ddd0974573c10108e3148a731230de4bccabc07a5666792bd525e39209e3678f",
+  "profile_name": "advanced-ticket",
+  "profile_version": 1,
+  "sampling_interval_seconds": 15,
+  "schema_version": "headlight.service-profile/v1",
+  "source": {
+    "generator": "experiments/scripts/generate_service_profiles.py",
+    "rendered_manifest_sha256": "134a0ae9078b6833961ef9cd6d83ca0659789ccc2e66b7348c2e8eb2fbe27985",
+    "resource_profile": "capacity-vm"
+  }
+}

@@ -4,21 +4,23 @@ metadata:
   name: flash-crowd
 spec:
   pattern: flash-crowd
-  duration_seconds: 2400
-  warmup_seconds: 300
+  duration_seconds: 1200
+  warmup_seconds: 480
+  capacity_users: 10
+  capacity_users_env: HEADLIGHT_EVALUATION_CAPACITY
   locust:
     spawn_rate: 40
-    base_users: 30
-    spike_users: 400
+    base_users: "0.2C"
+    spike_users: C
     spike_start_seconds: &id001
-    - 600
-    - 1500
+    - 300
+    - 900
     spike_duration_seconds: 180
   notes: Sharp surge followed by controlled decay; intended to stress proactive scaling.
   sampling_interval_seconds: 15
   shape_parameters:
     spawn_rate: 40
-    base_users: 30
-    spike_users: 400
+    base_users: "0.2C"
+    spike_users: C
     spike_start_seconds: *id001
     spike_duration_seconds: 180

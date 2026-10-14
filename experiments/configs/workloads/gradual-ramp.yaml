@@ -4,19 +4,21 @@ metadata:
   name: gradual-ramp
 spec:
   pattern: gradual-ramp
-  duration_seconds: 3000
-  warmup_seconds: 300
+  duration_seconds: 1200
+  warmup_seconds: 480
+  capacity_users: 10
+  capacity_users_env: HEADLIGHT_EVALUATION_CAPACITY
   locust:
     spawn_rate: 15
-    start_users: 20
-    end_users: 320
-    ramp_seconds: 1200
-    hold_seconds: 600
+    start_users: "0.2C"
+    end_users: C
+    ramp_seconds: 900
+    hold_seconds: 300
   notes: Monotonic growth workload used to measure anticipation of sustained demand.
   sampling_interval_seconds: 15
   shape_parameters:
     spawn_rate: 15
-    start_users: 20
-    end_users: 320
-    ramp_seconds: 1200
-    hold_seconds: 600
+    start_users: "0.2C"
+    end_users: C
+    ramp_seconds: 900
+    hold_seconds: 300

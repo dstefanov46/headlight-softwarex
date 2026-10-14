@@ -1,0 +1,132 @@
+$ bash /home/stefanovaleksandar130/headlight-jsa/experiments/scripts/install_keda_baseline.sh
+Release "keda" does not exist. Installing it now.
+NAME: keda
+LAST DEPLOYED: Sun Sep 27 13:26:17 2026
+NAMESPACE: keda
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+:::^.     .::::^:     :::::::::::::::    .:::::::::.                   .^.                  
+7???~   .^7????~.     7??????????????.   :?????????77!^.              .7?7.                 
+7???~  ^7???7~.       ~!!!!!!!!!!!!!!.   :????!!!!7????7~.           .7???7.                
+7???~^7????~.                            :????:    :~7???7.         :7?????7.               
+7???7????!.           ::::::::::::.      :????:      .7???!        :7??77???7.              
+7????????7:           7???????????~      :????:       :????:      :???7?5????7.             
+7????!~????^          !77777777777^      :????:       :????:     ^???7?#P7????7.            
+7???~  ^????~                            :????:      :7???!     ^???7J#@J7?????7.           
+7???~   :7???!.                          :????:   .:~7???!.    ~???7Y&@#7777????7.          
+7???~    .7???7:      !!!!!!!!!!!!!!!    :????7!!77????7^     ~??775@@@GJJYJ?????7.         
+7???~     .!????^     7?????????????7.   :?????????7!~:      !????G@@@@@@@@5??????7:        
+::::.       :::::     :::::::::::::::    .::::::::..        .::::JGGGB@@@&7:::::::::        
+                                                                      ?@@#~                  
+                                                                      P@B^                   
+                                                                    :&G:                    
+                                                                    !5.                     
+                                                                    .Kubernetes Event-driven Autoscaling (KEDA) - Application autoscaling made simple.
+
+Get started by deploying Scaled Objects to your cluster:
+    - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
+    - Samples: https://github.com/kedacore/samples
+
+Get information about the deployed ScaledObjects:
+  kubectl get scaledobject [--namespace <namespace>]
+
+Get details about a deployed ScaledObject:
+  kubectl describe scaledobject <scaled-object-name> [--namespace <namespace>]
+
+Get information about the deployed TriggerAuthentications:
+  kubectl get triggerauthentication [--namespace <namespace>]
+
+Get details about a deployed TriggerAuthentication:
+  kubectl describe triggerauthentication <trigger-authentication-name> [--namespace <namespace>]
+
+Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
+  kubectl get hpa [--all-namespaces] [--namespace <namespace>]
+
+Learn more about KEDA:
+- Documentation: https://keda.sh/
+- Support: https://keda.sh/support/
+- File an issue: https://github.com/kedacore/keda/issues/new/choose
+Waiting for deployment "keda-operator" rollout to finish: 0 of 1 updated replicas are available...
+deployment "keda-operator" successfully rolled out
+deployment "keda-operator-metrics-apiserver" successfully rolled out
+scaledobject.keda.sh/ts-auth-keda created
+scaledobject.keda.sh/ts-basic-keda created
+scaledobject.keda.sh/ts-price-keda created
+scaledobject.keda.sh/ts-route-keda created
+scaledobject.keda.sh/ts-route-plan-keda created
+scaledobject.keda.sh/ts-station-keda created
+scaledobject.keda.sh/ts-ticketinfo-keda created
+scaledobject.keda.sh/ts-train-keda created
+scaledobject.keda.sh/ts-travel-keda created
+scaledobject.keda.sh/ts-travel-plan-keda created
+scaledobject.keda.sh/ts-travel2-keda created
+Rendered KEDA ScaledObjects: /home/stefanovaleksandar130/headlight-jsa/results/keda-scaledobjects.yaml
+[exit 0]
+$ bash /home/stefanovaleksandar130/headlight-jsa/experiments/scripts/install_keda_baseline.sh
+Release "keda" does not exist. Installing it now.
+NAME: keda
+LAST DEPLOYED: Sun Sep 27 13:26:44 2026
+NAMESPACE: keda
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+:::^.     .::::^:     :::::::::::::::    .:::::::::.                   .^.                  
+7???~   .^7????~.     7??????????????.   :?????????77!^.              .7?7.                 
+7???~  ^7???7~.       ~!!!!!!!!!!!!!!.   :????!!!!7????7~.           .7???7.                
+7???~^7????~.                            :????:    :~7???7.         :7?????7.               
+7???7????!.           ::::::::::::.      :????:      .7???!        :7??77???7.              
+7????????7:           7???????????~      :????:       :????:      :???7?5????7.             
+7????!~????^          !77777777777^      :????:       :????:     ^???7?#P7????7.            
+7???~  ^????~                            :????:      :7???!     ^???7J#@J7?????7.           
+7???~   :7???!.                          :????:   .:~7???!.    ~???7Y&@#7777????7.          
+7???~    .7???7:      !!!!!!!!!!!!!!!    :????7!!77????7^     ~??775@@@GJJYJ?????7.         
+7???~     .!????^     7?????????????7.   :?????????7!~:      !????G@@@@@@@@5??????7:        
+::::.       :::::     :::::::::::::::    .::::::::..        .::::JGGGB@@@&7:::::::::        
+                                                                      ?@@#~                  
+                                                                      P@B^                   
+                                                                    :&G:                    
+                                                                    !5.                     
+                                                                    .Kubernetes Event-driven Autoscaling (KEDA) - Application autoscaling made simple.
+
+Get started by deploying Scaled Objects to your cluster:
+    - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
+    - Samples: https://github.com/kedacore/samples
+
+Get information about the deployed ScaledObjects:
+  kubectl get scaledobject [--namespace <namespace>]
+
+Get details about a deployed ScaledObject:
+  kubectl describe scaledobject <scaled-object-name> [--namespace <namespace>]
+
+Get information about the deployed TriggerAuthentications:
+  kubectl get triggerauthentication [--namespace <namespace>]
+
+Get details about a deployed TriggerAuthentication:
+  kubectl describe triggerauthentication <trigger-authentication-name> [--namespace <namespace>]
+
+Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
+  kubectl get hpa [--all-namespaces] [--namespace <namespace>]
+
+Learn more about KEDA:
+- Documentation: https://keda.sh/
+- Support: https://keda.sh/support/
+- File an issue: https://github.com/kedacore/keda/issues/new/choose
+Waiting for deployment "keda-operator" rollout to finish: 0 of 1 updated replicas are available...
+deployment "keda-operator" successfully rolled out
+deployment "keda-operator-metrics-apiserver" successfully rolled out
+scaledobject.keda.sh/ts-auth-keda created
+scaledobject.keda.sh/ts-basic-keda created
+scaledobject.keda.sh/ts-price-keda created
+scaledobject.keda.sh/ts-route-keda created
+scaledobject.keda.sh/ts-route-plan-keda created
+scaledobject.keda.sh/ts-station-keda created
+scaledobject.keda.sh/ts-ticketinfo-keda created
+scaledobject.keda.sh/ts-train-keda created
+scaledobject.keda.sh/ts-travel-keda created
+scaledobject.keda.sh/ts-travel-plan-keda created
+scaledobject.keda.sh/ts-travel2-keda created
+Rendered KEDA ScaledObjects: /home/stefanovaleksandar130/headlight-jsa/results/keda-scaledobjects.yaml
+[exit 0]

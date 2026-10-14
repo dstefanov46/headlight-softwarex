@@ -1,0 +1,38 @@
+{
+  "apiVersion": "headlight.experiments/v1alpha1",
+  "kind": "GatewayExperimentProtocol",
+  "metadata": {
+    "name": "research-v4-gateway-v1"
+  },
+  "reference": {
+    "base_protocol_sha256": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "path": "experiments/configs/gateway-protocols/research-v4-gateway.yaml",
+    "sha256": "93ffb1709755ff729128ea2e61d7b52807d3b6d49870a45f50b3a31a3a606608",
+    "version": "research-v4-gateway-v1"
+  },
+  "spec": {
+    "base_protocol_path": "experiments/configs/protocols/research-v3.yaml",
+    "base_protocol_sha256": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "comparison_rule": "all-controllers-must-use-identical-gateway-and-workload",
+    "entry_services": {
+      "auth": "ts-auth-service",
+      "route": "ts-route-service",
+      "travel": "ts-travel-service"
+    },
+    "gateway_cluster": "cluster1",
+    "gateway_namespace": "trainticket",
+    "gateway_url": "http://trainticket-gateway.trainticket.svc.cluster.local:8080",
+    "load_generator_cluster": "cluster1",
+    "prior_research_v3_cells_directly_comparable": false,
+    "routing_rule": "one-weight-unit-per-ready-pod-endpointslice-address",
+    "status": "evaluation-not-frozen-paper-matrix",
+    "transaction_mix": "advanced-ticket",
+    "update_interval_seconds": 10,
+    "version": "research-v4-gateway-v1",
+    "workload_clusters": [
+      "cluster2",
+      "cluster3"
+    ],
+    "zero_ready_endpoint_weight": 0
+  }
+}

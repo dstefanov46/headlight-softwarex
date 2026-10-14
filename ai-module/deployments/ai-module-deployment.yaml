@@ -33,6 +33,8 @@ spec:
           value: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
         - name: HEADLIGHT_SHADOW_MODE
           value: '0'
+        - name: HEADLIGHT_POLICY_CONFIG
+          value: /config/policy/policy.json
         - name: KUBECONFIG
           value: /home/appuser/.kube/config
         volumeMounts:
@@ -46,6 +48,10 @@ spec:
         - name: service-profile
           mountPath: /profiles/profile.json
           subPath: profile.json
+          readOnly: true
+        - name: policy-config
+          mountPath: /config/policy/policy.json
+          subPath: policy.json
           readOnly: true
         - name: artifacts
           mountPath: /artifacts
@@ -68,6 +74,9 @@ spec:
       - name: service-profile
         configMap:
           name: headlight-service-profile
+      - name: policy-config
+        configMap:
+          name: headlight-policy-config
       - name: artifacts
         emptyDir: {}
       automountServiceAccountToken: false

@@ -1,0 +1,67 @@
+{
+  "protocol": {
+    "version": "research-v3",
+    "hash": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "path": "experiments/configs/protocols/research-v3.yaml"
+  },
+  "manifest_topology": {
+    "mode": "multi-cluster-headlight",
+    "namespace": "trainticket",
+    "active_clusters": [
+      "cluster2",
+      "cluster3"
+    ],
+    "clusters_file": "ai-module/configs/clusters.json",
+    "services_file": "ai-module/configs/application_services.json",
+    "additional_services_file": "ai-module/configs/additional_services.json",
+    "placement_source": "actions-handler",
+    "notes": "Dynamic multi-cluster mode using Actions Handler and ControlledReplicaPropagation."
+  },
+  "common_topology": {
+    "trainticket_path": "advanced-ticket",
+    "resource_profile": "capacity-vm",
+    "namespace": "trainticket",
+    "active_clusters": [
+      "cluster2",
+      "cluster3"
+    ],
+    "ingress_cluster": "cluster2",
+    "load_generator_cluster": "cluster2",
+    "workload_deploy_modes": {
+      "headlight": "karmada",
+      "lstm": "karmada",
+      "threshold": "karmada",
+      "hpa": "native-per-cluster",
+      "static": "karmada"
+    },
+    "identical_data_plane_required": {
+      "service_set": true,
+      "manifests": true,
+      "namespaces": true,
+      "requests_limits": true,
+      "image_versions": true,
+      "ingress_path": true,
+      "load_generator_placement": true
+    }
+  },
+  "controller": "headlight-v2",
+  "controller_context": "cluster3",
+  "load_generator_cluster": "cluster1",
+  "ingress_cluster": "cluster1",
+  "deploy_mode": "karmada",
+  "hpa_controller_path_note": "",
+  "workload_manifest_hashes": {
+    "trainticket_path": "advanced-ticket",
+    "resource_profile": "capacity-vm",
+    "namespace": "trainticket",
+    "data_plane_no_policies_sha256": "0c752bcc700389e1f84b80795a7f2a3e8323a147f6dda0a037938ee09fbc6899",
+    "karmada_with_policies_sha256": "134a0ae9078b6833961ef9cd6d83ca0659789ccc2e66b7348c2e8eb2fbe27985"
+  },
+  "gateway_protocol": {
+    "version": "research-v4-gateway-v1",
+    "path": "experiments/configs/gateway-protocols/research-v4-gateway.yaml",
+    "sha256": "93ffb1709755ff729128ea2e61d7b52807d3b6d49870a45f50b3a31a3a606608",
+    "base_protocol_sha256": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545"
+  },
+  "gateway_url": "http://trainticket-gateway.trainticket.svc.cluster.local:8080"
+}

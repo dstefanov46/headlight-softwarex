@@ -1,0 +1,44 @@
+{
+  "architecture_decision": {
+    "graph_architecture_changed": false,
+    "reason": "The full model beat graph-free demand MAE by more than the fixed 3% gate, same-observation decisions disagreed, and edge-feature ablation changed SLA-risk predictions. Valid edge information is therefore not being ignored."
+  },
+  "artifacts": {
+    "dataset_manifest": "results/synthetic-headlight-v2/large-v2-policy/manifest.json",
+    "dataset_manifest_sha256": "c7adcaa63849d66a170d5c5b2906a8481ad8381489099bab5e8ca0742d5aa69b",
+    "policy_selection": "results/synthetic-headlight-v2/policy-tuning-v2/selection.json",
+    "policy_selection_sha256": "aa40e455a4cd59b0d7e910deb366befd6589d07cf3e98a76843a9decbde1316d",
+    "training_report": "results/synthetic-headlight-v2/training-v2-policy-accepted/training-report.json",
+    "training_report_sha256": "7c1cd6bcb01b4ef30a520e686b109528df86d203f9cff81c1766247b56e811b4"
+  },
+  "schema_version": "headlight.closed-loop-policy-freeze/v1",
+  "selection": {
+    "development_episodes": 12,
+    "development_seeds": [
+      711,
+      712,
+      713
+    ],
+    "evaluation_seeds_excluded": [
+      701,
+      702,
+      703,
+      704,
+      705
+    ],
+    "graph_edge_sensitivity": 0.007650271991089405,
+    "mean_pod_count": 86.32060185185185,
+    "migration_proxy": 10.25,
+    "model_graph_free_disagreement_rate": 0.35455246913580246,
+    "request_sla_violation_rate": 0.05727148466428692,
+    "rule": "within 0.002 of best success and 0.01 of best request-SLA rate; then minimize equally normalized mean pod count and migration proxy",
+    "success_rate": 0.9919767857383675
+  },
+  "status": "frozen-before-evaluation",
+  "weights": {
+    "migration": 0.1,
+    "reliability": 0.5,
+    "resource": 0.25,
+    "sla_risk": 1.0
+  }
+}

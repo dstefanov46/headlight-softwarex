@@ -1,0 +1,164 @@
+{
+  "capacity_headroom": {
+    "maximum_headroom_safe_capacity": 11,
+    "minimum_reserved_replicas": 10,
+    "required_fraction": 0.2
+  },
+  "capacity_seed": 11,
+  "contract_payload_sha256": "3900d1b125c28a68fd6721b3907abc8a30ae9dfde3a1136a9d20e60024c465a8",
+  "created_at_unix": 1787164893,
+  "environment": {
+    "available_contexts": [
+      "cluster1",
+      "cluster2",
+      "cluster3",
+      "karmada-apiserver",
+      "karmada-host"
+    ],
+    "captured_at_unix": 1787164892,
+    "dry_run": false,
+    "git_commit": "92c38ee33daa717d9a4da259ed3088b7f7ec9e13",
+    "image_tags": {
+      "actions_handler": "local/actions-handler:dev",
+      "ai_module": "local/headlight-ai:dev",
+      "locust": "local/headlight-locust:dev"
+    },
+    "repo_root": "/home/stefanovaleksandar130/headlight-jsa",
+    "required_contexts": [
+      "karmada-apiserver",
+      "karmada-host",
+      "cluster1",
+      "cluster2",
+      "cluster3"
+    ],
+    "source_tree_sha256": null
+  },
+  "evaluation_seeds_excluded": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "finalized_at_unix": 1787164893,
+  "git_commit": "92c38ee33daa717d9a4da259ed3088b7f7ec9e13",
+  "hashes": {
+    "environment_sha256": "a33bbc8544d3a454e8b9797e20f581ce87942c6926e7bf357d9e6fbabf72356a",
+    "pilot_results_sha256": "a1e2aa67b9fe04992630c70b94a29063423599c741815d231ad8b15d485a44e2",
+    "qualification_inputs_sha256": "03dd1e279fa564e77c020b2801601f853114d3a9be85ce67904edb173b43fd6a",
+    "workload_manifest_hashes_sha256": "de650fd925a2aae804b6a019a7386b7d2680616af8364342a38179950d3a42fc"
+  },
+  "immutable": true,
+  "pilot_results": [
+    {
+      "exceptions": 0,
+      "first_timestamp": 1787087334.14866,
+      "healthy": true,
+      "last_timestamp": 1787087365.0459738,
+      "p95_latency_ms": 475.4927330004648,
+      "reason": "healthy",
+      "requests": 81,
+      "success_rate": 1.0,
+      "successful": 81,
+      "users": 2
+    },
+    {
+      "exceptions": 0,
+      "first_timestamp": 1787087669.2031617,
+      "healthy": true,
+      "last_timestamp": 1787087699.970843,
+      "p95_latency_ms": 740.3741890000219,
+      "reason": "healthy",
+      "requests": 116,
+      "success_rate": 1.0,
+      "successful": 116,
+      "users": 4
+    },
+    {
+      "exceptions": 0,
+      "first_timestamp": 1787088006.8491647,
+      "healthy": false,
+      "last_timestamp": 1787088037.6649058,
+      "p95_latency_ms": 1132.2050430001127,
+      "reason": "P95 1132.21ms exceeds the 1000ms SLA",
+      "requests": 156,
+      "success_rate": 1.0,
+      "successful": 156,
+      "users": 6
+    }
+  ],
+  "protocol": {
+    "hash": "833d85432bb646181a173d8991bd9fbfec3558dbb72dda4191891d7e55748545",
+    "path": "experiments/configs/protocols/research-v3.yaml",
+    "version": "research-v3"
+  },
+  "qualification_inputs": {
+    "controllers": [
+      "headlight",
+      "lstm",
+      "threshold"
+    ],
+    "cooldown_seconds": 0,
+    "pilot_duration_seconds": 30,
+    "pilot_levels": [
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "qualification_duration_seconds": 60,
+    "resource_profile": "capacity-vm",
+    "seed": 11,
+    "skip_pilots": false,
+    "trainticket_path": "advanced-ticket"
+  },
+  "registered_capacity_seeds": [
+    11
+  ],
+  "replica_bounds": {
+    "aggregate_max_replicas_per_service": 14,
+    "min_replicas_per_cluster": 1,
+    "per_cluster_max_replicas": {
+      "cluster2": 6,
+      "cluster3": 8
+    },
+    "required_peak_headroom_fraction": 0.2
+  },
+  "schema_version": "headlight.capacity-contract/v1",
+  "selected_capacity": 4,
+  "topology": {
+    "active_clusters": [
+      "cluster2",
+      "cluster3"
+    ],
+    "identical_data_plane_required": {
+      "image_versions": true,
+      "ingress_path": true,
+      "load_generator_placement": true,
+      "manifests": true,
+      "namespaces": true,
+      "requests_limits": true,
+      "service_set": true
+    },
+    "ingress_cluster": "cluster2",
+    "load_generator_cluster": "cluster2",
+    "namespace": "trainticket",
+    "resource_profile": "capacity-vm",
+    "trainticket_path": "advanced-ticket",
+    "workload_deploy_modes": {
+      "headlight": "karmada",
+      "hpa": "native-per-cluster",
+      "lstm": "karmada",
+      "static": "karmada",
+      "threshold": "karmada"
+    }
+  },
+  "workload_manifest_hashes": {
+    "data_plane_no_policies_sha256": "0c752bcc700389e1f84b80795a7f2a3e8323a147f6dda0a037938ee09fbc6899",
+    "karmada_with_policies_sha256": "134a0ae9078b6833961ef9cd6d83ca0659789ccc2e66b7348c2e8eb2fbe27985",
+    "namespace": "trainticket",
+    "resource_profile": "capacity-vm",
+    "trainticket_path": "advanced-ticket"
+  }
+}

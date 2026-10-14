@@ -1,0 +1,86 @@
+{
+  "schema_version": "headlight.policy/v1",
+  "policy_id": "research-v3-forecast-policy",
+  "status": "frozen-pre-execution",
+  "parameters": {
+    "sla_latency_ms": 1000.0,
+    "cpu_guard": 0.8,
+    "sla_probability_guard": 0.5,
+    "max_scale_up_step": 2,
+    "scale_down_healthy_windows": 12,
+    "scale_down_cooldown_seconds": 180,
+    "readiness": {
+      "hold_when_pending_actuation": true,
+      "require_all_ready_before_new_action": true
+    },
+    "staleness": {
+      "reactive_freshness_seconds": 30,
+      "hold_when_predictive_and_reactive_inputs_stale": true,
+      "reactive_guard_when_predictive_input_stale": true
+    },
+    "replica_allocation": {
+      "method": "largest-remainder",
+      "weights": {
+        "cluster2": 6,
+        "cluster3": 8
+      },
+      "bounds": {
+        "cluster2": {
+          "min_replicas": 1,
+          "max_replicas": 6
+        },
+        "cluster3": {
+          "min_replicas": 1,
+          "max_replicas": 8
+        }
+      }
+    }
+  },
+  "provenance": {
+    "parameters": {
+      "sla_latency_ms": {
+        "source": "fixed-a-priori"
+      },
+      "cpu_guard": {
+        "source": "fixed-a-priori"
+      },
+      "sla_probability_guard": {
+        "source": "fixed-a-priori"
+      },
+      "max_scale_up_step": {
+        "source": "fixed-a-priori"
+      },
+      "scale_down_healthy_windows": {
+        "source": "fixed-a-priori"
+      },
+      "scale_down_cooldown_seconds": {
+        "source": "fixed-a-priori"
+      },
+      "readiness": {
+        "source": "fixed-a-priori"
+      },
+      "staleness": {
+        "source": "fixed-a-priori"
+      },
+      "replica_allocation": {
+        "source": "fixed-a-priori"
+      }
+    },
+    "calibration_trace": {
+      "name": "none-fixed-a-priori",
+      "sha256": "",
+      "seeds": []
+    },
+    "selection_procedure": "Parameters were fixed before evaluation to isolate forecasting quality; no threshold, guard, cooldown, or allocation value is selected from evaluation outcomes.",
+    "selected_at": "2026-08-08T00:00:00Z",
+    "commit": "367e833458312fd2021e02ebbc3f70e9fca02ecc"
+  },
+  "forbidden_seed_set": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "policy_configuration_hash": "897483a50cb10b73be0d64a0106cc7328cf44f1add9f86147c0b895c24fe0b3f"
+}
